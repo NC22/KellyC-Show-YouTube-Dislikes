@@ -1,0 +1,43 @@
+{
+   "content_scripts": [ {
+      "js": [
+          "lib/kellyTools.js",
+          "lib/kellyTooltip.js",          
+          "lib/kellyStorage.js", 
+          "lib/kellyShowRate.js",
+          "init/init.js"
+      ],
+      "all_frames": false,
+      "matches": [ 
+        "*://youtube.com/*",
+        "*://m.youtube.com/*",
+        "*://www.youtube.com/*"
+        ]
+   } ],
+   "default_locale" : "en",
+   "icons": { 
+        "32": "env/img/icon32x32.png",
+        "44": "env/img/icon44x44.png",
+        "128": "env/img/icon128x128.png" },
+   "manifest_version" : 2,
+   "version": "1.1.1.2",
+   "name": "Return Youtube Dislike",
+   "description": "__MSG_ext_description__",
+   "author" : "nradiowave",  
+   "background": {
+        "scripts": ["lib/kellyTools.js", "lib/kellyDispetcher.js"],
+        "persistent": false
+   },  
+   "options_ui": {
+        "page": "env/page/options.html",
+        "open_in_tab": true
+   },
+   "permissions": [
+        "storage",
+        "*://youtube.com/*",
+        "*://www.youtube.com/*",
+        "*://m.youtube.com/*",
+        "*://return-youtube-dislike-api.azurewebsites.net/*",
+        "*://catface.ru/*"
+    ]
+}

@@ -1,0 +1,47 @@
+{  
+    "ext_description":{  
+        "message":"Show dislikes on Youtube"
+    },
+    "ext_name":{  
+        "message":"KellyC Youtube Show Dislikes"
+    },    
+    "save":{  
+        "message":"Save"
+    },    
+    "save_ok":{  
+        "message":"Config updated"
+    },  
+    "num_k":{  
+        "message":"K"
+    },  
+    "num_m":{  
+        "message":"M"
+    }, 
+    "show_additions":{  
+        "message":"Show addition options"
+    }, 
+    "save_error":{  
+        "message":"Error during save config"
+    },  
+    "support_link":{  
+        "message":"Support"
+    },
+    "chik_advice":{  
+        "message":"If all works well, don't edit addition options"
+    },
+    "option_showRatio":{  
+        "message":"Show ratio"
+    },    
+    "option_showSource":{  
+        "message":"Add notice about data source in popup"
+    },
+    "option_forceApi":{  
+        "message":"Priority to API request"
+    },
+    "option_rTimeout":{  
+        "message":"Request timeout"
+    },
+    "option_debug":{  
+        "message":"Debug mode"
+    }
+}

@@ -1,0 +1,50 @@
+{  
+    "ext_description":{  
+        "message":"Отображает дизлайки на Youtube"
+    },
+    "ext_name":{  
+        "message":"KellyC Youtube Show Dislikes"
+    }, 
+    "save":{  
+        "message":"Сохранить"
+    },   
+    "save_ok":{  
+        "message":"Настройки изменены"
+    },  
+    "num_k":{  
+        "message":"Тыс"
+    },  
+    "num_m":{  
+        "message":"Млн"
+    }, 
+    "save_error":{  
+        "message":"Ошибка сохранения"
+    },   
+    "support_link":{  
+        "message":"Сайт поддержки"
+    },  
+    "show_additions":{  
+        "message":"Показать расширенные настройки"
+    },
+    "chik_advice":{  
+        "message":"Если и так все работает, не трогай<br><b>расширенные настройки</b>"
+    },
+    "option_showRatio":{  
+        "message":"Показывать соотношение лайков \\ дизлайков"
+    },   
+    "option_showSource":{  
+        "message":"Отображать источник данных"
+    },
+    "option_forceApi":{  
+        "message":"Приоритет на запросы через API"
+    },
+    "option_delay":{  
+        "message":"Задержка между запросами (сек.)"
+    },
+    "option_rTimeout":{  
+        "message":"Таймаут запроса (сек.)"
+    },   
+    "option_debug":{  
+        "message":"Режим отладки"
+    }
+}

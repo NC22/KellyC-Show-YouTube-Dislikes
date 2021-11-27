@@ -1,0 +1,1 @@
+KellyShowRate.getInstance().init();

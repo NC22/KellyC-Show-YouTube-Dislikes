@@ -1,0 +1,41 @@
+.__BASECLASS__-ratio-bar {
+    width: 150px;
+    height: 5px;
+    position: absolute;
+    overflow: hidden;
+    left : 8px;
+}
+
+.__BASECLASS__-ratio-like {
+    width: 50%;
+    height: 100%;
+    background: #75bc49;
+    float: left;
+    box-sizing: border-box;
+}
+
+.__BASECLASS__-ratio-dislike {
+    width: 50%;
+    height: 100%;
+    background: #cc6a7c;
+    float: left;
+    box-sizing: border-box;
+}
+
+.__BASECLASS__-ratio-bar.__BASECLASS__-ratio-bar-load .__BASECLASS__-ratio-like,
+.__BASECLASS__-ratio-bar.__BASECLASS__-ratio-bar-load .__BASECLASS__-ratio-dislike {
+    background : #ffd023;
+}
+
+.__BASECLASS__-tool .__BASECLASS__-tool-group-container {
+    min-width: unset; 
+    min-height: unset;
+    background: rgb(14 14 14 / 65%);
+    color: #fff;
+    border-radius: 0;
+    padding : 8px;
+}
+
+.__BASECLASS__-tool .__BASECLASS__-tool-group-content {
+    font-size : 12px;
+}
