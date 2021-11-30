@@ -30,6 +30,7 @@ button {
     cursor: pointer;
     border-radius: 3px;
     font-size: 16px;
+    position : relative;
 }
 
 button:hover {
@@ -70,7 +71,7 @@ button:hover {
 .page-options {
     padding-left: 50px;
     padding-top: 26px;
-    max-width: 350px;
+    max-width: 380px;
 }
 
 .kelly-options-row {
@@ -135,6 +136,19 @@ button:hover {
 
 .kelly-options-additions-wrap.show {
     display : block;
+}
+
+.kelly-options-additions-show {
+    text-align: left;
+    padding-left: 39px;
+}
+
+.kelly-options-additions-show:after {
+    content: "▼";
+    display: block;
+    position: absolute;
+    top: 13px;
+    left: 12px;
 }
 
 .colorring-ratio-preview {
