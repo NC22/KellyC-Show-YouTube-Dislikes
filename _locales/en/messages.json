@@ -19,6 +19,9 @@
     }, 
     "show_additions":{  
         "message":"Show addition options"
+    },  
+    "show_colorring":{  
+        "message":"Change color of ratio bar"
     }, 
     "save_error":{  
         "message":"Error during save config"
@@ -28,6 +31,9 @@
     },
     "chik_advice":{  
         "message":"If all works well, don't edit addition options"
+    },  
+    "reset_to_defaults":{  
+        "message":"Reset to default"
     },
     "option_showRatio":{  
         "message":"Show ratio"

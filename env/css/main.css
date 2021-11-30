@@ -6,6 +6,10 @@
     left : 8px;
 }
 
+.__BASECLASS__-ratio-bar-mobile {
+    bottom : 0;
+}
+
 .__BASECLASS__-ratio-like {
     width: 50%;
     height: 100%;
