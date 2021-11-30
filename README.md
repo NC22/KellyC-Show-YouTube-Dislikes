@@ -11,11 +11,12 @@ Default requests order -> [page data rating meta data] -> [API driver] (can be r
 <h2> Install </h2>
 
 <p>
-<b> Install </b> for <a href="https://chrome.google.com/webstore/detail/kellyc-return-youtube-dis/gmdihkflccbodfkfioifolcijgahdgaf?hl=en"> Chrome </a>,
- <a href="https://addons.mozilla.org/en/firefox/addon/return-youtube-dislike/"> FireFox </a>, <a href = "https://chrome.google.com/ webstore / detail / kellyc-return-youtube-dis / gmdihkflccbodfkfioifolcijgahdgaf? hl = en "> Edge </a>, <a href =" https://chrome.google.com/webstore/detail/kellyc-return-youtube- dis / gmdihkflccbodfkfioifolcijgahdgaf? hl = en "> Opera </a>
+<b> Install </b> for <a href="https://chrome.google.com/webstore/detail/kellyc-return-youtube-dis/gmdihkflccbodfkfioifolcijgahdgaf?hl=en">Chrome</a>,
+ <a href="https://addons.mozilla.org/en/firefox/addon/return-youtube-dislike/">FireFox</a>
 </p>
 
-a bit tested on mobile devices as well (for ex. Kiwi Browser supports extensions)
+- Edge, Opera and any that allow install extensions from Chrome Extensions Store
+- a bit tested on mobile devices as well (for ex. Kiwi Browser supports extensions)
 
 
 # APIs used
