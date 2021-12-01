@@ -40,6 +40,12 @@
     "page": "env/page/options.html",
     "open_in_tab": true
    },
+   "action": {
+        "default_popup": "env/page/popup.html",
+        "default_icon": {
+            "32": "env/img/icon32x32.png"
+        }
+   },
    "web_accessible_resources":  [{
       "resources": ["enc/css/*.css"],
       "matches": [],

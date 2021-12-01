@@ -21,8 +21,9 @@ Default requests order -> [page data rating meta data] -> [API driver] (can be r
 
 # APIs used
 
-- v1.0.0.0-1.1.1.1 used API by <a href="https://returnyoutubedislike.com/"> Return YouTube Dislikes </a> project as alternative channel. <br>
-- currently used temporary api through my host catface.ru, implementation based on YouTube apis that will hide dislikes after 13 Dec.
+- API by <a href="https://returnyoutubedislike.com/">Return YouTube Dislikes</a> project as alternative channel (WIP)<br>
+- API by <a href="https://sponsor.ajay.app/">SponsorBlock</a> (WIP)<br>
+- catface.ru used as cache from YouTube API \ metric data. It's not store all data constantly.
 
 If YouTube completely closes all metadata, planning to give choice of which data source will be used for load data.
 
