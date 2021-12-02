@@ -8,7 +8,7 @@ My project is similar to other ones, but with some features that was important p
 
 - Classic ratio bar with green \ red colors
 - Optional customisation of colors for ratio bar
-- Support different sources of data so user can clearly see where "likes\dislikes" information was loaded from
+- Support different sources of data so user can clearly see where "likes\dislikes" information was loaded from (currently IN DEV versions only)
 - Support of mobile devices
 
 Used combination of API access and restore data by rating metrica data.
@@ -28,9 +28,9 @@ Default requests order -> [page data rating meta data] -> [API driver] (can be r
 
 # APIs used
 
-- API by <a href="https://returnyoutubedislike.com/">Return YouTube Dislikes</a> project as alternative channel (WIP)<br>
-- API by <a href="https://sponsor.ajay.app/">SponsorBlock</a> (WIP)<br>
-- catface.ru used as cache from YouTube API \ metric data. It's not store all data constantly.
+- API by <a href="https://returnyoutubedislike.com/">Return YouTube Dislikes</a> project as alternative channel (in dev builds > 1.1.1.6)<br>
+- API by <a href="https://sponsor.ajay.app/">SponsorBlock</a> (in dev builds > 1.1.1.6)<br>
+- <a href="https://catface.ru>Catface.ru</a> used as cache from YouTube API \ metric data. It's not store all data constantly.
 
 If YouTube completely closes all metadata, planning to give choice of which data source will be used for load data.
 
