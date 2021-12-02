@@ -25,51 +25,60 @@
     },
     "show_datasources":{  
         "message":"Data sources order"
-    },    
+    },     
+    "datasource_id_youtubeMetric":{  
+        "message":"Gets statistic from page meta data. Restore likes\\ dislikes based on rating data for video<br>Currently most accurate method if availabe"
+    },
+    "datasource_id_sponsorsBlock":{  
+        "message":"Collects data from user sended actions (from extensions that use same API).<br>Uses its own data base https://sponsor.ajay.app/database"
+    }, 
+    "datasource_id_ryda":{  
+        "message":"Gets data from YouTube API, then stores the data in a database for caching (cached for around 2-3 days).<br>All collected statistic about videos is stored constatntly<br> and will used in future to replace YouTube API statistic when it will be unavailabe"
+    },
+    "datasource_id_catface":{  
+        "message":"Cache server for YouTube API \\ Meta data get results. It's not store all data constantly."
+    }, 
     "datasource_get":{  
-        "message":"Получать данные"
+        "message":"Reciev ratio"
     }, 
     "datasource_send":{  
-        "message":"Отправлять действия"
+        "message":"Send actions"
     }, 
     "datasource_home":{  
-        "message":"Домашняя страница"
+        "message":"Home page"
     },
     "datasource_pp":{  
-        "message":"Политика конфиденциальности"
+        "message":"Privacy policy"
     },   
     "datasource_colors":{  
-        "message":"цвет"
+        "message":"color"
     },  
     "datasource_desc":{  
-        "message":"Описание"
+        "message":"Description"
     },
     "datasource_donate":{  
-        "message":"Поддержать"
+        "message":"Donate"
     },
     "datasources_help":{  
-        "message":"Источники данных отвечают за получаемую информацию о дизлайках \\ лайках."
+        "message":"Extension gets information about dislikes / likes count by making request to data sources by priority"
     }, 
     "datasources_help_1":{  
-        "message":"Показатели могут отличатся исходя из того с какого источника удалось получить данные в соответствии с порядком запросов."
+        "message":"The count may differ based on the source from which the data was obtained in accordance with the order of requests."
     },
     "datasources_help_2":{  
-        "message":"<b>SponsorBlock API</b> - отображает только свои данные без учета прошлой статистики ютуба"
-    },  
-    "datasources_help_3":{  
-        "message":"<b>ReturnYoutubeDislikes.com</b> - отображает с учетом \"спасенной\" \\ \"архивированной\" информации до скрытия дизлайков."
-    },  
-    "datasources_help_4":{  
-        "message":"<b>Catface.ru</b> - кэш метрики \\ данных из YouTube API, не хранит данные на постоянной основе"
+        "message":"Currently supported <b>SponsorBlock API</b> (currently for testing), <b>ReturnYoutubeDislikes.com</b>, <b>Catface.ru</b>. Read more in description section of each source."
     },
-    "datasources_help_5":{  
-        "message":"По умолчанию порядок получения данных [данные из метрики ютуба + кэш] -&gt; [api returnyoutubedislikes].<br>На данный метрика - наиболее точный источник. Получение информации этим способом могут ограничить в любой момент.<br>В зависимости от того какие действия будет принимать Ютуб порядок и источники могут менятся чтобы расширение могло продолжать работать."
+    "datasources_help_3":{  
+        "message":"By default, the order of data retrieval is [data from YouTube Meta + cache] -> [APY by <b>ReturnYoutubeDislikes.com</b>]."
     },   
-    "datasources_help_6":{  
-        "message":"Порядок менять рекомендуется только в случае проблем в работе."
+    "datasources_help_4":{  
+        "message":"For now, the metric is the most accurate source. The receipt of information in this way can be limited at any time. Depending on what actions YouTube takes, the order and sources may change so that the extension can continue to work."
     },  
-    "datasources_help_7":{  
-        "message":"При необходимости можно ограничить отправку действий (лайк \\ дизлайк видео) или получение данных с отдельных источников"
+    "datasources_help_5":{  
+        "message":"It is recommended to change the order only in case of problems in operation."
+    },    
+    "datasources_help_6":{  
+        "message":"You can restrict sending actions (like / dislike videos) or receiving data from separate sources."
     },
     "save_error":{  
         "message":"Error during save config"

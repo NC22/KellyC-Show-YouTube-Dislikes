@@ -4,6 +4,7 @@
     position: absolute;
     overflow: hidden;
     left : 8px;
+    cursor : pointer;
 }
 
 .__BASECLASS__-ratio-bar-mobile {

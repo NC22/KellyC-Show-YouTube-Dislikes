@@ -133,6 +133,7 @@ button:hover {
 .kelly-options-save .kelly-options-save-btn {
     background: #c40000;
     color: #fff;
+    margin-bottom : 16px;
 }
 
 .kelly-options-result.show {
@@ -189,13 +190,18 @@ a.kelly-options-row-help {
 }
 
 .data-source {
-    background: #626262;
     padding: 4px;
-    margin-bottom: 4px;
+    margin-bottom: 4px; 
+    background: #6e6e6e;
+}
+
+.data-source-card {
+    
+    background: #626262;
 }
 
 .data-source:hover {
-    background: #6e6e6e;
+    background: #838383;
 }
 
 
@@ -207,10 +213,15 @@ a.kelly-options-row-help {
     font-size: 15px;
     font-weight: bold;
     padding: 6px 0;
+    padding-left: 4px;
+    color: #fff;
+}
+
+.data-source-index { 
+    color: #d7d7d7;
 }
 
 .data-source-links {
-    margin: 4px 0;
 }
 
 .data-source-actions {
@@ -234,7 +245,8 @@ a.kelly-options-row-help {
     padding: 4px;
 }
 
-.data-source-desc {
+.data-source-desc { 
+    color: #fff;
     height : 0;
     opacity : 0;
     overflow : hidden;
@@ -242,7 +254,8 @@ a.kelly-options-row-help {
 
 .data-source-desc.enabled {
     opacity : 1;
-    height : auto;
+    height : auto;   
+    padding: 6px;
 }
 
 .data-source-colorpicker {
