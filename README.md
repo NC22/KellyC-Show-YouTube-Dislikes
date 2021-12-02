@@ -30,7 +30,7 @@ Default requests order -> [page data rating meta data] -> [API driver] (can be r
 
 - API by <a href="https://returnyoutubedislike.com/">Return YouTube Dislikes</a> project as alternative channel (in dev builds > 1.1.1.6)<br>
 - API by <a href="https://sponsor.ajay.app/">SponsorBlock</a> (in dev builds > 1.1.1.6)<br>
-- <a href="https://catface.ru>Catface.ru</a> used as cache from YouTube API \ metric data. It's not store all data constantly.
+- <a href="https://catface.ru">Catface.ru</a> used as cache from YouTube API \ metric data. It's not store all data constantly.
 
 If YouTube completely closes all metadata, planning to give choice of which data source will be used for load data.
 
