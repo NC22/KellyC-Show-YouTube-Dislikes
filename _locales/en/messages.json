@@ -3,7 +3,7 @@
         "message":"Show dislikes on Youtube"
     },
     "ext_name":{  
-        "message":"KellyC Youtube Show Dislikes"
+        "message":"KellyC Return Youtube Dislike"
     },    
     "save":{  
         "message":"Save"
@@ -18,14 +18,17 @@
         "message":"M"
     }, 
     "show_additions":{  
-        "message":"Show addition options"
+        "message":"Addition options"
     },  
     "show_colorring":{  
         "message":"Change color of ratio bar"
     },
     "show_datasources":{  
         "message":"Data sources order"
-    },     
+    },         
+    "show_datasources_popup":{  
+        "message":"Data sources"
+    },
     "datasource_id_youtubeMetric":{  
         "message":"Gets statistic from page meta data. Restore likes\\ dislikes based on rating data for video<br>Currently most accurate method if availabe"
     },
@@ -39,7 +42,7 @@
         "message":"Cache server for YouTube API \\ Meta data get results. It's not store all data constantly."
     }, 
     "datasource_get":{  
-        "message":"Reciev ratio"
+        "message":"Reciev dislikes"
     }, 
     "datasource_send":{  
         "message":"Send actions"
@@ -60,25 +63,31 @@
         "message":"Donate"
     },
     "datasources_help":{  
-        "message":"Extension gets information about dislikes / likes count by making request to data sources by priority"
+        "message":"Extension gets information about dislikes / likes count by making request to data sources by priority. The count may differ based on the source from which the data was obtained in accordance with the order of requests."
     }, 
     "datasources_help_1":{  
-        "message":"The count may differ based on the source from which the data was obtained in accordance with the order of requests."
+        "message":"<b>Reciev dislikes</b> - extension will try to get statistic from API according to priority"
     },
     "datasources_help_2":{  
-        "message":"Currently supported <b>SponsorBlock API</b> (currently for testing), <b>ReturnYoutubeDislikes.com</b>, <b>Catface.ru</b>. Read more in description section of each source."
+        "message":"<b>Send actions</b> - extension will send your like \\ dislike actions to API"
     },
     "datasources_help_3":{  
-        "message":"By default, the order of data retrieval is [data from YouTube Meta + cache] -> [APY by <b>ReturnYoutubeDislikes.com</b>]."
+        "message":"By default selected most accurate way to get statistic. Depending on what actions YouTube takes, the order and sources may change so that the extension can continue to work."
     },   
     "datasources_help_4":{  
-        "message":"For now, the metric is the most accurate source. The receipt of information in this way can be limited at any time. Depending on what actions YouTube takes, the order and sources may change so that the extension can continue to work."
+        "message":"To see what data source was used activate option <b>Addition options</b> - <b>ОDisplay data source in ratio bar popup</b>"
     },  
     "datasources_help_5":{  
-        "message":"It is recommended to change the order only in case of problems in operation."
+        "message":""
     },    
     "datasources_help_6":{  
-        "message":"You can restrict sending actions (like / dislike videos) or receiving data from separate sources."
+        "message":""
+    },
+    "disclaimer" : {
+        "message" : "This extension done by one person in spare time.<br>I try to keep it up-to-date, and collect most relevant data sources, but I can miss something. Feel free to feedback via github or by links related to me if needed."
+    },
+    "datasources_disclaimer" : {
+        "message" : "Priority of sources already configured for most accurate results.<br>Dont change without the need "
     },
     "save_error":{  
         "message":"Error during save config"
@@ -91,12 +100,15 @@
     },  
     "reset_to_defaults":{  
         "message":"Reset to default"
-    },
+    },  
+    "options":{  
+        "message":"Options"
+    },  
     "option_showRatio":{  
         "message":"Show ratio"
     },    
     "option_showSource":{  
-        "message":"Add notice about data source in popup"
+        "message":"Display data source in ratio bar popup"
     },
     "option_forceApi":{  
         "message":"Priority to API request"

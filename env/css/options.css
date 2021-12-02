@@ -20,7 +20,7 @@ a {
 
 button {
     display: block;
-    height: 45px;
+    height: 38px;
     min-width: 80px;
     background: #535353;
     border: 0;
@@ -42,6 +42,7 @@ button:hover {
 
 #header {    
     color : #fff;
+    position: relative;
 }
 
 .fade {
@@ -53,7 +54,7 @@ button:hover {
 }
 
 .page-header {
-    padding: 50px;
+    padding: 55px;
     padding-bottom: 4px;
     padding-top: 10px;
     background: #535353;
@@ -80,7 +81,7 @@ button:hover {
 
 .page-options {
     padding-left: 50px;
-    padding-top: 26px;
+    padding-top: 15px;
     max-width: 466px;
 }
 
@@ -130,19 +131,19 @@ button:hover {
   outline: 1px solid slategrey;
 }
 
-.kelly-options-save .kelly-options-save-btn {
+.kelly-options-save .kelly-options-save-btn,
+.kelly-options-options-btn {
     background: #c40000;
     color: #fff;
-    margin-bottom : 16px;
 }
 
 .kelly-options-result.show {
-    width: 1;
     background: #7a7a7a;
     box-sizing: border-box;
     padding: 12px;
     color: #fff;
-    margin-top: 12px;
+    margin-top: 0;
+    margin-bottom: 16px;
 }
 
 .kelly-options-additions-wrap.show {
@@ -158,7 +159,7 @@ button:hover {
     content: "▼";
     display: block;
     position: absolute;
-    top: 13px;
+    top: 10px;
     left: 12px;
 }
 
@@ -187,6 +188,19 @@ a.kelly-options-row-help {
 
 .kelly-options-tool-group-content p {
     max-width: 687px;
+}
+
+.kelly-copyright {
+    font-size: 12px;
+    position: absolute;
+    top: 20px;
+    left: 0;
+}
+
+.kelly-copyright a {
+    background: 0;
+    color: #ff2e2e;
+    padding: 0;
 }
 
 .data-source {
@@ -265,6 +279,11 @@ a.kelly-options-row-help {
 
 .data-source-colorpicker.enabled {
     display : block;
+}
+
+.data-source-disclaimer {
+    color: #ff2a2a;
+    padding: 4px;
 }
 
 .colorring-ratio-preview {
