@@ -27,6 +27,14 @@ Default requests order -> [page data rating meta data] -> [API driver] (can be r
 - Edge, Opera and any that allow install extensions from Chrome Extensions Store
 - a bit tested on mobile devices as well (for ex. Kiwi Browser supports extensions)
 
+<h2> FAQ </h2>
+
+<ul>
+<li>
+<a href="https://github.com/NC22/KellyC-Return-YouTube-Dislikes/wiki/How-extension-count-%22dislikes%22-and-is-this-results-accurate%3F">How extension count "dislikes" and is this results accurate?</a>
+</li>
+</ul>
+
 
 # Dislikes providers used
 
