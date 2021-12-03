@@ -1,1 +1,1 @@
-KellyCOptions.init();
+KellyTools.loadFrontJs(KellyCOptions.init, ['kellyTools', 'kellyCOptions']);

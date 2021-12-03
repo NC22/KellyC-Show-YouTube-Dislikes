@@ -5,10 +5,12 @@
     overflow: hidden;
     left : 8px;
     cursor : pointer;
+    z-index : 1;
 }
 
 .__BASECLASS__-ratio-bar-mobile {
     bottom : 0;
+    z-index : 2;
 }
 
 .__BASECLASS__-ratio-like {
@@ -27,9 +29,34 @@
     box-sizing: border-box;
 }
 
+.__BASECLASS__-extended-info {
+    margin-top : 12px; 
+}
+
+.__BASECLASS__-api-datasource {
+    margin-bottom : 6px;
+}
+
+.__BASECLASS__-api-copyright-url a {
+    color: #fff;
+}
+
+.__BASECLASS__-api-copyright {
+    font-weight : bold;
+}
+
 .__BASECLASS__-ratio-bar.__BASECLASS__-ratio-bar-load .__BASECLASS__-ratio-like,
 .__BASECLASS__-ratio-bar.__BASECLASS__-ratio-bar-load .__BASECLASS__-ratio-dislike {
     background : #ffd023;
+}
+
+.__BASECLASS__-tool .__BASECLASS__-dark  .__BASECLASS__-tool-group-close,
+.__BASECLASS__-tool .__BASECLASS__-tool-group-container.__BASECLASS__-dark {
+    background : rgb(54 54 54);
+}
+
+.__BASECLASS__-tool .__BASECLASS__-tool-group-container.__BASECLASS__-extended {
+    min-width : 230px;
 }
 
 .__BASECLASS__-tool .__BASECLASS__-tool-group-container {
@@ -41,6 +68,24 @@
     padding : 8px;
 }
 
+.__BASECLASS__-tool .__BASECLASS__-tool-group-close {
+    left: -32px;
+    position: absolute;
+    top: 0;
+    background: rgb(14 14 14 / 65%);
+}
+
+.__BASECLASS__-tool .__BASECLASS__-tool-group-close svg g line {
+    stroke: #fff;
+    fill: #fff;
+}
+
+.__BASECLASS__-tool .__BASECLASS__-tool-group-close svg {
+    
+    width: 26px;
+    height: 15px;
+}
+  
 .__BASECLASS__-tool .__BASECLASS__-tool-group-content {
     font-size : 12px;
 }

@@ -329,6 +329,10 @@ a.kelly-options-row-help {
     box-sizing: border-box;
 }  
 
+.colorring-inputs-list {
+    margin-bottom: 12px;
+}
+
 @media (max-width: 800px) {
     
     body, html,
