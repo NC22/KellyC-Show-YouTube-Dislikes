@@ -1,5 +1,7 @@
 # KellyC-Return-YouTube-Dislikes
 
+<img src="https://catface.ru/userfiles/media/udata_1638497616_xequqlxf.png">
+
 Show dislikes on Youtube
 
 Youtube has removed dislike statistics. This extension return this functionality back.
@@ -8,7 +10,7 @@ My project is similar to other ones, but with some features that was important p
 
 - Classic ratio bar with green \ red colors
 - Optional customisation of colors for ratio bar
-- Support different sources of data so user can clearly see where "likes\dislikes" information was loaded from (currently IN DEV versions only)
+- Support select of dislikes data providers, so user can clearly see where "likes\dislikes" information was loaded from (currently IN DEV versions only)
 - Support of mobile devices
 
 Used combination of API access and restore data by rating metrica data.
@@ -26,7 +28,7 @@ Default requests order -> [page data rating meta data] -> [API driver] (can be r
 - a bit tested on mobile devices as well (for ex. Kiwi Browser supports extensions)
 
 
-# APIs used
+# Dislikes providers used
 
 - API by <a href="https://returnyoutubedislike.com/">Return YouTube Dislikes</a> project as alternative channel (in dev builds > 1.1.1.6)<br>
 - API by <a href="https://sponsor.ajay.app/">SponsorBlock</a> (in dev builds > 1.1.1.6)<br>
@@ -35,3 +37,12 @@ Default requests order -> [page data rating meta data] -> [API driver] (can be r
 If YouTube completely closes all metadata, planning to give choice of which data source will be used for load data.
 
 Feel free to suggest any other solutions (open databases \ metrics etc.)
+
+# Screenshots
+
+Data providers configuration manager
+
+<img src="https://catface.ru/userfiles/media/udata_1638497609_cwdmlwgu.png">
+
+<img src="https://catface.ru/userfiles/media/udata_1638497612_sruftcdp.png">
+
