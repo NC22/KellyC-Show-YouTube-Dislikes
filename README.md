@@ -13,10 +13,10 @@ My project is similar to other ones, but with some features that was important p
   Support select of "dislikes" data providers, so user can clearly see where "likes\dislikes" stat was loaded from (in dev builds > 1.1.1.6)
   currently supported : 
   
-<p>YouTube metadata parsing (used by default)</p>
-<p>API by <a href="https://returnyoutubedislike.com/">Return YouTube Dislikes</a></p>
-<p>API by <a href="https://sponsor.ajay.app/">SponsorBlock</a> (<a href="https://wiki.sponsor.ajay.app/w/API_Docs/Ratings">Documentation</a>)</p>
-<p>API by <a href="https://catface.ru">CatFace</a> (my server, currently used as cache for metadata)</p>
+<p>- YouTube metadata parsing (used by default)</p>
+<p>- API by <a href="https://returnyoutubedislike.com/">Return YouTube Dislikes</a></p>
+<p>- API by <a href="https://sponsor.ajay.app/">SponsorBlock</a> (<a href="https://wiki.sponsor.ajay.app/w/API_Docs/Ratings">Documentation</a>)</p>
+<p>- API by <a href="https://catface.ru">CatFace</a> (my server, currently used as cache for metadata)</p>
 </li>
 <li>Classic ratio bar with [green \ red] \ custom colors</li>
 <li>Support of mobile devices</li>
@@ -48,7 +48,7 @@ Data providers configuration manager
 
 Information about data source
 
-<img src="https://catface.ru/userfiles/media/udata_1638552929_yawwmcnf.png">
+<img src="https://catface.ru/userfiles/media/udata_1638564407_bbgibtji.png">
 
 <img src="https://catface.ru/userfiles/media/udata_1638552251_vwllpies.png">
 
