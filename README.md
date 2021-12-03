@@ -8,20 +8,22 @@ Youtube has removed dislike statistics. This extension return this functionality
 
 My project is similar to other ones, but with some features that was important personaly for me :
 
-- Classic ratio bar with green \ red colors
-- Optional customisation of colors for ratio bar
-- Support select of dislikes data providers, so user can clearly see where "likes\dislikes" information was loaded from (currently IN DEV versions only)
+- Support select of "dislikes" data providers, so user can clearly see where "likes\dislikes" stat was loaded from (in dev builds > 1.1.1.6)
+currently supported : 
+
+* YouTube metadata parsing (used by default)
+* API by <a href="https://returnyoutubedislike.com/">Return YouTube Dislikes</a>
+* API by <a href="https://sponsor.ajay.app/">SponsorBlock</a> (<a href="https://wiki.sponsor.ajay.app/w/API_Docs/Ratings">Documentation</a>)
+* API by <a href="https://catface.ru">CatFace</a> (my server, currently used as cache for metadata)
+
+- Classic ratio bar with [green \ red] \ custom colors
 - Support of mobile devices
+- By using callbacks addition APIs also can be supported. All current providers \ examples can be found here <a href="https://github.com/NC22/KellyC-Return-YouTube-Dislikes/tree/main/lib/api">here</a>
 
-Used combination of API access and restore data by rating metrica data.
-
-Default requests order -> [page data rating meta data] -> [API driver] (can be replaced in extra settings)
-
-<h2> Install </h2>
+<h2>Install</h2>
 
 <p>
-<b> Install </b> for <a href="https://chrome.google.com/webstore/detail/kellyc-return-youtube-dis/gmdihkflccbodfkfioifolcijgahdgaf?hl=en">Chrome</a>,
- <a href="https://addons.mozilla.org/en/firefox/addon/return-youtube-dislike/">FireFox</a>
+<b>Install</b> for <a href="https://chrome.google.com/webstore/detail/kellyc-return-youtube-dis/gmdihkflccbodfkfioifolcijgahdgaf?hl=en">Chrome</a>,<a href="https://addons.mozilla.org/en/firefox/addon/return-youtube-dislike/">FireFox</a>
 </p>
 
 - Edge, Opera and any that allow install extensions from Chrome Extensions Store
@@ -35,22 +37,15 @@ Default requests order -> [page data rating meta data] -> [API driver] (can be r
 </li>
 </ul>
 
-
-# Dislikes providers used
-
-- API by <a href="https://returnyoutubedislike.com/">Return YouTube Dislikes</a> project as alternative channel (in dev builds > 1.1.1.6)<br>
-- API by <a href="https://sponsor.ajay.app/">SponsorBlock</a> (in dev builds > 1.1.1.6)<br>
-- <a href="https://catface.ru">Catface.ru</a> used as cache from YouTube API \ metric data. It's not store all data constantly.
-
-If YouTube completely closes all metadata, planning to give choice of which data source will be used for load data.
-
-Feel free to suggest any other solutions (open databases \ metrics etc.)
-
 # Screenshots
 
 Data providers configuration manager
 
-<img src="https://catface.ru/userfiles/media/udata_1638497609_cwdmlwgu.png">
+<img src="https://catface.ru/userfiles/media/udata_1638552247_wasmuugw.png">
 
-<img src="https://catface.ru/userfiles/media/udata_1638497612_sruftcdp.png">
+Information about data source
+
+<img src="https://catface.ru/userfiles/media/udata_1638552929_yawwmcnf.png">
+
+<img src="https://catface.ru/userfiles/media/udata_1638552251_vwllpies.png">
 
