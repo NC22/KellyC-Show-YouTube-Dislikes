@@ -2,9 +2,13 @@
    "content_scripts": [ {
       "js": [
           "lib/kellyTools.js",
-          "lib/kellyTooltip.js",          
+          "lib/kellyTooltip.js",       
           "lib/kellyStorage.js", 
           "lib/kellyShowRate.js",
+          "lib/api/youtubeMeta.js",
+          "lib/api/catface.js",
+          "lib/api/sponsorBlock.js",
+          "lib/api/ryda.js",   
           "init/init.js"
       ],
       "all_frames": false,
