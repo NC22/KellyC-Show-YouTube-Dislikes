@@ -319,6 +319,14 @@ a.kelly-options-row-help {
     /* word-break: keep-all; */
 }
 
+.data-source-colorpicker .colorring-input {
+    width : 45%;
+}
+
+.data-source-colorpicker .colorring-input.colorring-input-loading {
+    display : none;
+}
+
 #spoiler-__colorring__ .kelly-options-additions {
     text-align: center;
 }

@@ -21,6 +21,8 @@
         "*://youtube.com/*",
         "*://www.youtube.com/*",
         "*://m.youtube.com/*",
+        "*://sponsor.ajay.app/*",
+        "*://returnyoutubedislikeapi.com/*",
         "*://catface.ru/*"
    ], 
    "manifest_version" : 3,

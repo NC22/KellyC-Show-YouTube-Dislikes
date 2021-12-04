@@ -8,9 +8,10 @@
     z-index : 1;
 }
 
-.__BASECLASS__-ratio-bar-mobile {
+.__BASECLASS__-ratio-bar.__BASECLASS__-ratio-bar-mobile {
     bottom : 0;
     z-index : 1;
+    height: 5px;
 }
 
 .__BASECLASS__-ratio-like {
