@@ -42,7 +42,7 @@
         "message":"Cache server for YouTube API \\ Meta data get results. It's not store all data constantly."
     }, 
     "datasource_get":{  
-        "message":"Reciev dislikes"
+        "message":"Reciev data"
     }, 
     "datasource_send":{  
         "message":"Send actions"
@@ -66,7 +66,7 @@
         "message":"Extension gets information about dislikes / likes count by making request to data sources by priority. The count may differ based on the source from which the data was obtained in accordance with the order of requests."
     }, 
     "datasources_help_1":{  
-        "message":"<b>Reciev dislikes</b> - extension will try to get statistic from API according to priority"
+        "message":"<b>Reciev data</b> - extension will try to get statistic from API according to priority"
     },
     "datasources_help_2":{  
         "message":"<b>Send actions</b> - extension will send your like \\ dislike actions to API"
@@ -88,6 +88,18 @@
     },
     "datasources_disclaimer" : {
         "message" : "Priority of sources already configured for most accurate results.<br>Dont change without the need "
+    }, 
+    "retry" : {
+        "message" : "Try again"
+    },
+    "download_log" : {
+        "message" : "Download log"
+    },  
+    "retry_no_responding" : {
+        "message" : "Data service is not responding"
+    }, 
+    "retry_feedback" : {
+        "message" : "If after retry problem still exist<br>you can report problem to <b>torrenttvi@gmail.com</b> (attach downloaded log). Thank you"
     },
     "save_error":{  
         "message":"Error during save config"

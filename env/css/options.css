@@ -12,8 +12,6 @@ body, html {
 a {
     color: #efefef;
     text-decoration: none;
-    background: #898989;
-    padding: 9px;
     display: inline-block;
     line-height: normal;
 }
@@ -63,14 +61,21 @@ button:hover {
     height: 44px;
 }
 
-.page-header a.kelly-options-report {
+.page-header .kelly-options-report {
     color: #efefef;
-    background: #898989; 
     float: right;
     display: inline-block;
     position: absolute;
+    text-align : right;
     right: 0;
     top: 0;
+}
+
+.page-header .kelly-options-report a {
+    font-size: 12px;
+    display: block;
+    text-decoration: underline;
+    padding-bottom: 4px;
 }
 
 .page-header img {
@@ -82,8 +87,6 @@ button:hover {
     float: left;
     margin-right: 16px;
 }
-
-
 
 .kelly-options-ext-name {
     display : block;

@@ -90,10 +90,22 @@
         "message":""
     },  
     "disclaimer" : {
-        "message" : "This extension done by myself in spare time.<br>I try to keep it up-to-date, and collect most relevant data sources, but I can miss something. Feel free to feedback via <a href=\"#/\" class=\"tab-navigation\" data-source=\"https://github.com/NC22/KellyC-Return-YouTube-Dislikes\">github</a> or by email in github profile if needed."
+        "message" : "Это расширение разрабатывается мной в свободное время<br>Я стараюсь обновлять его по возможности и использовать актуальные источники данных, но со временем источники могут устареть. Если заметили проблемы в работе можете связатся через страницу <a href=\"#/\" class=\"tab-navigation\" data-source=\"https://github.com/NC22/KellyC-Return-YouTube-Dislikes\">github</a> или через приведенный в профиле на github email"
     },
     "datasources_disclaimer" : {
-        "message" : "Priority of sources already configured for most accurate results.<br>Dont change without the need "
+        "message" : "Приоритет источников данных по умолчанию настроен на обеспечение наиболее точных результатов.<br>Менять только при необходимости"
+    },
+    "retry" : {
+        "message" : "Повторить запрос"
+    },
+    "download_log" : {
+        "message" : "Скачать лог"
+    },  
+    "retry_no_responding" : {
+        "message" : "Источник данных о лайках \\ дизлайках не отвечает"
+    }, 
+    "retry_feedback" : {
+        "message" : "Если проблема остается продолжительное время<br>вы можете передать лог на адрес <b>torrenttvi@gmail.com</b>. Это поможет мне быстрее узнать о проблеме. Спасибо"
     },
     "chik_advice":{  
         "message":"Если и так все работает, не трогай<br><b>расширенные настройки</b>"
