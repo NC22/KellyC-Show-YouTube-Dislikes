@@ -10,7 +10,7 @@ Show dislikes on Youtube
 <b>Install</b> for <a href="https://chrome.google.com/webstore/detail/kellyc-return-youtube-dis/gmdihkflccbodfkfioifolcijgahdgaf?hl=en">Chrome</a>, <a href="https://addons.mozilla.org/en/firefox/addon/return-youtube-dislike/">FireFox</a>
 </p>
 
-<h2> About </a>
+<h2> About </h2>
 
 Youtube has removed dislike statistics. This extension return this functionality back.
 
