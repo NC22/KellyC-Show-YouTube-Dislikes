@@ -461,13 +461,14 @@ var KellyCOptions = new Object();
     KellyCOptions.showBgState = function(popup) {
         if (KellyStorage.bgFail) {
             var tEl = document.getElementsByClassName(KellyCOptions.baseClass + '-ext-name')[0];
-                tEl.innerText = 'Browser restart requeired';
+                tEl.innerText = KellyTools.getLoc('restart_bg_required');
                 tEl.style.color = '#c40000';
                 
                 if (!popup) {
-                    KellyCOptions.getTooltip().setMessage('tewtwe');
+                    KellyCOptions.getTooltip().setMessage(KellyTools.getLoc('restart_bg_required'));
                     KellyCOptions.getTooltip().show(true);
                 }
+                
             document.getElementsByClassName('kelly-copyright')[0].innerText = '';
             
             return true;
