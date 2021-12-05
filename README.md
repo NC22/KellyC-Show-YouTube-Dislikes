@@ -10,6 +10,9 @@ Show dislikes on Youtube
 <b>Install</b> for <a href="https://chrome.google.com/webstore/detail/kellyc-return-youtube-dis/gmdihkflccbodfkfioifolcijgahdgaf?hl=en">Chrome</a>, <a href="https://addons.mozilla.org/en/firefox/addon/return-youtube-dislike/">FireFox</a>
 </p>
 
+- Edge, Opera and any that allow install extensions from Chrome Extensions Store
+- a bit tested on mobile devices as well (for ex. Kiwi Browser supports extensions)
+
 <h2> About </h2>
 
 Youtube has removed dislike statistics. This extension return this functionality back.
@@ -30,10 +33,6 @@ My project is similar to other ones, but with some features that was important p
 <li>Support of mobile devices</li>
 <li> By using callbacks addition APIs also can be supported. All current providers \ examples can be found here <a href="https://github.com/NC22/KellyC-Return-YouTube-Dislikes/tree/main/lib/api">here</a></li>
 </ul>
-
-
-- Edge, Opera and any that allow install extensions from Chrome Extensions Store
-- a bit tested on mobile devices as well (for ex. Kiwi Browser supports extensions)
 
 <h2> FAQ </h2>
 
