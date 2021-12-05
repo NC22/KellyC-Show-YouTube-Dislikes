@@ -10,12 +10,12 @@ My project is similar to other ones, but with some features that was important p
 
 <ul><li> 
   
-  Support select of "dislikes" data providers, so user can clearly see where "likes\dislikes" stat was loaded from (in dev builds > 1.1.1.6)
+  Support select of "dislikes" data providers, so user can clearly see where "likes\dislikes" stat was loaded from
   currently supported : 
   
 <p>- YouTube metadata parsing (used by default)</p>
 <p>- API by <a href="https://returnyoutubedislike.com/">Return YouTube Dislikes</a></p>
-<p>- API by <a href="https://sponsor.ajay.app/">SponsorBlock</a> (<a href="https://wiki.sponsor.ajay.app/w/API_Docs/Ratings">Documentation</a>)</p>
+<p>- API by <a href="https://sponsor.ajay.app/">SponsorBlock</a> (<a href="https://wiki.sponsor.ajay.app/w/API_Docs/Ratings">Documentation</a>)</p> (currently for testing only - disabled in production versions)
 <p>- API by <a href="https://catface.ru">CatFace</a> (my server, currently used as cache for metadata)</p>
 </li>
 <li>Classic ratio bar with [green \ red] \ custom colors</li>
@@ -26,7 +26,7 @@ My project is similar to other ones, but with some features that was important p
 <h2>Install</h2>
 
 <p>
-<b>Install</b> for <a href="https://chrome.google.com/webstore/detail/kellyc-return-youtube-dis/gmdihkflccbodfkfioifolcijgahdgaf?hl=en">Chrome</a>,<a href="https://addons.mozilla.org/en/firefox/addon/return-youtube-dislike/">FireFox</a>
+<b>Install</b> for <a href="https://chrome.google.com/webstore/detail/kellyc-return-youtube-dis/gmdihkflccbodfkfioifolcijgahdgaf?hl=en">Chrome</a>, <a href="https://addons.mozilla.org/en/firefox/addon/return-youtube-dislike/">FireFox</a>
 </p>
 
 - Edge, Opera and any that allow install extensions from Chrome Extensions Store
