@@ -67,6 +67,10 @@ button:hover {
     color: #efefef;
     background: #898989; 
     float: right;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 .page-header img {
@@ -77,6 +81,18 @@ button:hover {
     border: 1px solid #fff;
     float: left;
     margin-right: 16px;
+}
+
+
+
+.kelly-options-ext-name {
+    display : block;
+    font-size: 20px;
+}
+
+.kelly-copyright {
+    display : block;
+    font-size: 12px;
 }
 
 .page-options {
@@ -188,13 +204,6 @@ a.kelly-options-row-help {
 
 .kelly-options-tool-group-content p {
     max-width: 687px;
-}
-
-.kelly-copyright {
-    font-size: 12px;
-    position: absolute;
-    top: 20px;
-    left: 0;
 }
 
 .kelly-copyright a {
@@ -361,16 +370,6 @@ a.kelly-options-row-help {
         max-width: unset;
         padding: 14px;
         padding-top: 18px;
-    }
-    
-    .kelly-options-ext-name {
-        display : block;
-        margin-bottom: 16px;
-        font-size: 20px;
-    }
-    
-    .kelly-options-ext-copy {
-        display : none;
     }
 }
 

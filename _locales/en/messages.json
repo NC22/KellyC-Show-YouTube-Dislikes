@@ -30,13 +30,13 @@
         "message":"Data sources"
     },
     "datasource_id_youtubeMetric":{  
-        "message":"Gets statistic from page meta data. Restore likes\\ dislikes based on rating data for video<br>Currently most accurate method if availabe"
+        "message":"Gets statistic from page meta data. Restore likes\\ dislikes based on rating data for video<br>Currently most accurate method if available"
     },
     "datasource_id_sponsorsBlock":{  
         "message":"Collects data from user sended actions (from extensions that use same API).<br>Uses its own data base https://sponsor.ajay.app/database"
     }, 
     "datasource_id_ryda":{  
-        "message":"Gets data from YouTube API, then stores the data in a database for caching (cached for around 2-3 days).<br>All collected statistic about videos is stored constatntly<br> and will used in future to replace YouTube API statistic when it will be unavailabe"
+        "message":"Gets data from YouTube API, then stores the data in a database for caching (cached for around 2-3 days).<br>All collected statistic about videos is stored constatntly<br> and will used in future to replace YouTube API statistic when it will be unavailable"
     },
     "datasource_id_catface":{  
         "message":"Cache server for YouTube API \\ Meta data get results. It's not store all data constantly."
@@ -75,7 +75,7 @@
         "message":"By default selected most accurate way to get statistic. Depending on what actions YouTube takes, the order and sources may change so that the extension can continue to work."
     },   
     "datasources_help_4":{  
-        "message":"To see what data source was used activate option <b>Addition options</b> - <b>ОDisplay data source in ratio bar popup</b>"
+        "message":"To see what data source was used activate option <b>Addition options</b> - <b>Display data source in ratio bar popup</b>"
     },  
     "datasources_help_5":{  
         "message":""
@@ -84,7 +84,7 @@
         "message":""
     },
     "disclaimer" : {
-        "message" : "This extension done by one person in spare time.<br>I try to keep it up-to-date, and collect most relevant data sources, but I can miss something. Feel free to feedback via github or by links related to me if needed."
+        "message" : "This extension done by myself in spare time.<br>I try to keep it up-to-date, and collect most relevant data sources, but I can miss something. Feel free to feedback via <a href=\"#/\" class=\"tab-navigation\" data-source=\"https://github.com/NC22/KellyC-Return-YouTube-Dislikes\">github</a> or by email in github profile if needed.."
     },
     "datasources_disclaimer" : {
         "message" : "Priority of sources already configured for most accurate results.<br>Dont change without the need "

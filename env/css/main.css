@@ -30,6 +30,20 @@
     box-sizing: border-box;
 }
 
+.__BASECLASS__-note {
+    font-size: 14px;
+}
+
+.__BASECLASS__-note a {
+    font-size: 14px;
+    font-weight: bold;
+    color : #fff;
+}
+
+.__BASECLASS__-note p {
+    margin-top: 14px;
+}
+
 .__BASECLASS__-extended-info {
     margin-top : 12px; 
 }

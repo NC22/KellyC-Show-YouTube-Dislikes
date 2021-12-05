@@ -33,10 +33,7 @@ body {
 
 .popup-env .kelly-copyright {
     font-size: 12px;
-    position: absolute;
-    top: 25px;
     display: block;
-    width: 150px;
 }
 
 .popup-env .disclaimer {
@@ -44,4 +41,11 @@ body {
     background: #545454;
     display: block;
     padding: 6px;
+}
+
+.popup-env .disclaimer a {
+    display: inline-block;
+    padding: 0;
+    background: transparent;
+    text-decoration: underline;
 }
