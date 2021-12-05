@@ -16,6 +16,9 @@
     },  
     "num_m":{  
         "message":"M"
+    },
+    "loading":{  
+        "message":"Loading"
     }, 
     "show_additions":{  
         "message":"Addition options"
@@ -112,6 +115,9 @@
     },  
     "reset_to_defaults":{  
         "message":"Reset to default"
+    },  
+    "restart_bg_required":{  
+        "message":"Restart browser after extension install"
     },  
     "options":{  
         "message":"Options"

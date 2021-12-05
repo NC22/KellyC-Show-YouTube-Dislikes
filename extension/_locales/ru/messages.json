@@ -17,6 +17,9 @@
     "num_m":{  
         "message":"Млн"
     }, 
+    "loading":{  
+        "message":"Загрузка"
+    },  
     "save_error":{  
         "message":"Ошибка сохранения"
     },   
@@ -112,6 +115,9 @@
     }, 
     "reset_to_defaults":{  
         "message":"По умолчанию"
+    }, 
+    "restart_bg_required":{  
+        "message":"Перезагрузите браузер после установки расширения"
     }, 
     "options":{  
         "message":"Настройки"

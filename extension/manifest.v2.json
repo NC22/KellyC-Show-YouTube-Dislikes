@@ -30,7 +30,7 @@
    "author" : "nradiowave",  
    "background": {
         "scripts": ["lib/kellyTools.js", "lib/kellyDispetcher.js"],
-        "persistent": false
+        "persistent": true
    },  
    "options_ui": {
         "page": "env/page/options.html",

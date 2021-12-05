@@ -166,25 +166,35 @@ var KellyStorage = {
     KellyStorage.load = function(callback) {
         
       var handler = this;
-      
       KellyTools.getBrowser().runtime.sendMessage({
             method: "getLocalStorageItem", 
             dbName : 'kelly-show-rating-cfg',
         }, function(response) {
             
-            handler.cfg = false;                
-            if (response.item) {
-                
-                handler.cfg = response.item;
-                                    
-                if (!handler.cfg) {
-                    handler.log('db exist but structured data parsing fail ' + name);
-                    handler.cfg = false;
-                }
-                
-            } else handler.log('config not changed ' + name + ', use defaults', true);
+            handler.cfg = false;   
             
-            KellyTools.DEBUG = handler.cfg.debugEnabled ? true : false; 
+            if (KellyTools.getBrowser().runtime.lastError) {   
+            
+                KellyTools.DEBUG = true;
+                handler.log('cant get BG process. Error : ' + ( KellyTools.getBrowser().runtime.lastError ? KellyTools.getBrowser().runtime.lastError.message : 'unknown' ), true);
+                KellyStorage.bgFail = true;
+                
+            } else {
+                         
+                if (response.item) {
+                    
+                    handler.cfg = response.item;
+                                        
+                    if (!handler.cfg) {
+                        handler.log('db exist but structured data parsing fail ' + name);
+                        handler.cfg = false;
+                    }
+                    
+                } else handler.log('config not changed ' + name + ', use defaults', true);
+                
+                KellyTools.DEBUG = handler.cfg.debugEnabled ? true : false;
+            }
+            
             handler.cfg = handler.validateCfg(handler.cfg);
             
             if (callback) callback(handler.cfg);

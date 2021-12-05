@@ -458,6 +458,22 @@ var KellyCOptions = new Object();
         handler.picker = picker;
     }
     
+    KellyCOptions.showBgState = function(popup) {
+        if (KellyStorage.bgFail) {
+            var tEl = document.getElementsByClassName(KellyCOptions.baseClass + '-ext-name')[0];
+                tEl.innerText = 'Browser restart requeired';
+                tEl.style.color = '#c40000';
+                
+                if (!popup) {
+                    KellyCOptions.getTooltip().setMessage('tewtwe');
+                    KellyCOptions.getTooltip().show(true);
+                }
+            document.getElementsByClassName('kelly-copyright')[0].innerText = '';
+            
+            return true;
+        } else return false;
+    }
+    
     KellyCOptions.showTitle = function() {
         
         var handler = KellyCOptions;        
@@ -467,7 +483,7 @@ var KellyCOptions = new Object();
             
             handler.titleHtml += '<div class="' + handler.baseClass + '-report">\
                                     <a href="' + KellyCOptions.reportIssue + '" target="_blank">' + handler.getLoc('support_link') + '</a>\
-                                    <a href="https://github.com/NC22/KellyC-Return-YouTube-Dislikes/wiki/Private-Policy" target="_blank">' + handler.getLoc('datasource_pp') + '</a>\
+                                    <a href="https://github.com/NC22/KellyC-Return-YouTube-Dislikes/wiki/Privacy-Policy" target="_blank">' + handler.getLoc('datasource_pp') + '</a>\
                                  </div>';
                     
         document.title = handler.title;        
@@ -478,6 +494,8 @@ var KellyCOptions = new Object();
     KellyCOptions.showPagePopup = function() {
                 
         KellyCOptions.showTitle();
+        if (KellyCOptions.showBgState(true)) return;
+        
         var html = '';
             html += '<div class="' + this.baseClass + '-popup-go"><button class="' + this.baseClass + '-options-btn tab-navigation" data-source="/env/page/options.html">' + this.getLoc('options') + '</button></div>';
             
@@ -500,6 +518,7 @@ var KellyCOptions = new Object();
         }
         
         KellyCOptions.showTitle();
+        if (KellyCOptions.showBgState()) return;
         
         for (var i = 0; i < KellyStorage.fieldsOrder.length; i++) {
              
@@ -524,7 +543,7 @@ var KellyCOptions = new Object();
              } else {
              
                  var key = KellyStorage.fieldsOrder[i];
-                 var title = handler.getLoc('option_' + key);
+                 var title = KellyStorage.fields[key].hidden ? key : handler.getLoc('option_' + key);
                  if (!title) title = key;
                  
                  title += helpHtml;

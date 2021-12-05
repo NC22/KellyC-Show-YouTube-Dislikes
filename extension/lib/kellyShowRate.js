@@ -27,6 +27,8 @@ function KellyShowRate(cfg) {
         handler.ratioBar = false;
         handler.ratioBarTpl = '<div class="' + handler.baseClass + '-ratio-like"></div><div class="' + handler.baseClass + '-ratio-dislike"></div>';
         
+        handler.bgFailTpl = '<div style="position:absolute;top:30px;background: #cc0000;color: #fff;padding: 4px;left: 26px;">' + KellyTools.getLoc('restart_bg_required') + '</div>';
+        
         handler.dislikeBtn = false;
         handler.likeBtn = false;
         handler.ytRequest = false;
@@ -543,6 +545,11 @@ function KellyShowRate(cfg) {
             method: "getCss", 
         }, function(response) {
             
+            if (KellyTools.getBrowser().runtime.lastError || typeof response == 'undefined' || typeof response.css == 'undefined') {   
+                handler.log('[initCss] fail request css - check bg process', true);
+                return;
+            } 
+            
             response.css = KellyTools.replaceAll(response.css, '__BASECLASS__', handler.baseClass);
           
             var baseClassLike = ' .' + handler.baseClass + '-ratio-bar .' + handler.baseClass + '-ratio-like';
@@ -597,7 +604,7 @@ function KellyShowRate(cfg) {
                
            } else {
                if (handler.requestsCfg.loops > handler.requestsCfg.loopsMax) notice = 'retry';
-               else notice = '<div class="' + handler.baseClass + '-note">Loading...</div>';
+               else notice = '<div class="' + handler.baseClass + '-note">' + KellyTools.getLoc('loading') + '...</div>';
            }
            
            if (notice == 'retry' || KellyTools.DEBUG) showRetryForm(handler.tooltip.getContent(), notice); 
@@ -724,7 +731,8 @@ function KellyShowRate(cfg) {
         
         setTimeout(updateRatioWidth, 200);
         handler.log('[updatePageStateWaitDomReady] Init extension dom and env', true);
-        updatePageState();
+        if (KellyStorage.bgFail) KellyTools.setHTMLData(handler.dislikeBtn, handler.bgFailTpl);
+        else updatePageState();
     }
         
     this.init = function() {
@@ -743,6 +751,7 @@ function KellyShowRate(cfg) {
                         
             initCss();
             handler.log(isMobile() ? '[Mobile]' : '[Desktop] version controller Drivers : [' + handler.requestsCfg.enabledApis.length + '] [loopsMax ' + handler.requestsCfg.loopsMax + ']', true);
+            if (KellyStorage.bgFail) handler.log('[Background process dead]', true);
             
             if (isMobile()) {
                 
