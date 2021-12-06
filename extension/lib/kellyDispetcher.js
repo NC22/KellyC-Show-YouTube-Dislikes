@@ -76,8 +76,15 @@ var KellyEDispetcher = new Object();
             
             } else if (request.method == 'getYoutubeInfo') {
                 
-                var cancelTimer = false;
-                var frequest = new AbortController();
+                var defaultAbortController = new Object();
+                    defaultAbortController.abort = function() {
+                        console.log('[Warning] AbortController is undefined. Default statement used');
+                }
+                
+                
+                var frequest = typeof AbortController == 'undefined' ? defaultAbortController : new AbortController();
+                
+                var cancelTimer = false;                
                 var canceled = false;
                 var onRequestEnd = function() {
                     

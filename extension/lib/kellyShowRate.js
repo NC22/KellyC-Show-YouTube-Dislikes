@@ -124,7 +124,7 @@ function KellyShowRate(cfg) {
                 for (var i = 0; i < mutations.length; i++) {
                                               
                     if (mutations[i].type == 'childList' &&
-                       ((KellyStorage.apis[handler.currentApi].updateLikes && mutations[i].target == handler.likeBtn) || mutations[i].target == handler.dislikeBtn) && 
+                       ((handler.currentApi && KellyStorage.apis[handler.currentApi].updateLikes && mutations[i].target == handler.likeBtn) || mutations[i].target == handler.dislikeBtn) && 
                         mutations[i].addedNodes.length > 0 && 
                         mutations[i].addedNodes[0].nodeType == Node.TEXT_NODE) {                                
                         mutations[i].addedNodes[0].textContent = '';
