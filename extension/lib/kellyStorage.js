@@ -11,8 +11,11 @@ var KellyStorage = {
 
             showRatio : {optional : true, defaultOptional : true},           
             showSource : {optional : true, defaultOptional : true},
-
-            // forceApi : {optional : true, defaultOptional : false}, - deprecated - replaced by apis order
+            showPercent : {optional : true, defaultOptional : false},
+            popupAvoidBounds : {optional : true, defaultOptional : true},
+            
+            fixedRatioWidth : {optional : true, type : 'int', defaultOptional : false, default : 150, limit : {from : 60, to : 350}},
+            fixedRatioHeight : {optional : true, type : 'int', defaultOptional : false, default : 5, limit : {from : 1, to : 8}}, 
             
             ratioLikeColor : {type : 'string', default : '#75bc49', hidden : true},
             ratioDislikeColor : {type : 'string', default : '#cc6a7c', hidden : true},
@@ -40,7 +43,14 @@ var KellyStorage = {
             'showRatio', 
             'ratioLikeColor', 
             'ratioDislikeColor', 
-            'ratioLoadingColor', 
+            'ratioLoadingColor',        
+            '__ratio_options__', 
+                'showSource', 
+                'showPercent',
+                'fixedRatioWidth',
+                'fixedRatioHeight',
+                'popupAvoidBounds',
+            '_/ratio_options/_', 
             '__datasources__', 
                 // content generates throw kellyCOption methods
             '_/datasources/_', 
@@ -48,8 +58,6 @@ var KellyStorage = {
                 // content generates throw kellyCOption methods
             '_/colorring/_', 
             '__additions__', 
-                'showSource', 
-                // 'forceApi', 
                 'debug', 
                 'rTimeout', 
             '_/additions/_',
@@ -140,18 +148,26 @@ var KellyStorage = {
         
         // validate loaded array
         
-        for (var key in this.fields) {
+        for (var key in handler.fields) {
             
             if (typeof cfg[key] == 'undefined') {
-                cfg[key] = this.fields[key].default;
-            } 
+                cfg[key] = handler.fields[key].default;
+            } else {
+                
+                cfg[key] = handler.validateCfgVal(key, cfg[key]);
+                
+                if (handler.fields[key].limit) {
+                   if (handler.fields[key].limit.to && cfg[key] > handler.fields[key].limit.to) cfg[key] = handler.fields[key].default;
+                   if (handler.fields[key].limit.from && cfg[key] < handler.fields[key].limit.from) cfg[key] = handler.fields[key].default;                   
+                }
+            }            
             
-            if (this.fields[key].optional && typeof cfg[key + 'Enabled'] == 'undefined') {
-                 cfg[key + 'Enabled'] = this.fields[key].defaultOptional;
-            }
+            if (handler.fields[key].optional && typeof cfg[key + 'Enabled'] == 'undefined') {
+                 cfg[key + 'Enabled'] = handler.fields[key].defaultOptional;
+            }            
         }
         
-        // console.log(cfg);
+         console.log(cfg);
         
         KellyStorage.validateCfgApis(cfg);
         

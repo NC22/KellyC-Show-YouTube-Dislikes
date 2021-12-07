@@ -34,7 +34,10 @@
     }, 
     "show_datasources":{  
         "message":"Порядок источников данных"
-    },   
+    },  
+    "show_ratio_options":{  
+        "message":"Настройки индикатора соотношения"
+    },      
     "show_datasources_popup":{  
         "message":"Источники данных"
     },
@@ -128,15 +131,24 @@
     "option_showSource":{  
         "message":"Отображать источник данных"
     },
-    "option_forceApi":{  
-        "message":"Приоритет на запросы через API"
+    "option_popupAvoidBounds":{  
+        "message":"Выводить popup над индикатором (если выходит за границы экрана)"
     },
     "option_delay":{  
         "message":"Задержка между запросами (сек.)"
     },
     "option_rTimeout":{  
         "message":"Таймаут запроса (сек.)"
-    },   
+    },       
+    "option_showPercent":{  
+        "message":"Показывать процент лайков"
+    },
+    "option_fixedRatioHeight":{  
+        "message":"Зафиксировать высоту (от 1 до 8 пикселей)"
+    },  
+    "option_fixedRatioWidth":{  
+        "message":"Зафиксировать ширину (от 60 до 350 пикселей)"
+    },  
     "option_debug":{  
         "message":"Режим отладки"
     }

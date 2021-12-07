@@ -72,7 +72,7 @@ KellyShowRate.apiController['youtubeMetric'].parseYTPage = function(docRawText) 
         publicData.likes = 0;
     }
     
-    if (publicData.dislikes === false && publicData.rating && publicData.count && publicData.likes) {
+    if (publicData.dislikes === false && publicData.rating && publicData.likes) {
         publicData.utDislikesT = Math.round((publicData.likes / publicData.rating) * 5 - publicData.likes); // -- not so accurate
         publicData.utDislikes = Math.round(publicData.likes * ((5 - publicData.rating) / (publicData.rating - 1)));
         publicData.dislikes = publicData.utDislikes;

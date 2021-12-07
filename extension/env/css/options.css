@@ -347,6 +347,8 @@ a.kelly-options-row-help {
     width: 100%;
     margin-top: 6px;
     box-sizing: border-box;
+    background: #838383;
+    padding: 10px;
 }  
 
 .colorring-inputs-list {

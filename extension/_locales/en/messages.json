@@ -28,7 +28,10 @@
     },
     "show_datasources":{  
         "message":"Data sources order"
-    },         
+    },     
+    "show_ratio_options":{  
+        "message":"Ratio bar options"
+    },        
     "show_datasources_popup":{  
         "message":"Data sources"
     },
@@ -128,12 +131,21 @@
     "option_showSource":{  
         "message":"Display data source in ratio bar popup"
     },
-    "option_forceApi":{  
-        "message":"Priority to API request"
+    "option_popupAvoidBounds":{  
+        "message":"Display popup above the ratio bar (if not fit to view area of screen)"
     },
     "option_rTimeout":{  
         "message":"Request timeout"
+    },     
+    "option_showPercent":{  
+        "message":"Show percent of likes"
     },
+    "option_fixedRatioHeight":{  
+        "message":"Set fixed height (from 1px to 8px)"
+    },  
+    "option_fixedRatioWidth":{  
+        "message":"Set fixed width (from 60px to 350px)"
+    }, 
     "option_debug":{  
         "message":"Debug mode"
     }

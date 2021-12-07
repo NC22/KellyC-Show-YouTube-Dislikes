@@ -36,7 +36,7 @@ KellyShowRate.apiController['sponsorsBlock'].onGetYDataReady = function(handler,
         
         for (var i = 0; i < response.ydata.length; i++) {
             
-            if (response.ydata[i].videoID && response.ydata[i].videoID.localeCompare(requestCfg.videoId) === 0) {
+            if (response.ydata[i].videoID && response.ydata[i].videoID.localeCompare(requestCfg.videoId) === 0 && response.ydata[i].count > 0) { // some videos can have < 0 count values for some reason
                 
                 ydata[response.ydata[i].type == 1 ? 'likes' : 'dislikes'] = response.ydata[i].count;
             }
@@ -121,4 +121,4 @@ KellyShowRate.apiController['sponsorsBlock'].onPrepareActionRequestStart = funct
 }
 
 // disable for prod for now
-// KellyStorage.apis['sponsorsBlock'] = KellyShowRate.apiController['sponsorsBlock'];
+KellyStorage.apis['sponsorsBlock'] = KellyShowRate.apiController['sponsorsBlock'];

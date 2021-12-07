@@ -365,7 +365,8 @@ var KellyCOptions = new Object();
         KellyTools.setHTMLData(colorRingConfigEl, html);
                  
         var picker = new KellyColorPicker({ 
-                place : 'colorring-color',    
+                place : 'colorring-color',
+                alpha_slider : true,  
                 userEvents : { 
                 
                     change : function(self) {
@@ -377,8 +378,9 @@ var KellyCOptions = new Object();
                             self.selectedInput.style.color = "#FFF";
                         else
                             self.selectedInput.style.color = "#000";
-
-                        self.selectedInput.value = self.getCurColorHex();    
+                        
+                        var rgb = self.getCurColorRgb(), a = self.getCurAlpha().toFixed(2);
+                        self.selectedInput.value = self.getCurAlpha() < 1 ? 'rgba(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ', ' + a + ')' : self.getCurColorHex();    
                         self.selectedInput.style.background = self.selectedInput.value;   
                         self.updateRelatedCfg();
                     }
@@ -556,7 +558,7 @@ var KellyCOptions = new Object();
                  
                  if (KellyStorage.fields[key].hidden) {
                             
-                    html += '<input id="option-' + key + '" type="hidden" value="' + KellyStorage.validateCfgVal(key, cfg[key]) + '">';
+                    html += '<input id="option-' + key + '" type="hidden" value="' + cfg[key] + '">';
                     
                  } else {
                      
@@ -566,7 +568,7 @@ var KellyCOptions = new Object();
                      if (KellyStorage.fields[key].type) { // type for validator \ display - todo - more types if needed
                             
                             html += '<div class="' + handler.baseClass + '-row-input">\
-                                        <input id="option-' + key + '" placeholder="' + title + '" value="' + KellyStorage.validateCfgVal(key, cfg[key]) + '">\
+                                        <input id="option-' + key + '" placeholder="' + title + '" value="' + cfg[key] + '">\
                                     </div>';
                      } 
                  }  
