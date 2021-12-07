@@ -343,12 +343,13 @@ a.kelly-options-row-help {
     text-align: center;
 }
 
-.colorring-reset a {
+.colorring-reset a, .data-source-reset-button {
     width: 100%;
     margin-top: 6px;
     box-sizing: border-box;
     background: #838383;
     padding: 10px;
+    text-align : center;
 }  
 
 .colorring-inputs-list {

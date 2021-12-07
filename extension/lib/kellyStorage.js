@@ -167,7 +167,7 @@ var KellyStorage = {
             }            
         }
         
-         console.log(cfg);
+        // console.log(cfg);
         
         KellyStorage.validateCfgApis(cfg);
         

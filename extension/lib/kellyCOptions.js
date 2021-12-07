@@ -73,7 +73,7 @@ var KellyCOptions = new Object();
             data.apis.cfg[key] = cfg;
         }
         
-        console.log(data);
+        // console.log(data);
     }
     
     KellyCOptions.addDataSources = function() {
