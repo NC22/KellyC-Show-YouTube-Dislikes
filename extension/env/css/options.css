@@ -377,5 +377,9 @@ a.kelly-options-row-help {
         padding: 14px;
         padding-top: 18px;
     }
+    
+    .page-header .kelly-options-report {
+        display : none;
+    }
 }
 

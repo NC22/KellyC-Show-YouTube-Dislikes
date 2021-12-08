@@ -8,6 +8,15 @@
     z-index : 1;
 }
 
+/* Comments Sidebar for Youtube ext. Fix */
+.__BASECLASS__-ratio-bar.__BASECLASS__-ratio-bar-warc {
+    left : unset;
+    right : 5px;
+    margin-bottom : -2px;
+    right: 5px;
+    margin-top: -3px;
+}
+
 .__BASECLASS__-ratio-bar.__BASECLASS__-ratio-bar-mobile {
     bottom : 0;
     z-index : 1;

@@ -17,8 +17,8 @@ function KellyShowRate() {
     var updateTimer = false; var initTimer = false;
         
     var domSelectors = {
-        mobile : {mobile : true, btnsWrap : '.slim-video-action-bar-actions', btnCounter : '.button-renderer-text', ratioHeight : 5, ratioBp : 0, ratioParent : 'ytm-slim-video-action-bar-renderer'},
-        desktop : {mobile : false, btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#menu-container'},
+        mobile : {mobile : true, btnsWrap : '.slim-video-action-bar-actions', btnCounter : '.button-renderer-text', ratioHeight : 4, ratioBp : 0, ratioParent : 'ytm-slim-video-action-bar-renderer'},
+        desktop : {mobile : false, btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 4, ratioBp : 8, ratioParent : '#menu-container'},
     };
     
     var handler = this; // todo - remove tpl vars from public
@@ -130,8 +130,8 @@ function KellyShowRate() {
         
     function updateRatioWidth() {
         
-             if (isMobile()) { handler.ratioBarMaxWidth = 146;
-        } else if (!handler.envSelectors.ratioWidthFixed && handler.buttonsWraper && handler.buttonsWraper.children.length > 1) {
+               if (isMobile()) { handler.ratioBarMaxWidth = 146; } 
+          else if (!handler.envSelectors.ratioWidthFixed && handler.buttonsWraper && handler.buttonsWraper.children.length > 1) {
             var boundsData = handler.buttonsWraper.children[1].getBoundingClientRect();
             var paddingEl = handler.buttonsWraper.children[1].querySelector('A');
             var totalPadding = 8;
@@ -158,7 +158,14 @@ function KellyShowRate() {
         likeEl = handler.ratioBar.getElementsByClassName(handler.baseClass + '-ratio-like')[0];
         dlikeEl = handler.ratioBar.getElementsByClassName(handler.baseClass + '-ratio-dislike')[0];
         
-        handler.ratioBar.className = barCl + ' ' + (isMobile() ? barCl + '-mobile ' : '') + (ydata ? '' : barCl + '-load ') + barCl + (ydata && ydata.apiId ? barCl + '-' + ydata.apiId : '');
+        handler.ratioBar.className = barCl + ' ' + (isMobile() ? barCl + '-mobile ' : '') + (ydata ? '' : barCl + '-load ');
+        
+        /* Comments Sidebar for Youtube ext. Fix */
+        if (document.getElementById('warc-app')) {
+            handler.envSelectors.ratioBp = 0;
+            handler.ratioBar.className += ' ' + barCl + '-warc';
+            handler.cfg.popupAvoidBoundsEnabled = false;
+        }
 
         if (ydata) {
             var percent = (ydata.likes + ydata.dislikes) / 100, api = handler.cfg.apis.cfg[ydata.apiId];
@@ -456,7 +463,6 @@ function KellyShowRate() {
     
     function updateCounter(type, counterEl, val) {
         
-        //if (document.getElementById('redux-style') || !counterEl) return;
         var holder = document.getElementsByClassName(handler.baseClass + '-' + type);
         if (holder.length <= 0) {
             holder = document.createElement('span');
