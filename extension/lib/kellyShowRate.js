@@ -608,7 +608,7 @@ function KellyShowRate() {
                handler.getTooltip().updateCfg({closeButton : true});
            }
            
-           if (isMobile()) handler.getTooltip().updateCfg({avoidOutOfBounds : false, offset : {left : 16, top : 12}});
+           if (isMobile()) handler.getTooltip().updateCfg({avoidOutOfBounds : false, closeButton : false, offset : {left : 16, top : 12}});
            handler.getTooltip().show(true);
      }
         
@@ -776,6 +776,7 @@ function KellyShowRate() {
                 });
                 
                 document.addEventListener('click', mobileMutationDelayRedraw);
+                window.addEventListener('scroll', function() { handler.getTooltip().show(false); });
                 handler.observer.observe(document.body, {childList: true, attributes: true, subtree: true});
                 handler.updatePageStateDelayed(0);
                 
