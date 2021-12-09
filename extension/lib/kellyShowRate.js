@@ -17,8 +17,8 @@ function KellyShowRate() {
     var updateTimer = false; var initTimer = false;
         
     var domSelectors = {
-        mobile : {mobile : true, btnsWrap : '.slim-video-action-bar-actions', btnCounter : '.button-renderer-text', ratioHeight : 4, ratioBp : 0, ratioParent : 'ytm-slim-video-action-bar-renderer'},
-        desktop : {mobile : false, btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 4, ratioBp : 8, ratioParent : '#menu-container'},
+        mobile : {mobile : true, btnsWrap : '.slim-video-action-bar-actions', btnCounter : '.button-renderer-text', ratioHeight : 5, ratioBp : 0, ratioParent : 'ytm-slim-video-action-bar-renderer'},
+        desktop : {mobile : false, btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#menu-container'},
     };
     
     var handler = this; // todo - remove tpl vars from public
@@ -162,8 +162,8 @@ function KellyShowRate() {
         
         /* Comments Sidebar for Youtube ext. Fix */
         if (document.getElementById('warc-app')) {
-            handler.envSelectors.ratioBp = 0;
-            handler.ratioBar.className += ' ' + barCl + '-warc';
+            handler.envSelectors.ratioBp = 0;  handler.ratioBar.style.marginTop = (4 - handler.envSelectors.ratioHeight) + 'px';
+            handler.ratioBar.className += ' ' + barCl + '-warc'; 
             handler.cfg.popupAvoidBoundsEnabled = false;
         }
 

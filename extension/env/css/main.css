@@ -12,9 +12,6 @@
 .__BASECLASS__-ratio-bar.__BASECLASS__-ratio-bar-warc {
     left : unset;
     right : 5px;
-    margin-bottom : -2px;
-    right: 5px;
-    margin-top: -3px;
 }
 
 .__BASECLASS__-ratio-bar.__BASECLASS__-ratio-bar-mobile {
@@ -85,7 +82,7 @@
 }
 
 .__BASECLASS__-tool .__BASECLASS__-tool-group-container.__BASECLASS__-extended {
-    min-width : 230px;
+    min-width : 170px;
 }
 
 .__BASECLASS__-tool .__BASECLASS__-tool-group-container {
