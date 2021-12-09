@@ -399,7 +399,7 @@ function KellyShowRate() {
                       if (onReady) onReady(response);
                   }  
                   
-                  if (initiator == 'button_click' && KellyShowRate.apiController[handler.currentApi].updateOnActionClick) handler.updatePageStateDelayed(300, true);
+                  // if (initiator == 'button_click' && KellyShowRate.apiController[handler.currentApi].updateOnActionClick) handler.updatePageStateDelayed(300, true);
                   
                   if (response.error) handler.log('[actionRequest] Request error : ' + response.error, true);  
                   else handler.log('[actionRequest] Action accepted | [' + type + '] [' + (undo ? 'UNDO' : 'SET') + ']', true);
@@ -423,6 +423,11 @@ function KellyShowRate() {
             browsingLog[lastVideoId].actionState = 'neutral';
         } else {
             browsingLog[lastVideoId].actionState = type;
+        }
+        
+        if (browsingLog[lastVideoId].ydata) {
+            if (oldAction) browsingLog[lastVideoId].ydata[oldAction == 'liked' ? 'likes' : 'dislikes']--;
+            if (!undo) browsingLog[lastVideoId].ydata[type == 'liked' ? 'likes' : 'dislikes']++;
         }
                 
         for (var apiId in KellyStorage.apis) {
