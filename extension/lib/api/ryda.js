@@ -9,7 +9,7 @@ KellyShowRate.apiController['ryda'] = {
     sync : false, // currently not implemented in API
     
     showZero : false, 
-    updateLikes : true,
+    updateLikes : false,
     
     cfgDefault : {
         enabled : true, 

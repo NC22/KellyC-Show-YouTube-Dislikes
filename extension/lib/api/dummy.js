@@ -19,18 +19,15 @@ KellyShowRate.apiController['API_ID'] = {
      
      sync : true, // is api support action api
      
-     // for apis that not use youtube api and have independed database
-     
-     showZero : true, // show ratiobar for items with zero data [likes : 0 | dislikes : 0]    
-     updateLikes : false, // update likes text (todo)
+     // for apis that not use youtube api and have independed database  
+     updateLikes : false, // update likes text
+     helper : false, // use addition data from helper api if available (result summ of likes \ dislikes = main data source + helper dislikes \ likes) - todo
      
      // timeouts \ limits
      
      maxAttempts : 3, // max requests - can be ignored if request was succesfull but data corrupted or have deprecated or unknown format - go instant to next driver
      nextDriverTimeout : 200, // wait before shutdown on FAIL
      rTimeout : 2, // request timeout
-     
-     updateOnActionClick : false, // reload stats after actions
      
      color : false, // color for title in options list
      

@@ -31,7 +31,7 @@ My project is similar to other ones, but with some features that was important p
 </li>
 <li>Classic ratio bar with [green \ red] \ custom colors</li>
 <li>Support of mobile devices</li>
-<li> By using callbacks addition APIs also can be supported. All current providers \ examples can be found here <a href="https://github.com/NC22/KellyC-Return-YouTube-Dislikes/tree/main/lib/api">here</a></li>
+<li> By using callbacks addition APIs also can be supported. All current providers \ examples can be found <a href="https://github.com/NC22/KellyC-Return-YouTube-Dislikes/tree/main/extension/lib/api">here</a></li>
 </ul>
 
 <h2> FAQ </h2>

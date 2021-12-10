@@ -15,7 +15,7 @@ function KellyShowRate() {
     var browsingLog = {};
     
     var updateTimer = false; var initTimer = false;
-        
+    var ldAction = {liked : 'likes', disliked : 'dislikes'};
     var domSelectors = {
         mobile : {mobile : true, btnsWrap : '.slim-video-action-bar-actions', btnCounter : '.button-renderer-text', ratioHeight : 5, ratioBp : 0, ratioParent : 'ytm-slim-video-action-bar-renderer'},
         desktop : {mobile : false, btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#menu-container'},
@@ -304,7 +304,14 @@ function KellyShowRate() {
     }
     
     function applyData(ydata, context) {
-        browsingLog[lastVideoId].ydata = ydata;
+        
+        browsingLog[lastVideoId].ydata = validateYData(ydata);
+        
+        if (browsingLog[lastVideoId].ydata && browsingLog[lastVideoId].actionState && ldAction[browsingLog[lastVideoId].actionState]) {
+            if (browsingLog[lastVideoId].ydata[ldAction[browsingLog[lastVideoId].actionState]] <= 0) {
+                browsingLog[lastVideoId].ydata[ldAction[browsingLog[lastVideoId].actionState]] = 1;
+            }
+        }
         
         handler.log('[' + handler.currentApi + '] result data : ', true);
         handler.log(ydata, true);
@@ -414,7 +421,7 @@ function KellyShowRate() {
         
         handler.log('[actionRequest] : Update rating action state from [' + browsingLog[lastVideoId].actionState + '] to [' + type + ']', true);
         
-        var oldAction = ['liked', 'disliked'].indexOf(browsingLog[lastVideoId].actionState) != -1 && type != browsingLog[lastVideoId].actionState ? browsingLog[lastVideoId].actionState : false;
+        var oldAction = ldAction[browsingLog[lastVideoId].actionState] && type != browsingLog[lastVideoId].actionState ? browsingLog[lastVideoId].actionState : false;
         var undo = false;
         
         if (type == 'neutral') {
@@ -426,8 +433,8 @@ function KellyShowRate() {
         }
         
         if (browsingLog[lastVideoId].ydata) {
-            if (oldAction) browsingLog[lastVideoId].ydata[oldAction == 'liked' ? 'likes' : 'dislikes']--;
-            if (!undo) browsingLog[lastVideoId].ydata[type == 'liked' ? 'likes' : 'dislikes']++;
+            if (oldAction && browsingLog[lastVideoId].ydata[ldAction[oldAction]] > 0) browsingLog[lastVideoId].ydata[ldAction[oldAction]]--;
+            if (!undo) browsingLog[lastVideoId].ydata[ldAction[type]]++;
         }
                 
         for (var apiId in KellyStorage.apis) {
