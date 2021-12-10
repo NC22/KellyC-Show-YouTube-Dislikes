@@ -76,6 +76,10 @@
     background : #ffd023;
 }
 
+.__BASECLASS__-tool.__BASECLASS__-tool-group-wrap {
+    z-index: 301;
+}
+
 .__BASECLASS__-tool .__BASECLASS__-dark  .__BASECLASS__-tool-group-close,
 .__BASECLASS__-tool .__BASECLASS__-tool-group-container.__BASECLASS__-dark {
     background : rgb(54, 54, 54);

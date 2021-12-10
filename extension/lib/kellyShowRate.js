@@ -15,7 +15,7 @@ function KellyShowRate() {
     var browsingLog = {};
     
     var updateTimer = false; var initTimer = false;
-    var ldAction = {liked : 'likes', disliked : 'dislikes'};
+    var ldAction = {liked : 'likes', disliked : 'dislikes'}; // valid action request types
     var domSelectors = {
         mobile : {mobile : true, btnsWrap : '.slim-video-action-bar-actions', btnCounter : '.button-renderer-text', ratioHeight : 5, ratioBp : 0, ratioParent : 'ytm-slim-video-action-bar-renderer'},
         desktop : {mobile : false, btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#menu-container'},
@@ -305,7 +305,10 @@ function KellyShowRate() {
     
     function applyData(ydata, context) {
         
+        // todo - count local likes \ dislikes
+        
         browsingLog[lastVideoId].ydata = validateYData(ydata);
+        browsingLog[lastVideoId].actionState = getRatingState();
         
         if (browsingLog[lastVideoId].ydata && browsingLog[lastVideoId].actionState && ldAction[browsingLog[lastVideoId].actionState]) {
             if (browsingLog[lastVideoId].ydata[ldAction[browsingLog[lastVideoId].actionState]] <= 0) {
@@ -368,7 +371,7 @@ function KellyShowRate() {
     
     function prepareActionRequestStart(apiId, type, undo, initiator, onReady) {
                   
-         handler.log('[actionRequest][' + apiId + '] : prepare request ' + type + ' | ' + (undo ? 'UNDO' : ''), true);        
+         handler.log('[actionRequest][' + apiId + '] : prepare request ' + type + ' | ' + (undo ? 'UNDO' : 'NEW'), true);        
         
          if (!KellyStorage.apis[apiId].sync) {
              onReady(false, 'Sync data not supported by API ' + apiId);
@@ -382,7 +385,7 @@ function KellyShowRate() {
              return;
          }
          
-         if (KellyShowRate.apiController[apiId].onPrepareActionRequestStart(handler, requestContext, onReady) !== true) {
+         if (!KellyShowRate.apiController[apiId].onPrepareActionRequestStart || KellyShowRate.apiController[apiId].onPrepareActionRequestStart(handler, requestContext, onReady) !== true) {
             onReady(false, 'prepareActionRequestStart not implemented for API ' + apiId); // sync mode
          }
     }
@@ -408,38 +411,32 @@ function KellyShowRate() {
                   
                   // if (initiator == 'button_click' && KellyShowRate.apiController[handler.currentApi].updateOnActionClick) handler.updatePageStateDelayed(300, true);
                   
-                  if (response.error) handler.log('[actionRequest] Request error : ' + response.error, true);  
-                  else handler.log('[actionRequest] Action accepted | [' + type + '] [' + (undo ? 'UNDO' : 'SET') + ']', true);
+                  if (response.error) handler.log('[actionRequest] [' + initiator + '][' + type + '] Request error : ' + response.error, true);  
+                  else handler.log('[actionRequest] Action accepted | [' + initiator + '][' + type + '] [' + (undo ? 'UNDO' : 'SET') + ']', true);
             }); 
           
         });
     }
     
-    function actionRequest(type, initiator) {
+    function actionRequest(newAction, initiator) {
         
-        if (!type || type == 'unkonwn' || !lastVideoId || !browsingLog[lastVideoId]) return false;
+        if (!newAction || newAction == 'unkonwn' || !lastVideoId || !browsingLog[lastVideoId]) return false;
         
-        handler.log('[actionRequest] : Update rating action state from [' + browsingLog[lastVideoId].actionState + '] to [' + type + ']', true);
+        handler.log('[actionRequest] : Update rating action state from [' + browsingLog[lastVideoId].actionState + '] to [' + newAction + ']', true);
         
-        var oldAction = ldAction[browsingLog[lastVideoId].actionState] && type != browsingLog[lastVideoId].actionState ? browsingLog[lastVideoId].actionState : false;
-        var undo = false;
+        var oldAction = ldAction[browsingLog[lastVideoId].actionState] && newAction != browsingLog[lastVideoId].actionState ? browsingLog[lastVideoId].actionState : false;
+        var undo = newAction == 'neutral' ? true : false;
         
-        if (type == 'neutral') {
-            type = browsingLog[lastVideoId].actionState; 
-            undo = true;
-            browsingLog[lastVideoId].actionState = 'neutral';
-        } else {
-            browsingLog[lastVideoId].actionState = type;
-        }
+        browsingLog[lastVideoId].actionState = newAction;
         
         if (browsingLog[lastVideoId].ydata) {
             if (oldAction && browsingLog[lastVideoId].ydata[ldAction[oldAction]] > 0) browsingLog[lastVideoId].ydata[ldAction[oldAction]]--;
-            if (!undo) browsingLog[lastVideoId].ydata[ldAction[type]]++;
+            if (ldAction[newAction]) browsingLog[lastVideoId].ydata[ldAction[newAction]]++;
         }
                 
         for (var apiId in KellyStorage.apis) {
             if (oldAction) handler.actionRequestInitForApi(apiId, oldAction, true, initiator + '_old_action');
-            handler.actionRequestInitForApi(apiId, type, undo, initiator);
+            if (ldAction[newAction]) handler.actionRequestInitForApi(apiId, newAction, false, initiator);
         }
     }
     

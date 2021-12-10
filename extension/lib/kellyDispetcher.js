@@ -81,7 +81,6 @@ var KellyEDispetcher = new Object();
                         console.log('[Warning] AbortController is undefined. Default statement used');
                 }
                 
-                
                 var frequest = typeof AbortController == 'undefined' ? defaultAbortController : new AbortController();
                 
                 var cancelTimer = false;                

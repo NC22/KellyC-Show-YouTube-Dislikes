@@ -48,23 +48,25 @@ KellyShowRate.apiController['sponsorsBlock'].onGetYDataReady = function(handler,
           response.error = 'Unknown response ' + response.status;
           response.ydata = false;
       }  
-
-
-      if (response.ydata) {
-          
+      
         // Is it possible to track is user already rated video or not via API?
         // We dont know is user already sended his action or no to API on new page load, If an action is setted - send current state
         // so videos that liked \\ disliked before integration with api will also count
-        
+
         // as I tested - we can set both like \\ dislike, but same action can be only one, so dubles is excluded
         // voice counted but refresh page required
-        
-        var nav = handler.getNavigation(), aState = nav.videoId ? nav.browsingLog[nav.videoId].actionState : false;
-        
-        if (aState && ['liked', 'disliked'].indexOf(aState) != -1 ) {
-            handler.actionRequestInitForApi('sponsorsBlock', nav.browsingLog[nav.videoId].actionState, false, 'sponsorsBlock_API');          
-        }
-     }      
+        // delay - actionState could be from prev video (can be synced with applyData)
+
+        setTimeout(function() {
+            
+            var nav = handler.getNavigation(), aState = nav.videoId ? nav.browsingLog[nav.videoId].actionState : false;
+            
+            if (handler.getNavigation().videoId != requestCfg.videoId) return;
+            
+            if (aState && ['liked', 'disliked'].indexOf(aState) != -1 ) {
+                handler.actionRequestInitForApi('sponsorsBlock', aState, false, 'sponsorsBlock_API');          
+            }
+        }, 3000);    
 }
 
 KellyShowRate.apiController['sponsorsBlock'].onPrepareGetRatingRequestStart = function(handler, requestCfg, onReady) {
