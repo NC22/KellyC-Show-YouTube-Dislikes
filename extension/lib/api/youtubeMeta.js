@@ -70,6 +70,7 @@ KellyShowRate.apiController['youtubeMetric'].parseYTPage = function(docRawText) 
     if (publicData.dislikes === false && publicData.likes === false && publicData.likesDisabled) {
         publicData.dislikes = 0;
         publicData.likes = 0;
+        publicData.disabledReason = 'Vote disabled';
     }
     
     if (publicData.dislikes === false && publicData.rating && publicData.likes) {

@@ -41,6 +41,15 @@
     box-sizing: border-box;
 }
 
+.__BASECLASS__-counter-long {
+    text-transform: none;
+    font-size : 12px;
+}
+
+.__BASECLASS__-counter-mobile.__BASECLASS__-counter-long {    
+    font-size : 10px;
+}
+
 .__BASECLASS__-note {
     font-size: 14px;
 }
@@ -59,7 +68,7 @@
     margin-top : 12px; 
 }
 
-.__BASECLASS__-api-datasource {
+.__BASECLASS__-api-datasource, .__BASECLASS__-api-disabled {
     margin-bottom : 6px;
 }
 

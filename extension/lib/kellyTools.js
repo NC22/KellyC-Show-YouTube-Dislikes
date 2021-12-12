@@ -68,6 +68,7 @@ KellyTools.loadFrontJs = function(callback, exclude) {
 }
 
 KellyTools.replaceAll = function(text, search, replace) {
+    
     return text.replace(new RegExp(search, 'g'), replace);
 }
 
@@ -75,17 +76,20 @@ KellyTools.replaceAll = function(text, search, replace) {
 // from firefox examples
   
 KellyTools.getSha256Hash = async function(message) {
-  const msgUint8 = new TextEncoder().encode(message);                           // encode as (utf-8) Uint8Array
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);           // hash the message
-  const hashArray = Array.from(new Uint8Array(hashBuffer));                     // convert buffer to byte array
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
-  return hashHex;
+    
+    const msgUint8 = new TextEncoder().encode(message);                           // encode as (utf-8) Uint8Array
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);           // hash the message
+    const hashArray = Array.from(new Uint8Array(hashBuffer));                     // convert buffer to byte array
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
+    
+    return hashHex;
 }
 
 // 01:12
 
-KellyTools.getTime = function() {
-    var currentTime = new Date();
+KellyTools.getTime = function(currentTime) {
+    
+    currentTime = currentTime ? currentTime : new Date();
     var hours = currentTime.getHours();
     var minutes = currentTime.getMinutes();
     

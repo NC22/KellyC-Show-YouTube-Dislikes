@@ -310,6 +310,8 @@ function KellyShowRate() {
         browsingLog[lastVideoId].ydata = validateYData(ydata);
         browsingLog[lastVideoId].actionState = getRatingState();
         
+        if (!browsingLog[lastVideoId].ydata && handler.currentApi == 'youtubeMetric' && ydata) browsingLog[lastVideoId].visibleStats = ydata;
+        
         if (browsingLog[lastVideoId].ydata && browsingLog[lastVideoId].actionState && ldAction[browsingLog[lastVideoId].actionState]) {
             if (browsingLog[lastVideoId].ydata[ldAction[browsingLog[lastVideoId].actionState]] <= 0) {
                 browsingLog[lastVideoId].ydata[ldAction[browsingLog[lastVideoId].actionState]] = 1;
@@ -473,17 +475,17 @@ function KellyShowRate() {
     function updateCounter(type, counterEl, val) {
         
         var holder = document.getElementsByClassName(handler.baseClass + '-' + type);
-        if (holder.length <= 0) {
-            holder = document.createElement('span');
-            holder.className = handler.baseClass + '-' + type;
-        } else holder = holder[0];
-                
+        if (holder.length <= 0) holder = document.createElement('span');
+        else holder = holder[0];
+        
+        holder.className = handler.baseClass + '-' + type + (isMobile() ? ' ' + handler.baseClass + '-counter-mobile ' : '') + (val.length >  14 ? ' ' + handler.baseClass + '-counter-long' : '');
+        
         if (val === false) {
             holder.innerHTML = ''; 
         } else {
             counterEl.innerHTML = '';
             counterEl.appendChild(holder); 
-            KellyTools.setHTMLData(holder, val === 'disabled' ? 'Votes disabled' : KellyTools.nFormat(val));
+            KellyTools.setHTMLData(holder, val);
         }
     }
     
@@ -497,16 +499,16 @@ function KellyShowRate() {
             handler.dislikeBtn.style.opacity = 1;
             var api = KellyStorage.apis[lastVideoYData.apiId], updateLikes = api && api.updateLikes;
             
-            if (lastVideoYData.likesDisabled) {
+            if (lastVideoYData.disabledReason) {
                 
-                updateCounter('like', handler.likeBtn, updateLikes ? 'disabled' : false);                
-                updateCounter('dislike', handler.dislikeBtn, 'disabled');
+                updateCounter('like', handler.likeBtn, false);                
+                updateCounter('dislike', handler.dislikeBtn, lastVideoYData.disabledReason);
                 updateRatio();
                 
             } else {
                 
-                updateCounter('like', handler.likeBtn, updateLikes ? lastVideoYData.likes : false);                
-                updateCounter('dislike', handler.dislikeBtn, lastVideoYData.dislikes);
+                updateCounter('like', handler.likeBtn, updateLikes ? KellyTools.nFormat(lastVideoYData.likes) : false);                
+                updateCounter('dislike', handler.dislikeBtn, KellyTools.nFormat(lastVideoYData.dislikes));
                 
                 // KellyTools.setHTMLData(handler.dislikeBtn, nFormat(lastVideoYData.dislikes));
                 // if (updateLikes && handler.likeBtn) KellyTools.setHTMLData(handler.likeBtn, nFormat(lastVideoYData.likes));
@@ -579,8 +581,15 @@ function KellyShowRate() {
                if (ydata.likesDisabled) notice = '<div class="' + handler.baseClass + '-note"><b>Channel author disable Likes \\ Dislikes for this video</b></div>';
                if (handler.cfg.showSourceEnabled) {
                    
-                   notice += '<div class="' + handler.baseClass + '-extended-info">';                   
-                   notice += '<div class="' + handler.baseClass + '-api-datasource">Data source : </div>';
+                   var noticeDate = '';
+                   if (ydata.lastUpdate) {
+                       var lastUpdateDate = new Date(ydata.lastUpdate);
+                       if (!isNaN(lastUpdateDate.getTime())) noticeDate = '(Last update <b>' + lastUpdateDate.toLocaleDateString() + ' ' + KellyTools.getTime(lastUpdateDate) + '</b>)';
+                   }
+                   
+                   notice += '<div class="' + handler.baseClass + '-extended-info">';  
+                   if (ydata.disabledReasonPopup) notice += '<div class="' + handler.baseClass + '-api-disabled">' + ydata.disabledReasonPopup + '</div>';
+                   notice += '<div class="' + handler.baseClass + '-api-datasource">Data source : ' + noticeDate + '</div>';
                    notice += '<div class="' + handler.baseClass + '-api-copyright">' + KellyStorage.apis[ydata.apiId].name + '</div>';
                    
                    if (KellyStorage.apis[ydata.apiId].link) {
@@ -638,7 +647,7 @@ function KellyShowRate() {
     }
     
     this.getNavigation = function() {
-        return {videoId : lastVideoId, browsingLog : browsingLog};
+        return {videoId : lastVideoId, browsingLog : browsingLog, browsingLogCurrent : (lastVideoId ? browsingLog[lastVideoId] : false)};
     }
         
     this.getTooltip = function() {

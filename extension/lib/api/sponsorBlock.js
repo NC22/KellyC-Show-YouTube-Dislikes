@@ -123,4 +123,4 @@ KellyShowRate.apiController['sponsorsBlock'].onPrepareActionRequestStart = funct
 }
 
 // disable for prod for now
-// KellyStorage.apis['sponsorsBlock'] = KellyShowRate.apiController['sponsorsBlock'];
+KellyStorage.apis['sponsorsBlock'] = KellyShowRate.apiController['sponsorsBlock'];
