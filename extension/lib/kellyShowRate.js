@@ -637,7 +637,7 @@ function KellyShowRate() {
                 var noticePercent = '';
                 if (handler.cfg.showPercentEnabled && (l > 0 || d > 0)) noticePercent = ' (' + (l / ((l + d) / 100)).toFixed(2) + '%)';
                 if (name) return '<div class="' + handler.baseClass + '-count"><div>' + name + '</div><div>' + KellyTools.dFormat(l) + ' / ' + KellyTools.dFormat(d) + noticePercent + '</div></div>';  
-                else return '<div class="' + handler.baseClass + '-count">' + KellyTools.dFormat(l) + ' / ' + KellyTools.dFormat(d) + noticePercent + '</div>';  
+                else return '<div>' + KellyTools.dFormat(l) + ' / ' + KellyTools.dFormat(d) + noticePercent + '</div>';  
            }
            var notice = '', ydata = lastVideoYData, noticeHelper = '', loadFail = false, logData = browsingLog[lastVideoId];           
            if (ydata) {

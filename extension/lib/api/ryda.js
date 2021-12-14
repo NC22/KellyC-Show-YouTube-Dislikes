@@ -16,7 +16,7 @@ KellyShowRate.apiController['ryda'] = {
     
     cfgDefault : {
         enabled : true, 
-        enabledAsHelper : true,
+        enabledAsHelper : false,
         syncData : true,
     },
 }

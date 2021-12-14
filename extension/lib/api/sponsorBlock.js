@@ -18,9 +18,9 @@ KellyShowRate.apiController['sponsorsBlock'] = {
      helpersSupport : true,
      
      cfgDefault : {
-         enabled : true,
-         enabledAsHelper : true,
-         syncData : true,
+         enabled : false,
+         enabledAsHelper : false,
+         syncData : false,
          ratioLikeColor : '#55caff',
          ratioDislikeColor : '#f08888',
      },
@@ -59,7 +59,7 @@ KellyShowRate.apiController['sponsorsBlock'].onGetYDataReady = function(handler,
         // voice counted but refresh page required
         // delay - actionState could be from prev video (can be synced with applyData)
 
-        setTimeout(function() {
+        /* setTimeout(function() {
             
             var nav = handler.getNavigation(), aState = nav.videoId ? nav.browsingLog[nav.videoId].actionState : false;
             
@@ -69,6 +69,7 @@ KellyShowRate.apiController['sponsorsBlock'].onGetYDataReady = function(handler,
                 handler.actionRequestInitForApi('sponsorsBlock', aState, false, 'sponsorsBlock_API');          
             }
         }, 3000);    
+        */
 }
 
 KellyShowRate.apiController['sponsorsBlock'].onPrepareGetRatingRequestStart = function(handler, requestCfg, onReady) {
