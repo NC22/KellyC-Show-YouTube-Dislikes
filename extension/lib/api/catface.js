@@ -1,13 +1,13 @@
 KellyShowRate.apiController['catface'] = { 
     name : "CatFace.ru cache API", 
     link : 'https://catface.ru/',
-    api : 'https://catface.ru/api/youtube/?videoId=__VIDEOID__',
-    // api : 'https://catface.ru/api/testyoutube2/?videoId=__VIDEOID__',
-    // apiAction : 'https://catface.ru/api/testyoutube2/',
+    // api : 'https://catface.ru/api/youtube/?videoId=__VIDEOID__',
+    api : 'https://catface.ru/api/ylocal/?videoId=__VIDEOID__',
+    apiAction : 'https://catface.ru/api/ylocal/',
         
-    // sync : true,
+    sync : true,
      
-    cfgDefault : {enabled : true},
+    cfgDefault : {enabled : true, syncData : true},
 }
 
 KellyShowRate.apiController['catface'].onPrepareActionRequestStart = function(handler, requestContext, onReady) {

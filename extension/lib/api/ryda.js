@@ -9,10 +9,14 @@ KellyShowRate.apiController['ryda'] = {
     sync : false, // currently not implemented in API
     
     showZero : false, 
-    updateLikes : false,
+    updateLikes : false,  
+    
+    helperMode : true,
+    helpersSupport : true,
     
     cfgDefault : {
         enabled : true, 
+        enabledAsHelper : true,
         syncData : true,
     },
 }
@@ -21,6 +25,7 @@ KellyShowRate.apiController['ryda'].onGetYDataReady = function(handler, requestC
     if (!response || !response.ydata) return;
     
     if (response.ydata.dateCreated) response.ydata.lastUpdate = response.ydata.dateCreated;
+    
     response.ydata.likes = parseInt(response.ydata.likes); 
     response.ydata.dislikes = parseInt(response.ydata.dislikes);
     response.ydata.viewCount = parseInt(response.ydata.viewCount);
@@ -30,11 +35,11 @@ KellyShowRate.apiController['ryda'].onGetYDataReady = function(handler, requestC
             var currentLog = handler.getNavigation().browsingLogCurrent, percent = 100;
             if (currentLog.visibleStats && currentLog.visibleStats.likes > 0) {                
                 var percent = response.ydata.likes / (currentLog.visibleStats.likes / 100);
-            }   
-                
-            if (percent < 5) {
-                
-                response.ydata.disabledReason = 'New video<br>(see popup)';
+            }  
+            
+            if (percent < 5) {   
+                response.ydata.likes = currentLog.visibleStats.likes;
+                response.ydata.disabledReason = "Old data";
                 response.ydata.disabledReasonPopup = 'Information about likes \\ dislikes for this video<br> is currently in collecting process.<br>For selected API this can take 1-3 days.';
             }
         }

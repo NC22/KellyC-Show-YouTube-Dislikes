@@ -14,11 +14,13 @@ KellyShowRate.apiController['sponsorsBlock'] = {
      showZero : true, 
      updateLikes : true,
      
-     updateOnActionClick : true,
+     helperMode : true,
+     helpersSupport : true,
      
      cfgDefault : {
-         enabled : false, 
-         syncData : true, 
+         enabled : true,
+         enabledAsHelper : true,
+         syncData : true,
          ratioLikeColor : '#55caff',
          ratioDislikeColor : '#f08888',
      },

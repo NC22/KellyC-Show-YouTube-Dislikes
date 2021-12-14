@@ -230,7 +230,14 @@ a.kelly-options-row-help {
     background: #838383;
 }
 
+.data-source-controlls {
+    position : relative;
+}
 
+.data-source-controlls label {
+    display : block;
+}
+    
 .data-source-desc, .data-source  {
     transition: opacity 0.2s;
 }
@@ -251,7 +258,10 @@ a.kelly-options-row-help {
 }
 
 .data-source-actions {
-    float : right;
+    float : right;  
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 .data-source-actions a {

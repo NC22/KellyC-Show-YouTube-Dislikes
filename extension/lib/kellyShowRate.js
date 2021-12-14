@@ -40,6 +40,7 @@ function KellyShowRate() {
         handler.requestsCfg = {
             
             enabledApis : [],
+            helperApis : [],
             
             loops : 1,
             loopsMax : -1, // max change driver attempts -1 = drivers.length * 3
@@ -47,6 +48,10 @@ function KellyShowRate() {
         
     this.getDefaultBGRequest = function() {
         return { method: "getYoutubeInfo" };
+    }
+    
+    this.getDefaultBrowsingLog = function() {
+        return {actionState : getRatingState(), helperYdata : {}, ydata : false};
     }
     
     function isDarkTheme() {
@@ -273,7 +278,7 @@ function KellyShowRate() {
         lastVideoYData = false;
         updateRatio();
         
-        if (!browsingLog[videoId]) browsingLog[videoId] = {actionState : getRatingState(), ydata : false};
+        if (!browsingLog[videoId]) browsingLog[videoId] = handler.getDefaultBrowsingLog();
         
         if (handler.ytRequest) handler.ytRequest.abort();
         
@@ -305,23 +310,55 @@ function KellyShowRate() {
     
     function applyData(ydata, context) {
         
-        // todo - count local likes \ dislikes
-        
-        browsingLog[lastVideoId].ydata = validateYData(ydata);
-        browsingLog[lastVideoId].actionState = getRatingState();
-        
+        var newData = validateYData(ydata); 
         if (!browsingLog[lastVideoId].ydata && handler.currentApi == 'youtubeMetric' && ydata) browsingLog[lastVideoId].visibleStats = ydata;
+
+        if (newData && !newData.helperApiId) {       
+            
+            browsingLog[lastVideoId].ydata = newData;
+            browsingLog[lastVideoId].origYData = {likes : newData.likes, dislikes : newData.dislikes};
+            browsingLog[lastVideoId].actionState = getRatingState();
+            
+            if (browsingLog[lastVideoId].ydata && browsingLog[lastVideoId].actionState && ldAction[browsingLog[lastVideoId].actionState]) {
+                if (browsingLog[lastVideoId].ydata[ldAction[browsingLog[lastVideoId].actionState]] <= 0) {
+                    browsingLog[lastVideoId].ydata[ldAction[browsingLog[lastVideoId].actionState]] = 1;
+                }
+            }
+        } else if (newData) browsingLog[lastVideoId].helperYdata[newData.helperApiId] = newData;
         
-        if (browsingLog[lastVideoId].ydata && browsingLog[lastVideoId].actionState && ldAction[browsingLog[lastVideoId].actionState]) {
-            if (browsingLog[lastVideoId].ydata[ldAction[browsingLog[lastVideoId].actionState]] <= 0) {
-                browsingLog[lastVideoId].ydata[ldAction[browsingLog[lastVideoId].actionState]] = 1;
+        if (newData && browsingLog[lastVideoId].origYData) {
+            browsingLog[lastVideoId].ydata.likes = browsingLog[lastVideoId].origYData.likes;
+            browsingLog[lastVideoId].ydata.dislikes = browsingLog[lastVideoId].origYData.dislikes;
+            for (var helperApiId in browsingLog[lastVideoId].helperYdata) {  
+                browsingLog[lastVideoId].ydata.likes += browsingLog[lastVideoId].helperYdata[helperApiId].likes;
+                browsingLog[lastVideoId].ydata.dislikes += browsingLog[lastVideoId].helperYdata[helperApiId].dislikes;
             }
         }
         
-        handler.log('[' + handler.currentApi + '] result data : ', true);
+        handler.log('[' + ydata.apiId + '] result data : ', true);
         handler.log(ydata, true);
         
         return showYData(browsingLog[lastVideoId].ydata, context ? context : 'getYTData.newData');
+    }
+    
+    function prepareHelper(driver, parentCfg, onReady) {
+        
+        var apiCfg = KellyStorage.apis[driver];
+        
+        var requestCfg = {
+            apiId : driver,
+            parentApiId : parentCfg.apiId,
+            context : 'prepareHelper',
+            videoId : parentCfg.videoId, 
+            url : apiCfg.api.replace('__VIDEOID__', parentCfg.videoId),       
+            timeout : apiCfg.rTimeout ? apiCfg.rTimeout : handler.cfg.rTimeout,
+            fetchParams : apiCfg.fetchParams ? apiCfg.fetchParams : false, 
+        };
+        
+        if (!KellyShowRate.apiController[driver].onPrepareGetRatingRequestStart ||
+            KellyShowRate.apiController[driver].onPrepareGetRatingRequestStart(handler, requestCfg, onReady) !== true) {
+                onReady(requestCfg); // sync mode  
+        }
     }
     
     // universal driver that holds [returnyoutubedislikes \ catface \ youtube \ sponsorsBlock] requests
@@ -333,6 +370,7 @@ function KellyShowRate() {
         if (!attempt) attempt = 1;
         
         handler.log('[updatePageStateByAR][' + handler.currentApi + '] prepare to request', true); 
+                
         prepareRequestStart(force, function(requestCfg, notice) {
                 
             if (!requestCfg) {
@@ -340,6 +378,33 @@ function KellyShowRate() {
                 return handler.log('[updatePageStateByAR][Skip request] ' + notice, true);
                 
             } else if (requestCfg.ydata && applyData(requestCfg.ydata, 'getYTData.prefetchedByApiData')) return;
+            
+            if (KellyStorage.apis[handler.currentApi].helpersSupport) { // todo - can be implemented as array
+                for (var i = 0; i < handler.requestsCfg.helperApis.length; i++) {
+                    
+                    if (handler.requestsCfg.helperApis[i] == handler.currentApi) continue;
+                    
+                    prepareHelper(handler.requestsCfg.helperApis[i], requestCfg, function(helperRequestCfg, notice) {
+                        if (!helperRequestCfg) {
+                            return handler.log('[HelperRequest][Helper request FAIL] ' + notice, true);
+                        } else if (helperRequestCfg.ydata) {
+                            helperRequestCfg.ydata.helperApiId = helperRequestCfg.apiId;
+                            if (helperRequestCfg.videoId == lastVideoId && applyData(helperRequestCfg.ydata, 'getYTData.prefetchedByHelperApiData')) return;
+                        }
+                        
+                        getYTData(helperRequestCfg, function(helperYdata, error) {
+                            if (helperYdata) {
+                                helperYdata.helperApiId = helperRequestCfg.apiId;
+                                applyData(helperYdata, 'getYTData.fetchedByHelperApiData');
+                            }
+                            
+                            handler.log('[HelperRequest] Helper : ' + helperRequestCfg.apiId + ' | Parent : ' + helperRequestCfg.parentApiId + ' Result : ' + (error ? 'FAIL ' + error : 'OK'), true);
+                            if (helperRequestCfg.videoId == lastVideoId && helperYdata) handler.log(helperYdata, true);
+                        });
+                    });
+                    
+                }
+            }
             
             handler.log('[updatePageStateByAR] update [' + attempt + '/' + requestCfg.maxAttempts + '] [loop : ' + handler.requestsCfg.loops + ']', true)
             
@@ -360,7 +425,7 @@ function KellyShowRate() {
                         handler.log('[updatePageStateByAR][FAIL] ' + error, true);
                         updatePageStateByAR(true, attempt + 1);
                         
-                    } else setTimeout(function() { updatePageState(true); }, requestCfg.nextDriverTimeout);     
+                    } else setTimeout(function() { browsingLog[lastVideoId].helperYdata = {}; updatePageState(true); }, requestCfg.nextDriverTimeout);     
                 }         
             });
         });
@@ -411,10 +476,8 @@ function KellyShowRate() {
                       if (onReady) onReady(response);
                   }  
                   
-                  // if (initiator == 'button_click' && KellyShowRate.apiController[handler.currentApi].updateOnActionClick) handler.updatePageStateDelayed(300, true);
-                  
-                  if (response.error) handler.log('[actionRequest] [' + initiator + '][' + type + '] Request error : ' + response.error, true);  
-                  else handler.log('[actionRequest] Action accepted | [' + initiator + '][' + type + '] [' + (undo ? 'UNDO' : 'SET') + ']', true);
+                  if (response.error) handler.log('[actionRequest] ' + apiId + ' | [' + initiator + '][' + type + '] Request error : ' + response.error, true);  
+                  else handler.log('[actionRequest] Action accepted ' + apiId + ' | [' + initiator + '][' + type + '] [' + (undo ? 'UNDO' : 'SET') + ']', true);
             }); 
           
         });
@@ -431,9 +494,13 @@ function KellyShowRate() {
         
         browsingLog[lastVideoId].actionState = newAction;
         
-        if (browsingLog[lastVideoId].ydata) {
-            if (oldAction && browsingLog[lastVideoId].ydata[ldAction[oldAction]] > 0) browsingLog[lastVideoId].ydata[ldAction[oldAction]]--;
-            if (ldAction[newAction]) browsingLog[lastVideoId].ydata[ldAction[newAction]]++;
+        if (browsingLog[lastVideoId].origYData) {
+            if (oldAction && browsingLog[lastVideoId].origYData[ldAction[oldAction]] > 0) browsingLog[lastVideoId].origYData[ldAction[oldAction]]--;
+            if (ldAction[newAction]) browsingLog[lastVideoId].origYData[ldAction[newAction]]++;
+            browsingLog[lastVideoId].ydata.likes = browsingLog[lastVideoId].origYData.likes;
+            browsingLog[lastVideoId].ydata.dislikes = browsingLog[lastVideoId].origYData.dislikes;
+            
+            applyData(browsingLog[lastVideoId].ydata, 'recalc');
         }
                 
         for (var apiId in KellyStorage.apis) {
@@ -472,13 +539,13 @@ function KellyShowRate() {
        return ydata;
     }
     
-    function updateCounter(type, counterEl, val) {
+    function updateCounter(type, counterEl, val, mark) {
         
         var holder = document.getElementsByClassName(handler.baseClass + '-' + type);
         if (holder.length <= 0) holder = document.createElement('span');
         else holder = holder[0];
         
-        holder.className = handler.baseClass + '-' + type + (isMobile() ? ' ' + handler.baseClass + '-counter-mobile ' : '') + (val.length >  14 ? ' ' + handler.baseClass + '-counter-long' : '');
+        holder.className = handler.baseClass + '-' + type + (isMobile() ? ' ' + handler.baseClass + '-counter-mobile ' : '') + (mark ? ' ' + handler.baseClass + '-counter-long' : '');
         
         if (val === false) {
             holder.innerHTML = ''; 
@@ -498,22 +565,19 @@ function KellyShowRate() {
                         
             handler.dislikeBtn.style.opacity = 1;
             var api = KellyStorage.apis[lastVideoYData.apiId], updateLikes = api && api.updateLikes;
-            
+
             if (lastVideoYData.disabledReason) {
                 
                 updateCounter('like', handler.likeBtn, false);                
-                updateCounter('dislike', handler.dislikeBtn, lastVideoYData.disabledReason);
+                updateCounter('dislike', handler.dislikeBtn, lastVideoYData.disabledReason == 'Old data' ? lastVideoYData.dislikes + ' (?)' : lastVideoYData.disabledReason, true);
                 updateRatio();
                 
             } else {
                 
                 updateCounter('like', handler.likeBtn, updateLikes ? KellyTools.nFormat(lastVideoYData.likes) : false);                
                 updateCounter('dislike', handler.dislikeBtn, KellyTools.nFormat(lastVideoYData.dislikes));
-                
-                // KellyTools.setHTMLData(handler.dislikeBtn, nFormat(lastVideoYData.dislikes));
-                // if (updateLikes && handler.likeBtn) KellyTools.setHTMLData(handler.likeBtn, nFormat(lastVideoYData.likes));
-                
                 updateRatio();
+                
                 setTimeout(updateRatioWidth, 500);
             }  
 
@@ -568,28 +632,41 @@ function KellyShowRate() {
     }
     
     function showTip(e, stick) { 
-            
-           var notice = '', ydata = lastVideoYData, noticePercent = '', loadFail = false;           
+           
+           var displayDataSourceCount = function(name, l, d) {
+                var noticePercent = '';
+                if (handler.cfg.showPercentEnabled && (l > 0 || d > 0)) noticePercent = ' (' + (l / ((l + d) / 100)).toFixed(2) + '%)';
+                if (name) return '<div class="' + handler.baseClass + '-count"><div>' + name + '</div><div>' + KellyTools.dFormat(l) + ' / ' + KellyTools.dFormat(d) + noticePercent + '</div></div>';  
+                else return '<div class="' + handler.baseClass + '-count">' + KellyTools.dFormat(l) + ' / ' + KellyTools.dFormat(d) + noticePercent + '</div>';  
+           }
+           var notice = '', ydata = lastVideoYData, noticeHelper = '', loadFail = false, logData = browsingLog[lastVideoId];           
            if (ydata) {
               
-               if (handler.cfg.showPercentEnabled && !ydata.likesDisabled && (ydata.likes > 0 || ydata.dislikes > 0)) {
-                   noticePercent = ' (' + (ydata.likes / ((ydata.likes + ydata.dislikes) / 100)).toFixed(2) + '%)';
-               }
+               if (!ydata.likesDisabled) {
+                   
+                    for (var helperApiId in logData.helperYdata) {
+                        noticeHelper += displayDataSourceCount(KellyStorage.apis[helperApiId].name, logData.helperYdata[helperApiId].likes, logData.helperYdata[helperApiId].dislikes);
+                    }
+                    
+                    if (noticeHelper && handler.cfg.showSourceEnabled) {
+                        notice = displayDataSourceCount(KellyStorage.apis[ydata.apiId].name, logData.origYData.likes, logData.origYData.dislikes) + noticeHelper;
+                    } else {                        
+                        notice = displayDataSourceCount(false, logData.origYData.likes, logData.origYData.dislikes);
+                    }
+                   
+               } else notice = '<div class="' + handler.baseClass + '-note"><b>Channel author disable Likes \\ Dislikes for this video</b></div>';
                
-               notice = '<div class="' + handler.baseClass + '-count">' + KellyTools.dFormat(ydata.likes) + ' / ' + KellyTools.dFormat(ydata.dislikes) + noticePercent + '</div>';
-               
-               if (ydata.likesDisabled) notice = '<div class="' + handler.baseClass + '-note"><b>Channel author disable Likes \\ Dislikes for this video</b></div>';
                if (handler.cfg.showSourceEnabled) {
                    
                    var noticeDate = '';
                    if (ydata.lastUpdate) {
                        var lastUpdateDate = new Date(ydata.lastUpdate);
-                       if (!isNaN(lastUpdateDate.getTime())) noticeDate = '(Last update <b>' + lastUpdateDate.toLocaleDateString() + ' ' + KellyTools.getTime(lastUpdateDate) + '</b>)';
+                       if (!isNaN(lastUpdateDate.getTime())) noticeDate = ' [last upd. <b>' + lastUpdateDate.toLocaleDateString() + ' ' + KellyTools.getTime(lastUpdateDate) + '</b>]';
                    }
                    
                    notice += '<div class="' + handler.baseClass + '-extended-info">';  
                    if (ydata.disabledReasonPopup) notice += '<div class="' + handler.baseClass + '-api-disabled">' + ydata.disabledReasonPopup + '</div>';
-                   notice += '<div class="' + handler.baseClass + '-api-datasource">Data source : ' + noticeDate + '</div>';
+                   notice += '<div class="' + handler.baseClass + '-api-datasource">Main source ' + noticeDate + '</div>';
                    notice += '<div class="' + handler.baseClass + '-api-copyright">' + KellyStorage.apis[ydata.apiId].name + '</div>';
                    
                    if (KellyStorage.apis[ydata.apiId].link) {
@@ -700,7 +777,7 @@ function KellyShowRate() {
         
         if (updateTimer !== false) clearTimeout(updateTimer);
         updateTimer = setTimeout(function() {
-            if (clearCache && lastVideoId && browsingLog[lastVideoId]) browsingLog[lastVideoId].ydata = false;        
+            if (clearCache && lastVideoId && browsingLog[lastVideoId]) browsingLog[lastVideoId] = handler.getDefaultBrowsingLog();        
             resetNavigation();
             updateTimer = false;
             updatePageState();
@@ -738,6 +815,7 @@ function KellyShowRate() {
             
             handler.cfg = cfg;
             handler.requestsCfg.enabledApis = [];
+            handler.requestsCfg.helperApis = [];
             
             handler.envSelectors = domSelectors[isMobile() ? 'mobile' : 'desktop']; 
             handler.envSelectors.ratioHeight = handler.cfg.fixedRatioHeightEnabled ? handler.cfg.fixedRatioHeight : handler.envSelectors.ratioHeight;
@@ -746,6 +824,7 @@ function KellyShowRate() {
             for (var i = 0; i < handler.cfg.apis.order.length; i++) {
                 var apiId = handler.cfg.apis.order[i];
                 if (handler.cfg.apis.cfg[apiId].enabled) handler.requestsCfg.enabledApis.push(apiId);
+                if ( KellyStorage.apis[apiId].helperMode && handler.cfg.apis.cfg[apiId].enabledAsHelper) handler.requestsCfg.helperApis.push(apiId);
             }
             
             if (handler.requestsCfg.loopsMax == -1) handler.requestsCfg.loopsMax = handler.requestsCfg.enabledApis.length * 3;

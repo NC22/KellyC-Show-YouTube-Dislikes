@@ -58,6 +58,10 @@ var KellyCOptions = new Object();
                 enabled : document.getElementById('data-source-enabled-' + key).checked,
             }
             
+            if (KellyStorage.apis[key].helperMode) {
+                cfg.enabledAsHelper = document.getElementById('data-source-helper-' + key).checked; 
+            }
+            
             if (KellyStorage.apis[key].sync) {
                 cfg.syncData = document.getElementById('data-source-sync-' + key).checked; 
             }
@@ -98,6 +102,11 @@ var KellyCOptions = new Object();
             if (KellyStorage.apis[key].sync) {
                 html += '<label for="data-source-sync-' + key + '">\
                         <input type="checkbox" id="data-source-sync-' + key +'" data-target="' + key +'" ' + (handler.cfg.apis.cfg[key].syncData ? 'checked' : '') + '>'  + handler.getLoc('datasource_send') + '</label>';
+            }
+            
+            if (KellyStorage.apis[key].helperMode) {
+                html += '<label for="data-source-helper-' + key + '">\
+                        <input type="checkbox" id="data-source-helper-' + key +'" data-target="' + key +'" ' + (handler.cfg.apis.cfg[key].enabledAsHelper ? 'checked' : '') + '>'  + handler.getLoc('datasource_helper') + '</label>';
             }
             
             html += '<div class="data-source-actions">\

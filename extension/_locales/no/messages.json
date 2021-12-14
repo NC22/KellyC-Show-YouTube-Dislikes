@@ -67,9 +67,6 @@
     },
     "datasource_donate":{  
         "message":"Donate"
-    },   
-    "datasource_helper":{  
-        "message":"Use as addition data source"
     },
     "datasources_help":{  
         "message":"Extension gets information about dislikes / likes count by making request to data sources by priority. The count may differ based on the source from which the data was obtained in accordance with the order of requests."

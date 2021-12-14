@@ -2,8 +2,8 @@
 
 var KellyStorage = { 
         
-        apiListRevisionCurrent : 1, // for reset list on major changes
-        apisDefaultOrder : ['youtubeMetric','catface','ryda','sponsorsBlock'],
+        apiListRevisionCurrent : 2, // for reset list on major changes
+        apisDefaultOrder : ['youtubeMetric','ryda','sponsorsBlock','catface'],
         
         apis : {},  // pool from external files from lib/apis/        
         
@@ -29,7 +29,7 @@ var KellyStorage = {
                 json data
                 
                 {
-                    catface : {enabled : true, syncActions : true, [optional] ratioLikeColor :  ratioDislikeColor : ratioLoadingColor : },
+                    catface : {enabled : true, syncData : true, enabledAsHelper : true, [optional] ratioLikeColor :  ratioDislikeColor : ratioLoadingColor : },
                     ...
                 }
             */

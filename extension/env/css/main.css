@@ -41,13 +41,8 @@
     box-sizing: border-box;
 }
 
-.__BASECLASS__-counter-long {
-    text-transform: none;
-    font-size : 12px;
-}
-
-.__BASECLASS__-counter-mobile.__BASECLASS__-counter-long {    
-    font-size : 10px;
+.__BASECLASS__-counter-long {    
+    color: #f90;
 }
 
 .__BASECLASS__-note {
@@ -64,8 +59,25 @@
     margin-top: 14px;
 }
 
+.__BASECLASS__-count {
+    margin-bottom: 6px;
+}
+
+.__BASECLASS__-count div:first-child {
+    padding: 2px 6px;
+    background: #787878;
+    margin-left: 0;
+    min-width: 150px;
+}
+
+.__BASECLASS__-count div {
+    display: inline-block;
+    margin-left: 4px;
+}
+
 .__BASECLASS__-extended-info {
-    margin-top : 12px; 
+    padding: 6px 6px;
+    background: #787878; 
 }
 
 .__BASECLASS__-api-datasource, .__BASECLASS__-api-disabled {
