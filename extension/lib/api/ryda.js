@@ -23,6 +23,10 @@ KellyShowRate.apiController['ryda'] = {
     },
 }
 
+KellyShowRate.apiController['ryda'].updateUserId = function(newId) {
+    KellyTools.getBrowser().runtime.sendMessage({method: "setLocalStorageItem", dbName : 'kelly-ryda-registered-uuid', data : newId}, function(response) {})
+}
+
 KellyShowRate.apiController['ryda'].validateInitSessionResponse = function(handler, response) {
      
     if (!response) {
@@ -30,11 +34,16 @@ KellyShowRate.apiController['ryda'].validateInitSessionResponse = function(handl
         return false;
     }
     
+    if (response.status >= 400) {
+        handler.log('[validateInitSessionResponse ryda] reset user id', true);
+        KellyShowRate.apiController['ryda'].updateUserId(false); // deprecated user id ?
+    }
+    
     handler.log('[validateInitSessionResponse ryda] Data : ', true);
     handler.log(response.ydata, true);
     
     if (response.error || !response.ydata || !response.ydata.challenge || !response.ydata.difficulty) {
-        handler.log('[validateInitSessionResponse ryda] Register fail : ' + (response.error ? response.error : '') + ' | ' + (!response.ydata ? 'NO DATA' : ''), true);
+        handler.log('[validateInitSessionResponse ryda] Session request fail : ' + (response.error ? response.error : '') + ' | ' + (!response.ydata ? 'NO DATA' : ''), true);
         return false;
     }
     
@@ -56,6 +65,8 @@ KellyShowRate.apiController['ryda'].prepareActionRequest = function(handler, req
           }
         },
     }; 
+    
+    if (requestContext.initiator.indexOf('to_neutral') != -1) voteRequestBg.requestCfg.fetchParams.value = 0;
     
     KellyTools.getBrowser().runtime.sendMessage(voteRequestBg, function(response) {
         
@@ -93,44 +104,51 @@ KellyShowRate.apiController['ryda'].onPrepareActionRequestStart = function(handl
         return true;
     }
     
-    if (KellyShowRate.apiController['ryda'].inUse) return onPrepareActionWorkEnd(false, 'Action skiped - Requests spam');
-    if (requestContext.initiator.indexOf('old_action') != -1) return onPrepareActionWorkEnd(false, 'Action skiped - Old action');  // undo actions currently not suppported by API
+    if (KellyShowRate.apiController['ryda'].inUse) {
+        return onPrepareActionWorkEnd(false, 'Action skiped - Requests spam');
+    } else if (requestContext.initiator.indexOf('old_action') != -1 && requestContext.initiator.indexOf('to_neutral') == -1) {
+        return onPrepareActionWorkEnd(false, 'Action skiped - cancel old state not required');  
+    }
     
-    KellyShowRate.apiController['ryda'].inUse = true;
+    KellyShowRate.apiController['ryda'].inUse = 'onPrepareActionRequestStart';
     KellyTools.getBrowser().runtime.sendMessage({method: "getLocalStorageItem", dbName : 'kelly-ryda-registered-uuid'}, function(response) {
         
         if (!response.item) {
             
-            var requestBg = handler.getDefaultBGRequest();
-                requestBg.requestCfg = {
-                url : KellyShowRate.apiController['ryda'].apiRegister + requestContext.uuid,       
-                timeout : 4,
-                fetchParams : { method: 'GET' },
-            };
+            KellyTools.getSha256Hash(requestContext.uuid).then(function(uuidHash) {
                 
-            KellyTools.getBrowser().runtime.sendMessage(requestBg, function(response) {
-                if (!KellyShowRate.apiController['ryda'].validateInitSessionResponse(handler, response)) return onPrepareActionWorkEnd(false, 'Register init Response validation fail');
-                
-                KellyShowRate.apiController['ryda'].getSessionKey(response.ydata.challenge, response.ydata.difficulty).then(function(sessionId) {
-                   
-                    response.ydata.solution = sessionId;
-                    var requestBg = handler.getDefaultBGRequest();
-                        requestBg.requestCfg = {
-                        url : KellyShowRate.apiController['ryda'].apiRegister + requestContext.uuid,       
-                        timeout : 4,
-                        fetchParams : { method: 'POST', jsonData : response.ydata },
-                    };
+                requestContext.uuid = uuidHash;
+                var requestBg = handler.getDefaultBGRequest();
+                    requestBg.requestCfg = {
+                    url : KellyShowRate.apiController['ryda'].apiRegister + requestContext.uuid,       
+                    timeout : 4,
+                    fetchParams : { method: 'GET' },
+                };
                     
-                    KellyTools.getBrowser().runtime.sendMessage(requestBg, function(response) {
-                        if (response.ydata !== true) return onPrepareActionWorkEnd(false, 'Register fail, response != true');
+                KellyTools.getBrowser().runtime.sendMessage(requestBg, function(response) {
+                    if (!KellyShowRate.apiController['ryda'].validateInitSessionResponse(handler, response)) return onPrepareActionWorkEnd(false, 'Register init Response validation fail');
+                    
+                    KellyShowRate.apiController['ryda'].getSessionKey(response.ydata.challenge, response.ydata.difficulty).then(function(sessionId) {
+                       
+                        response.ydata.solution = sessionId;
+                        var requestBg = handler.getDefaultBGRequest();
+                            requestBg.requestCfg = {
+                            url : KellyShowRate.apiController['ryda'].apiRegister + requestContext.uuid,       
+                            timeout : 4,
+                            fetchParams : { method: 'POST', jsonData : response.ydata },
+                        };
                         
-                        KellyTools.getBrowser().runtime.sendMessage({method: "setLocalStorageItem", dbName : 'kelly-ryda-registered-uuid', data : requestContext.uuid}, function(response) {});
-                        KellyShowRate.apiController['ryda'].prepareActionRequest(handler, requestContext, onPrepareActionWorkEnd);
-                    }); 
+                        KellyTools.getBrowser().runtime.sendMessage(requestBg, function(response) {
+                            if (response.ydata !== true) return onPrepareActionWorkEnd(false, 'Register fail, response != true');
+                            KellyShowRate.apiController['ryda'].updateUserId(requestContext.uuid);
+                            KellyShowRate.apiController['ryda'].prepareActionRequest(handler, requestContext, onPrepareActionWorkEnd);
+                        }); 
+                    });
                 });
             });
-            
         } else {
+            requestContext.uuid = response.item;
+            KellyShowRate.apiController['ryda'].inUse = false;
             KellyShowRate.apiController['ryda'].prepareActionRequest(handler, requestContext, onPrepareActionWorkEnd);
         }
     });    

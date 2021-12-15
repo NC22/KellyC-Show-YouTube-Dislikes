@@ -55,7 +55,7 @@ var KellyEDispetcher = new Object();
                 
             } else if (request.method == "setLocalStorageItem") {
                 
-                if (request.dbName && request.data) {
+                if (request.dbName && typeof request.data != 'undefined') {
                     
                     var save = {};
                         save[request.dbName] = request.data;
@@ -93,11 +93,10 @@ var KellyEDispetcher = new Object();
                         frequest = false;
                     }
                        
-                    if (cancelTimer) {                    
+                    if (cancelTimer !== false) {                    
                         clearTimeout(cancelTimer);
                         cancelTimer = false;
                     }
-                    
                 }
                 
                 var requestParams = {

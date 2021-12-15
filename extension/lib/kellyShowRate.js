@@ -83,9 +83,9 @@ function KellyShowRate() {
                 
                 // mobile version encodes script containers in some way
                 var encoded = scripts[i].innerHTML.indexOf('\\x5b\\x7b\\x22') != -1;
-                var pageDataRegExpEncoded = /\\x22browseId\\x22\:\\x22([A-Za-z0-9]+)\\x22?/;
+                var pageDataRegExpEncoded = /\\x22browseId\\x22\:\\x22([-_A-Za-z0-9]+)\\x22?/;
                 
-                var pageDataRegExp = /\"browseId\"\:\"([A-Za-z0-9]+)\"?/;
+                var pageDataRegExp = /\"browseId\"\:\"([-_A-Za-z0-9]+)\"?/;
                 var pageData = encoded ? pageDataRegExpEncoded.exec(scripts[i].innerHTML) : pageDataRegExp.exec(scripts[i].innerHTML);
                 
                 if (pageData) return pageData[1];
@@ -490,7 +490,7 @@ function KellyShowRate() {
         handler.log('[actionRequest] : Update rating action state from [' + browsingLog[lastVideoId].actionState + '] to [' + newAction + ']', true);
         
         var oldAction = ldAction[browsingLog[lastVideoId].actionState] && newAction != browsingLog[lastVideoId].actionState ? browsingLog[lastVideoId].actionState : false;
-        var undo = newAction == 'neutral' ? true : false;
+        var neutral = newAction == 'neutral' ? true : false;
         
         browsingLog[lastVideoId].actionState = newAction;
         
@@ -503,9 +503,9 @@ function KellyShowRate() {
             applyData(browsingLog[lastVideoId].ydata, 'recalc');
         }
                 
-        for (var apiId in KellyStorage.apis) {
-            if (oldAction) handler.actionRequestInitForApi(apiId, oldAction, true, initiator + '_old_action');
-            if (ldAction[newAction]) handler.actionRequestInitForApi(apiId, newAction, false, initiator);
+        for (var apiId in KellyStorage.apis) { // two actions possible if we change action from like to dislike for ex. | if return to netural - only one action called
+            if (oldAction) handler.actionRequestInitForApi(apiId, oldAction, true, initiator + '_old_action_' + (neutral ? '_to_neutral' : ''));
+            if (ldAction[newAction]) handler.actionRequestInitForApi(apiId, newAction, false, initiator); 
         }
     }
     
