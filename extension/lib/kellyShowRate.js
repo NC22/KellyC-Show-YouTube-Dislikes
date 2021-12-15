@@ -252,7 +252,7 @@ function KellyShowRate() {
     function prepareRequestStart(force, onReady) {
         
         if (handler.requestsCfg.loops > handler.requestsCfg.loopsMax) { 
-            if (handler.ratioBar) showTip(false, true);
+            // if (handler.ratioBar) showTip(false, true);
             return onReady(false, 'max requests loops reached ' + handler.requestsCfg.loops);
         }
         
@@ -319,9 +319,9 @@ function KellyShowRate() {
             browsingLog[lastVideoId].origYData = {likes : newData.likes, dislikes : newData.dislikes};
             browsingLog[lastVideoId].actionState = getRatingState();
             
-            if (browsingLog[lastVideoId].ydata && browsingLog[lastVideoId].actionState && ldAction[browsingLog[lastVideoId].actionState]) {
-                if (browsingLog[lastVideoId].ydata[ldAction[browsingLog[lastVideoId].actionState]] <= 0) {
-                    browsingLog[lastVideoId].ydata[ldAction[browsingLog[lastVideoId].actionState]] = 1;
+            if (browsingLog[lastVideoId].actionState && ldAction[browsingLog[lastVideoId].actionState]) {
+                if (browsingLog[lastVideoId].origYData[ldAction[browsingLog[lastVideoId].actionState]] <= 0) {
+                    browsingLog[lastVideoId].origYData[ldAction[browsingLog[lastVideoId].actionState]] = 1;
                 }
             }
         } else if (newData) browsingLog[lastVideoId].helperYdata[newData.helperApiId] = newData;
@@ -465,7 +465,7 @@ function KellyShowRate() {
         
         prepareActionRequestStart(apiId, type, undo, initiator, function(requestBgCfg, error) {
             
-            if (!requestBgCfg) return handler.log('[actionRequest] Fail to create request config : ' + error, true);
+            if (!requestBgCfg) return handler.log('[actionRequest] Fail to create request config : ' + (error ? error : 'error not specifed'), true);
                             
             KellyTools.getBrowser().runtime.sendMessage(requestBgCfg, function(response) {
                     
@@ -637,7 +637,7 @@ function KellyShowRate() {
                 var noticePercent = '';
                 if (handler.cfg.showPercentEnabled && (l > 0 || d > 0)) noticePercent = ' (' + (l / ((l + d) / 100)).toFixed(2) + '%)';
                 if (name) return '<div class="' + handler.baseClass + '-count"><div>' + name + '</div><div>' + KellyTools.dFormat(l) + ' / ' + KellyTools.dFormat(d) + noticePercent + '</div></div>';  
-                else return '<div>' + KellyTools.dFormat(l) + ' / ' + KellyTools.dFormat(d) + noticePercent + '</div>';  
+                else return '<div class="' + handler.baseClass + '-count">' + KellyTools.dFormat(l) + ' / ' + KellyTools.dFormat(d) + noticePercent + '</div>';  
            }
            var notice = '', ydata = lastVideoYData, noticeHelper = '', loadFail = false, logData = browsingLog[lastVideoId];           
            if (ydata) {

@@ -7,7 +7,7 @@ KellyShowRate.apiController['catface'] = {
         
     sync : true,
      
-    cfgDefault : {enabled : true, syncData : true},
+    cfgDefault : {enabled : true, syncData : false},
 }
 
 KellyShowRate.apiController['catface'].onPrepareActionRequestStart = function(handler, requestContext, onReady) {
