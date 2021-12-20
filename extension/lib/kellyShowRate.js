@@ -311,8 +311,6 @@ function KellyShowRate() {
     function applyData(ydata, context) {
         
         var newData = validateYData(ydata); 
-        if (!browsingLog[lastVideoId].ydata && handler.currentApi == 'youtubeMetric' && ydata) browsingLog[lastVideoId].visibleStats = ydata;
-
         if (newData && !newData.helperApiId) {       
             
             browsingLog[lastVideoId].ydata = newData;
@@ -325,6 +323,8 @@ function KellyShowRate() {
                 }
             }
         } else if (newData) browsingLog[lastVideoId].helperYdata[newData.helperApiId] = newData;
+        
+        if (ydata && ydata.apiId == 'youtubeMetric' && ydata.disabledReason) browsingLog[lastVideoId].ydata.disabledReason = ydata.disabledReason;
         
         if (newData && browsingLog[lastVideoId].origYData) {
             browsingLog[lastVideoId].ydata.likes = browsingLog[lastVideoId].origYData.likes;
@@ -379,7 +379,9 @@ function KellyShowRate() {
                 
             } else if (requestCfg.ydata && applyData(requestCfg.ydata, 'getYTData.prefetchedByApiData')) return;
             
-            if (KellyStorage.apis[handler.currentApi].helpersSupport) { // todo - can be implemented as array
+            // sync helpers requests
+            
+            if (KellyStorage.apis[handler.currentApi].helpersSupport) { 
                 for (var i = 0; i < handler.requestsCfg.helperApis.length; i++) {
                     
                     if (handler.requestsCfg.helperApis[i] == handler.currentApi) continue;
@@ -393,18 +395,22 @@ function KellyShowRate() {
                         }
                         
                         getYTData(helperRequestCfg, function(helperYdata, error) {
-                            if (helperYdata) {
-                                helperYdata.helperApiId = helperRequestCfg.apiId;
-                                applyData(helperYdata, 'getYTData.fetchedByHelperApiData');
-                            }
                             
                             handler.log('[HelperRequest] Helper : ' + helperRequestCfg.apiId + ' | Parent : ' + helperRequestCfg.parentApiId + ' Result : ' + (error ? 'FAIL ' + error : 'OK'), true);
-                            if (helperRequestCfg.videoId == lastVideoId && helperYdata) handler.log(helperYdata, true);
+                            if (helperRequestCfg.videoId == lastVideoId && helperYdata) {                                
+                                helperYdata.helperApiId = helperRequestCfg.apiId;
+                                if (KellyStorage.apis[helperRequestCfg.parentApiId].onHelperData) {
+                                    KellyStorage.apis[helperRequestCfg.parentApiId].onHelperData(handler, helperRequestCfg, helperYdata);
+                                }
+                                applyData(helperYdata, 'getYTData.fetchedByHelperApiData');
+                            }
                         });
                     });
                     
                 }
             }
+            
+            // sync helper requests end
             
             handler.log('[updatePageStateByAR] update [' + attempt + '/' + requestCfg.maxAttempts + '] [loop : ' + handler.requestsCfg.loops + ']', true)
             
@@ -858,21 +864,20 @@ function KellyShowRate() {
                                 typeof mutations[i].target.className != 'string' || 
                                 (mutations[i].target.nodeType == Node.ELEMENT_NODE &&
                                 typeof mutations[i].target.className == 'string' && mutations[i].target.className.indexOf('ytp') == -1)) {
-
                                 continue;
                             } 
                             
                             redraw = true;
-                            if (handler.mobileMutationsTimer) clearTimeout(handler.mobileMutationsTimer);
-                            handler.mobileMutationsTimer = setTimeout(mobileMutationDelayRedraw, 300);
-                            
                         }
                     }
 
-                    if (redraw) mobileMutationDelayRedraw();                    
+                    if (redraw){
+                        if (handler.mobileMutationsTimer) clearTimeout(handler.mobileMutationsTimer);
+                            handler.mobileMutationsTimer = setTimeout(mobileMutationDelayRedraw, 300);
+                    }               
                 });
                 
-                document.addEventListener('click', mobileMutationDelayRedraw);
+                document.addEventListener('click', function() {setTimeout(mobileMutationDelayRedraw, 300);});
                 window.addEventListener('scroll', function() { handler.getTooltip().show(false); });
                 handler.observer.observe(document.body, {childList: true, attributes: true, subtree: true});
                 handler.updatePageStateDelayed(0);

@@ -1,9 +1,9 @@
 {  
     "ext_description":{  
-        "message":"Show dislikes on Youtube"
+        "message":"Show dislikes on Youtube. Return dislikes and ratio bar. Classic ratio bar, controll data sources via options"
     },
     "ext_name":{  
-        "message":"KellyC Return Youtube Dislike"
+        "message":"KellyC Show YouTube Dislikes"
     },    
     "save":{  
         "message":"Save"
@@ -42,7 +42,7 @@
         "message":"Collects data from user sended actions (from extensions that use same API).<br>Uses its own data base https://sponsor.ajay.app/database"
     }, 
     "datasource_id_ryda":{  
-        "message":"Gets data from YouTube API, then stores the data in a database for caching (cached for around 2-3 days).<br>All collected statistic about videos is stored constatntly<br> and will used in future to replace YouTube API statistic when it will be unavailable"
+        "message":"Uses historical data collected from Youtube API (when it was availabe). Historical data combined with actions that users do via extensions that support this API (cached refreshes for around 2-3 days)."
     },
     "datasource_id_catface":{  
         "message":"Fallback \\ backup for sended by extension actions. Can be replacement for SB"

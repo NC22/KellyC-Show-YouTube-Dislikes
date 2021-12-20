@@ -3,7 +3,9 @@ KellyShowRate.apiController['youtubeMetric'] =  {
     // color : '#ff4949',
     api : 'https://www.youtube.com/watch?v=__VIDEOID__&app=desktop',
     
-    cfgDefault : {enabled : true},
+    helperMode : true,
+    
+    cfgDefault : {enabled : false, enabledAsHelper : true},
 };
         
 KellyShowRate.apiController['youtubeMetric'].parseYTPage = function(docRawText) {

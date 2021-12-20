@@ -2,7 +2,7 @@
 
 var KellyStorage = { 
         
-        apiListRevisionCurrent : 4, // for reset list on major changes
+        apiListRevisionCurrent : 5, // for reset list on major changes
         apisDefaultOrder : ['youtubeMetric','ryda','sponsorsBlock','catface'],
         
         apis : {},  // pool from external files from lib/apis/        

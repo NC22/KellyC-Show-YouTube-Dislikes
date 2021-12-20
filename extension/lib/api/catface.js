@@ -6,8 +6,15 @@ KellyShowRate.apiController['catface'] = {
     apiAction : 'https://catface.ru/api/ylocal/',
         
     sync : true,
+
+    helperMode : true,
+    helpersSupport : true,
      
-    cfgDefault : {enabled : true, syncData : false},
+    cfgDefault : {
+        enabled : true, 
+        enabledAsHelper : false,
+        syncData : false,
+    },
 }
 
 KellyShowRate.apiController['catface'].onPrepareActionRequestStart = function(handler, requestContext, onReady) {

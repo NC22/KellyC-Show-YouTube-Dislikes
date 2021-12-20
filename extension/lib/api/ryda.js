@@ -194,33 +194,24 @@ KellyShowRate.apiController['ryda'].getSessionKey = async function(inputKey, dif
   }
 }
 
-KellyShowRate.apiController['ryda'].onGetYDataReady = function(handler, requestCfg, response, onLoad) {
-    if (!response || !response.ydata) return;
+KellyShowRate.apiController['ryda'].onHelperData = function(handler, helperRequestCfg, helperYData) {
+    var currentLog = handler.getNavigation(), ydata = currentLog.browsingLogCurrent ? currentLog.browsingLogCurrent.ydata : false;
+    if (!ydata || !helperYData || helperYData.disabledReason || helperRequestCfg.apiId != 'youtubeMetric' || helperRequestCfg.videoId != currentLog.videoId) return;
+
+    if (ydata.dateCreated) ydata.lastUpdate = ydata.dateCreated;
+
+    var percent = 100, showWarningType = false;
+    if (ydata.likes > 0 && helperYData.likes > 0) percent = ydata.likes / (helperYData.likes / 100);   
+
+    if (helperYData.likes > 200 && ydata.dislikes == 0) {
+        showWarningType = 1;
+    } else if (ydata.dislikes < 10 && ydata.viewCount <= 100 && helperYData.likes > 0) {    
+        if (percent < 10) showWarningType = 1;
+    } else if (percent < 50) showWarningType = 2;
     
-    if (response.ydata.dateCreated) response.ydata.lastUpdate = response.ydata.dateCreated;
-    
-    response.ydata.likes = parseInt(response.ydata.likes); 
-    response.ydata.dislikes = parseInt(response.ydata.dislikes);
-    response.ydata.viewCount = parseInt(response.ydata.viewCount);
-    
-    var currentLog = handler.getNavigation().browsingLogCurrent, percent = 100, showWarningType = false;
-    if (!isNaN(response.ydata.likes) && !isNaN(response.ydata.dislikes) && !isNaN(response.ydata.viewCount) && currentLog.visibleStats) {
-        
-        percent = response.ydata.likes / (currentLog.visibleStats.likes / 100);   
-        
-        if (currentLog.visibleStats.likes > 200 && response.ydata.dislikes == 0) {
-            showWarningType = 1;
-        } else if (response.ydata.dislikes < 10 && response.ydata.viewCount <= 100 && currentLog.visibleStats.likes > 0) {    
-            if (percent < 5) showWarningType = 1;
-        } else if (percent < 50) showWarningType = 2;
-         
-        if (showWarningType == 1) {
-            response.ydata.likes = currentLog.visibleStats.likes;
-            response.ydata.disabledReason = "Old data";
-            response.ydata.disabledReasonPopup = 'Too small information about likes \\ dislikes for this video<br>Stats is currently in collecting process.<br>For selected API this can take 1-3 days.';
-        } else if (showWarningType == 2) {
-            response.ydata.disabledReasonPopup = 'Possible too small information about likes \\ dislikes for this video currently<br>Video not offten viewed by extension users or stats is currently<br>in collecting process.';
-        }
+    if (showWarningType !== false) {
+        ydata.disabledReason = "Old data";  
+        ydata.disabledReasonPopup = 'Possible too small information about likes \\ dislikes for this video currently<br>Video not offten viewed by extension users or stats is currently<br>in collecting process.';
     }
 }
 
