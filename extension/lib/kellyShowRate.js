@@ -695,7 +695,7 @@ function KellyShowRate() {
            handler.getTooltip().updateCfg({
                 target : handler.ratioBar, 
                 offset : {left : 0, top : 0}, 
-                avoidOffset : {left : 0, top : -22}, 
+                avoidOffset : {outBottom : -22, outLeft : 0}, 
                 positionY : 'bottom',
                 positionX : 'left',                
                 ptypeX : 'inside',

@@ -5,7 +5,7 @@
    @description    creates tooltip elements (attaches to an element or screen) widget
    @author         Rubchuk Vladimir <torrenttvi@gmail.com>
    @license        GPLv3
-   @version        v 1.0.4 14.05.20
+   @version        v 1.0.5 23.12.21
    
    ToDo : 
    
@@ -39,7 +39,7 @@ function KellyTooltip(cfg) {
     this.ptypeY = 'outside';
     
     this.offset = {left : 0, top : -20};
-    this.avoidOffset = {left : 0, top : 20};
+    this.avoidOffset = {outBottom : 0, outLeft : 0};
     
     this.removeOnClose = false;
     this.removeSelfDelay = 600;
@@ -105,7 +105,7 @@ function KellyTooltip(cfg) {
             
                 handler[key] = cfg[key];
                 
-                if (key == 'selfClass' || key == 'classGroup'){
+                if (key == 'selfClass' || key == 'classGroup' || key == 'target' || key == 'closeButton'){
                     updateContainerClass = true;
                 }
                 
@@ -160,10 +160,15 @@ function KellyTooltip(cfg) {
             className += ' ' + handler.classGroup + '-y-' + handler.positionY;
             className += ' ' + handler.classGroup + '-x-' + handler.positionX;
         
+        if (handler.target && handler.target == 'screen') className += ' ' + handler.classGroup + '-target-screen';
+        
+        if (handler.closeButton) className += ' ' + handler.classGroup + '-close-btn';
         if (handler.ptypeX) className += ' ' + handler.classGroup + '-' + handler.ptypeX;
         if (handler.ptypeY) className += ' ' + handler.classGroup + '-' + handler.ptypeY;
-        if (handler.selfClass) className += ' ' + handler.selfClass;
         
+        if (handler.isShown()) className += ' ' + handler.classGroup + '-show';
+        if (handler.selfClass) className += ' ' + handler.selfClass;
+                
         return className;
     }
     
@@ -327,13 +332,15 @@ function KellyTooltip(cfg) {
             
             handler.contentId = contentId;
             
-            
             closeByBodyPrevent = true;            
             if (handler.closeByBody) {
                 setTimeout(function() { closeByBodyPrevent = false; }, 100);
             }
             
+            if (handler.userEvents.onShow) handler.userEvents.onShow(handler);
+            
         } else {
+            
             if (handler.userEvents.onClose) handler.userEvents.onClose(handler);
             
             if (handler.removeOnClose) handler.remove();
@@ -394,7 +401,7 @@ function KellyTooltip(cfg) {
     }
     
     function calcPosForTarget(targetPos, toolTipBounds, envBounds, posX, posY, typeX, typeY, offset) {
-             
+           
         var left = targetPos.left + offset.left + envBounds.scrollLeft;  // left - inside element
         var top = targetPos.top + offset.top + envBounds.scrollTop; // top - inside element
               
@@ -447,8 +454,15 @@ function KellyTooltip(cfg) {
             var targetPos = handler.getTarget().getBoundingClientRect();
             
         } else if (handler.target == 'screen') {            
-            var targetPos = {left : 0, top : 0, width : screenBounds.width, height : screenBounds.height};
         
+            var targetPos = {left : 0, top : 0, width : envBounds.screenWidth, height : envBounds.screenHeight};
+            
+            if (handler.ptypeX == 'outside') handler.ptypeX = 'inside';
+            if (handler.ptypeY == 'outside') handler.ptypeY = 'inside';
+            
+            handler.getContent().style.maxHeight = (targetPos.height-140) + 'px';
+            handler.getContent().style.maxWidth = targetPos.width + 'px';
+            
         } else return false;
         
         var toolTip = handler.self;
@@ -459,17 +473,19 @@ function KellyTooltip(cfg) {
                 
         if (this.avoidOutOfBounds && handler.target != 'screen') {
             
-            var modPos = {enabled : false, positionX : handler.positionX, positionY : handler.positionY, ptypeX : handler.ptypeX, ptypeY : handler.ptypeY};
+            var modPos = {enabled : false, positionX : handler.positionX, positionY : handler.positionY, ptypeX : handler.ptypeX, ptypeY : handler.ptypeY, outY : false, outX : false};
+            var modOffset = {left : handler.offset.left, top : handler.offset.top};
+
             if ( calcPos.top + toolTipBounds.height > envBounds.scrollTop + envBounds.screenHeight) { // go under screen in bottom
-                modPos.enabled = true; modPos.positionY = 'top';
+                modPos.enabled = true; modPos.positionY = 'top'; modPos.outY = 'bottom'; if (typeof handler.avoidOffset.outBottom != 'undefined') modOffset.top += handler.avoidOffset.outBottom;
             }  else if ( calcPos.top + toolTipBounds.height < 0 ) { // go out of screen from top
-                modPos.enabled = true; modPos.positionY = 'bottom';
+                modPos.enabled = true; modPos.positionY = 'bottom'; modPos.outY = 'top'; if (typeof handler.avoidOffset.outTop != 'undefined') modOffset.top += handler.avoidOffset.outTop;
             }
             
             if ( calcPos.left + toolTipBounds.width > envBounds.scrollLeft + envBounds.screenWidth) { // from right
-                modPos.enabled = true; modPos.positionX = 'left';
+                modPos.enabled = true; modPos.positionX = 'right'; modPos.outX = 'right'; if (typeof handler.avoidOffset.outRight != 'undefined') modOffset.left += handler.avoidOffset.outRight;
             } else if ( calcPos.left + toolTipBounds.width < 0 ) { // from left
-                modPos.enabled = true; modPos.positionX = 'right';
+                modPos.enabled = true; modPos.positionX = 'left'; modPos.outX = 'left'; if (typeof handler.avoidOffset.outLeft != 'undefined') modOffset.left += handler.avoidOffset.outLeft;
             }
             
             if (modPos.enabled) {
@@ -478,7 +494,7 @@ function KellyTooltip(cfg) {
                     return;
                 } 
                 
-                calcPos = calcPosForTarget(targetPos, toolTipBounds, envBounds, modPos.positionX, modPos.positionY, modPos.ptypeX, modPos.ptypeY, handler.avoidOffset);
+                calcPos = calcPosForTarget(targetPos, toolTipBounds, envBounds, modPos.positionX, modPos.positionY, modPos.ptypeX, modPos.ptypeY, modOffset);
             }
         }
         
@@ -508,22 +524,27 @@ KellyTooltip.loadDefaultCss = function(className) {
             z-index : 60;\
             pointer-events: none;\
         }\
+        .' + className + '-wrap.' + className + '-target-screen {\
+            padding : 16px;\
+        }\
+        .' + className + '-wrap.' + className + '-target-screen .' + className + '-close {\
+            top: -19px;\
+            left: 17px;\
+        }\
         .' + className + '-container {\
             min-width: 210px;\
             min-height: 52px;\
             margin : 0;\
-            background : rgba(96, 102, 126, 0.9490);\
-            border : ' + border + 'px dashed #c5c5c5;\
+            background: rgb(96, 96, 96);\
+            border : 0;\
             transition: opacity 0.1s;\
             color : #fff;\
-            border-radius : 4px;\
+            border-radius : 0px;\
             padding : 12px;\
+            max-width: 510px;\
         }\
         .' + className + '-close {\
-            left: 0px;\
-            right: auto;\
             position: absolute;\
-            top: 0px;\
             display: block;\
             cursor: pointer;\
             font-size: 25px;\
@@ -532,14 +553,23 @@ KellyTooltip.loadDefaultCss = function(className) {
             text-align: center;\
             line-height: 25px;\
             cursor : pointer;\
+            right: auto;\
+            top: 0px;\
+            left: -32px;\
+            background: rgb(96, 96, 96);\
+        }\
+        .' + className + '-close svg {\
+            width: 26px;\
+            height: 15px;\
         }\
         .' + className + '-close svg g line {\
-            stroke: #56400c;\
-            fill: #56400c;\
+            stroke: #fff;\
+            fill: #fff;\
         }\
         .' + className + '-content {\
             text-align: left;\
             font-size: 16px;\
+            overflow: auto;\
         }\
         .' + className + '-show {\
             opacity : 1;\

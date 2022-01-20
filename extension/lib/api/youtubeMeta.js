@@ -81,8 +81,11 @@ KellyShowRate.apiController['youtubeMetric'].parseYTPage = function(docRawText) 
         publicData.dislikes = publicData.utDislikes;
     }   
     
-    // publicData.dislikes = false;
-    // publicData.utDislikes = false;
+    // since youtube disable ratings, always return false for dislikes, to prevent overwrite if some junk parsed. 
+    // bring only information about likesDisabled \ viewCount \ likes
+    
+    publicData.dislikes = false;
+    publicData.utDislikes = false;
     return publicData; 
 }
     

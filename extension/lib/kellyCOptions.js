@@ -299,14 +299,14 @@ var KellyCOptions = new Object();
     }
     
     KellyCOptions.getTooltip = function() {
-
+        
         var handler = KellyCOptions; 
         if (!handler.tooltip) {
             KellyTooltip.autoloadCss = handler.baseClass + '-tool-group';
             handler.tooltip = new KellyTooltip({
                 closeButton : true,
                 closeByBody : true,
-                offset : {left : 40, top : -40}, 
+                offset : {left : 0, top : -6}, 
                 positionY : 'bottom',
                 positionX : 'left',                
                 ptypeX : 'inside',
@@ -341,7 +341,7 @@ var KellyCOptions = new Object();
                    
                    handler.getTooltip().setMessage(html);
            
-                   handler.getTooltip().updateCfg({target : document.body});
+                   handler.getTooltip().updateCfg({target : 'screen'});
                    handler.getTooltip().show(true);  
                     return false;
             };

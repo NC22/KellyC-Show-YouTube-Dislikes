@@ -190,23 +190,13 @@ a.kelly-options-row-help {
     color: #afafaf;
 }
 
-.kelly-options-tool-group-wrap .kelly-options-tool-group-close svg g line {
-    stroke: #fff;
-    fill: #fff;
+.kelly-options-tool-group-wrap.kelly-options-tool-group-target-screen {
+    padding : 16px;
 }
 
 .kelly-options-tool-group-wrap .kelly-options-tool-group-close {
-    background: rgb(112 112 112);
     top : -30px;
-}
-
-.kelly-options-tool-group-wrap .kelly-options-tool-group-container {
-    background: rgb(112 112 112);
-    border-radius: 0;
-}
-
-.kelly-options-tool-group-content p {
-    max-width: 687px;
+    left : 0px;
 }
 
 .kelly-copyright a {

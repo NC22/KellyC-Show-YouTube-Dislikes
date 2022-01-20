@@ -7,7 +7,7 @@ KellyShowRate.apiController['catface'] = {
         
     sync : true,
 
-    helperMode : true,
+    helperMode : false,
     helpersSupport : true,
      
     cfgDefault : {
