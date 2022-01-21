@@ -192,7 +192,9 @@ var KellyEDispetcher = new Object();
                 if (request.requestCfg.timeout > 0) {
                     cancelTimer = setTimeout(function() {
                         
-                        response.error = 'Request timeout';
+                        if (canceled) return;
+                    
+                        response.error = 'Request timeout [' + request.requestCfg.timeout + ']';
                         onRequestEnd();
                         
                         if (callback) callback(response);

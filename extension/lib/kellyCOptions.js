@@ -553,8 +553,14 @@ var KellyCOptions = new Object();
                  html += '</div></div>';
                  
              } else {
-             
+                 
                  var key = KellyStorage.fieldsOrder[i];
+                 
+                 if (typeof KellyStorage.fields[key] == 'undefined') {
+                     console.log('Option [' + key + '] is undefined');
+                     continue;
+                 }
+                 
                  var title = KellyStorage.fields[key].hidden ? key : handler.getLoc('option_' + key);
                  if (!title) title = key;
                  

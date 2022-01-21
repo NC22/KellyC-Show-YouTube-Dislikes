@@ -140,7 +140,7 @@
     "option_delay":{  
         "message":"Задержка между запросами (сек.)"
     },
-    "option_rTimeout":{  
+    "option_sTimeout":{  
         "message":"Таймаут запроса (сек.)"
     },       
     "option_showPercent":{  

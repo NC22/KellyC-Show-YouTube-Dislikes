@@ -298,7 +298,7 @@ function KellyShowRate() {
             url : KellyStorage.apis[handler.currentApi].api.replace('__VIDEOID__', videoId),
             maxAttempts : apiCfg.maxAttempts ? apiCfg.maxAttempts : 3,
             nextDriverTimeout : typeof apiCfg.nextDriverTimeout != 'undefined' ? apiCfg.nextDriverTimeout : 500,            
-            timeout : apiCfg.rTimeout ? apiCfg.rTimeout : handler.cfg.rTimeout,
+            timeout : apiCfg.rTimeout ? apiCfg.rTimeout : handler.cfg.sTimeout,
             fetchParams : apiCfg.fetchParams ? apiCfg.fetchParams : false, // default GET request without coockies
         };
         
@@ -351,7 +351,7 @@ function KellyShowRate() {
             context : 'prepareHelper',
             videoId : parentCfg.videoId, 
             url : apiCfg.api.replace('__VIDEOID__', parentCfg.videoId),       
-            timeout : apiCfg.rTimeout ? apiCfg.rTimeout : handler.cfg.rTimeout,
+            timeout : apiCfg.rTimeout ? apiCfg.rTimeout : handler.cfg.sTimeout,
             fetchParams : apiCfg.fetchParams ? apiCfg.fetchParams : false, 
         };
         
@@ -625,7 +625,7 @@ function KellyShowRate() {
     function showRetryForm(el, html, loadFail) {
     
         html += '<div class="' + handler.baseClass + '-note"><p>' + (loadFail ? KellyTools.getLoc('retry_no_responding') : KellyTools.getLoc('option_debug')) + '</p>';
-        html += '<p><a href="#" class="' + handler.baseClass + '-retry">' + KellyTools.getLoc('retry') + '</a> | <a href="#" class="' + handler.baseClass + '-download-log">' + KellyTools.getLoc('download_log') + '</a> <!--a href="#" class="' + handler.baseClass + '-download-log">' + KellyTools.getLoc('download_log') + ' + HTML</a--></p>';
+        html += '<p><button class="' + handler.baseClass + '-retry">' + KellyTools.getLoc('retry') + '</button> | <button class="' + handler.baseClass + '-download-log">' + KellyTools.getLoc('download_log') + '</button></p>';
         
         if (loadFail) html += '<p>' + KellyTools.getLoc('retry_feedback') + '</p></div>';
         
@@ -849,7 +849,7 @@ function KellyShowRate() {
                     
                     var redraw = false;
                     for (var i = 0; i < mutations.length; i++) {
-                                                  
+                        
                         if (mutations[i].type == 'childList' && 
                             (mutations[i].target.classList.contains('slim-video-action-bar-actions')) &&
                             mutations[i].addedNodes.length > 0 && 

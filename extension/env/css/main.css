@@ -85,14 +85,6 @@
     margin-bottom : 6px;
 }
 
-.__BASECLASS__-api-copyright-url a {
-    color: #fff;
-}
-
-.__BASECLASS__-api-copyright {
-    font-weight : bold;
-}
-
 .__BASECLASS__-ratio-bar.__BASECLASS__-ratio-bar-load .__BASECLASS__-ratio-like,
 .__BASECLASS__-ratio-bar.__BASECLASS__-ratio-bar-load .__BASECLASS__-ratio-dislike {
     background : #ffd023;
@@ -100,6 +92,15 @@
 
 .__BASECLASS__-tool.__BASECLASS__-tool-group-wrap {
     z-index: 301;
+}
+
+.__BASECLASS__-tool.__BASECLASS__-tool-group-wrap a, .__BASECLASS__-tool.__BASECLASS__-tool-group-wrap button {
+    color: #fff;
+    font-weight : bold;
+    text-decoration : underline;
+    background: transparent;
+    border: 0;
+    cursor : pointer;
 }
 
 .__BASECLASS__-tool .__BASECLASS__-dark  .__BASECLASS__-tool-group-close,

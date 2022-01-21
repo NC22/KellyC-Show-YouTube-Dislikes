@@ -22,7 +22,7 @@ var KellyStorage = {
             ratioLoadingColor : {type : 'string', default : '#ffd023', hidden : true,},
             apiListRevision : {type : 'int', hidden : true,},
             
-            rTimeout : {type : 'float', default : 2},
+            sTimeout : {type : 'float', default : 10},
             debug : {optional : true, defaultOptional : false},
             
             /*
@@ -59,7 +59,7 @@ var KellyStorage = {
             '_/colorring/_', 
             '__additions__', 
                 'debug', 
-                'rTimeout', 
+                'sTimeout', 
             '_/additions/_',
         ],   
                                 
