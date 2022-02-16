@@ -106,8 +106,13 @@ function KellyShowRate() {
         
     function getPageDom() { 
     
-        var upgrade = document.querySelector('#primary ytd-watch-metadata');      
-        if (!isMobile() && upgrade && !upgrade.hidden && !upgrade.hasAttribute('disable-upgrade') && document.querySelector(handler.envSelectors.btnsWrap)) {            
+        var upgrade = document.querySelector('#primary ytd-watch-metadata');    
+        // if (upgrade.hidden) {
+        //    upgrade.hidden = false;
+        //    upgrade.removeAttribute('disable-upgrade');
+        // }
+        
+        if (!isMobile() && upgrade && !upgrade.hidden && !upgrade.hasAttribute('disable-upgrade') && document.querySelector(domSelectors['desktopUpgrade'].btnsWrap)) {            
             handler.envSelectors = domSelectors['desktopUpgrade']; 
         }
         
