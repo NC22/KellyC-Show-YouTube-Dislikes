@@ -8,6 +8,17 @@
     z-index : 1;
 }
 
+/* YouTube layout upgrade */
+
+#above-the-fold #actions-inner {
+    position : relative;
+}
+
+#above-the-fold #actions-inner .__BASECLASS__-ratio-bar {
+    top : 38px;
+}
+
+
 /* Comments Sidebar for Youtube ext. Fix */
 .__BASECLASS__-ratio-bar.__BASECLASS__-ratio-bar-warc {
     left : unset;

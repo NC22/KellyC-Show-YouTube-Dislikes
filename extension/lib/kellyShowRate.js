@@ -19,6 +19,7 @@ function KellyShowRate() {
     var domSelectors = {
         mobile : {mobile : true, btnsWrap : '.slim-video-action-bar-actions', btnCounter : '.button-renderer-text', ratioHeight : 5, ratioBp : 0, ratioParent : 'ytm-slim-video-action-bar-renderer'},
         desktop : {mobile : false, btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#menu-container'},
+        desktopUpgrade : {mobile : false, btnsWrap : '#above-the-fold #menu #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#above-the-fold #actions-inner'},
     };
     
     var handler = this; // todo - remove tpl vars from public
@@ -105,8 +106,14 @@ function KellyShowRate() {
         
     function getPageDom() { 
     
+        var upgrade = document.querySelector('#primary ytd-watch-metadata');      
+        if (!isMobile() && upgrade && !upgrade.hidden && !upgrade.hasAttribute('disable-upgrade') && document.querySelector(handler.envSelectors.btnsWrap)) {            
+            handler.envSelectors = domSelectors['desktopUpgrade']; 
+        }
+        
         handler.buttonsWraper = document.querySelector(handler.envSelectors.btnsWrap);
         handler.ratioBarParent = document.querySelector(handler.envSelectors.ratioParent);
+        
         if (handler.buttonsWraper) {
             handler.likeBtn = handler.buttonsWraper.children[0].querySelector(handler.envSelectors.btnCounter);
             handler.dislikeBtn = handler.buttonsWraper.children[1].querySelector(handler.envSelectors.btnCounter);
