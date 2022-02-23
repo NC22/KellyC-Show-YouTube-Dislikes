@@ -19,6 +19,9 @@
     },
     "loading":{  
         "message":"Loading"
+    },  
+    "support_project":{  
+        "message":"Support project"
     }, 
     "show_additions":{  
         "message":"Addition options"

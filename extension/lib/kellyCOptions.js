@@ -512,7 +512,7 @@ var KellyCOptions = new Object();
             html += '<div class="' + this.baseClass + '-popup-go"><button class="' + this.baseClass + '-options-btn tab-navigation" data-source="/env/page/options.html">' + this.getLoc('options') + '</button></div>';
             
             html += '<button class="' + this.baseClass + '-additions-show tab-navigation" data-source="/env/page/options.html?spoiler=datasources">' + this.getLoc('show_datasources_popup') + '</button>';
-            html += '<button class="' + this.baseClass + '-additions-show tab-navigation" data-source="' + KellyCOptions.reportIssue + '">' + this.getLoc('support_link') + '</button>';
+            html += '<button class="' + this.baseClass + '-additions-show tab-navigation support" data-source="https://ko-fi.com/nradiowave">' + this.getLoc('support_project') + '</button>';
             html += '<div class="disclaimer" data-source="' + KellyCOptions.reportIssue + '">' + this.getLoc('disclaimer') + '</button>';
                        
         KellyTools.setHTMLData(this.page, html);

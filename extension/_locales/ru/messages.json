@@ -116,6 +116,9 @@
     "retry_feedback" : {
         "message" : ""
     },
+    "support_project":{  
+        "message":"Поддержать проект"
+    }, 
     "chik_advice":{  
         "message":"Если и так все работает, не трогай<br><b>расширенные настройки</b>"
     }, 

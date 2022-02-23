@@ -17,6 +17,9 @@
     "num_m":{  
         "message":"M"
     },
+    "support_project":{  
+        "message":"Support project"
+    }, 
     "loading":{  
         "message":"Loading"
     }, 

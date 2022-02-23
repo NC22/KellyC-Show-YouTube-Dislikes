@@ -116,6 +116,9 @@
     "support_link":{  
         "message":"Support"
     },
+    "support_project":{  
+        "message":"Support project"
+    }, 
     "chik_advice":{  
         "message":"If all works well, don't edit addition options"
     },  
