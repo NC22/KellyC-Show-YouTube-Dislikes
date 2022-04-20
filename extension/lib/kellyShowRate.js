@@ -10,8 +10,8 @@
 
 function KellyShowRate() {
 
-    var lastVideoId = false;    // last loaded video id
-    var lastVideoYData = false; // valid data for current video    
+    var lastVideoId = false;    // last loaded video id, can be erased on load new page  
+    var lastVideoYData = false; // valid data for current video, can be erased on load new page  
     var browsingLog = {};
     
     var updateTimer = false; var initTimer = false;
@@ -19,11 +19,13 @@ function KellyShowRate() {
     var domSelectors = {
         mobile : {mobile : true, btnsWrap : '.slim-video-action-bar-actions', btnCounter : '.button-renderer-text', ratioHeight : 5, ratioBp : 0, ratioParent : 'ytm-slim-video-action-bar-renderer'},
         desktop : {mobile : false, btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#menu-container'},
+        shorts : {mobile : false, btnsWrapDefault : '#like-button ytd-like-button-renderer', btnCounter : '#text'},
         desktopUpgrade : {mobile : false, btnsWrap : '#above-the-fold #menu #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#above-the-fold #actions-inner'},
     };
     
     var handler = this; // todo - remove tpl vars from public
-    
+        
+        handler.shortsMode = false;
         handler.cfg = {}; // loads on init method
         handler.attempt = 0;
         handler.baseClass = 'kelly-show-rating';
@@ -63,16 +65,33 @@ function KellyShowRate() {
         return window.location.href.indexOf('m.youtube') != -1;
     }
     
-    function getVideoId(href) {          
+    function isShorts() {
+        return handler.shortsMode;
+    }
     
+    function getVideoId(href) {          
+        
+        handler.shortsMode = false;
         href = href ? href : window.location.href;
         if (!href) return false;
         
         href = href.replace('app=desktop&', '');
-        var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+        var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;        
         var match = href.match(regExp);
         
-        return (match && match[7].length==11) ? match[7] : false;
+        if (match && match[7].length==11) return match[7];
+
+        if (href.indexOf('shorts') != -1) {
+            
+            var regExp = /(shorts\/)([-_A-Za-z0-9]+){0,11}/;
+            var match = href.match(regExp);
+            if (match && match[2].length==11) {
+                handler.shortsMode = true;
+                return match[2];
+            }
+        }
+        
+        return false;
     }
     
     function getUserId() { 
@@ -99,23 +118,48 @@ function KellyShowRate() {
     
     function getRatingState() {
              if (!handler.buttonsWraper) return 'unkonwn';
-        else if (handler.buttonsWraper.children[0].querySelector('button[aria-pressed=true]')) return 'liked';
-        else if (handler.buttonsWraper.children[1].querySelector('button[aria-pressed=true]')) return 'disliked';
+        else if (handler.buttonsWraper.children[0].querySelector('[aria-pressed=true]')) return 'liked';
+        else if (handler.buttonsWraper.children[1].querySelector('[aria-pressed=true]')) return 'disliked';
         else return 'neutral';
     } 
+    
+    function initSelectors() {
+       
+        var upgrade = document.querySelector('#primary ytd-watch-metadata');    
+        handler.envSelectors = domSelectors[isMobile() ? 'mobile' : 'desktop']; 
+        handler.envSelectors.ratioHeight = handler.cfg.fixedRatioHeightEnabled ? handler.cfg.fixedRatioHeight : handler.envSelectors.ratioHeight;
+        handler.envSelectors.ratioWidthFixed = handler.cfg.fixedRatioWidthEnabled ? handler.cfg.fixedRatioWidth : false;
+            
+        if (isShorts()) {
+            
+            handler.envSelectors = domSelectors['shorts'];
+            var shortsVideos = document.querySelectorAll('#shorts-container ytd-reel-video-renderer'), videoId = getVideoId();
+            
+            for (var i = 0; i < shortsVideos.length; i++) {
+                
+                if (shortsVideos[i].innerHTML.indexOf(videoId) != -1) { // active element has id=player element in it
+                    shortsVideos[i].classList.add(handler.baseClass + '-short-' + shortsVideos[i].id);
+                    handler.envSelectors.btnsWrap = '.' + handler.baseClass + '-short-' + shortsVideos[i].id + ' ' + handler.envSelectors.btnsWrapDefault; 
+                    break;
+                }
+                
+            }
+            
+            console.log(videoId + ' - ' + handler.envSelectors.btnsWrap);
+            
+        } else if (!isMobile() && upgrade && !upgrade.hidden && !upgrade.hasAttribute('disable-upgrade') && document.querySelector(domSelectors['desktopUpgrade'].btnsWrap)) {            
+            handler.envSelectors = domSelectors['desktopUpgrade']; 
+        } 
+    }
         
     function getPageDom() { 
     
-        var upgrade = document.querySelector('#primary ytd-watch-metadata');    
         // if (upgrade.hidden) {
         //    upgrade.hidden = false;
         //    upgrade.removeAttribute('disable-upgrade');
         // }
         
-        if (!isMobile() && upgrade && !upgrade.hidden && !upgrade.hasAttribute('disable-upgrade') && document.querySelector(domSelectors['desktopUpgrade'].btnsWrap)) {            
-            handler.envSelectors = domSelectors['desktopUpgrade']; 
-        }
-        
+        initSelectors();
         handler.buttonsWraper = document.querySelector(handler.envSelectors.btnsWrap);
         handler.ratioBarParent = document.querySelector(handler.envSelectors.ratioParent);
         
@@ -124,7 +168,10 @@ function KellyShowRate() {
             handler.dislikeBtn = handler.buttonsWraper.children[1].querySelector(handler.envSelectors.btnCounter);
         } 
     
+        // prevent update counters by external scripts
+        //
         // youtube renderer redraw likes counter in some cases even if navigation already finished
+        
         if (handler.buttonsWraper && !handler.protectCounters) {
             handler.protectCounters = new MutationObserver(function(mutations) {
                 
@@ -147,23 +194,33 @@ function KellyShowRate() {
         
     function updateRatioWidth() {
         
-               if (isMobile()) { handler.ratioBarMaxWidth = 146; } 
-          else if (!handler.envSelectors.ratioWidthFixed && handler.buttonsWraper && handler.buttonsWraper.children.length > 1) {
+         if (isMobile()) {
+                   
+           handler.ratioBarMaxWidth = 146; 
+                   
+         } else if (!handler.envSelectors.ratioWidthFixed && handler.buttonsWraper && handler.buttonsWraper.children.length > 1) {
+              
             var boundsData = handler.buttonsWraper.children[1].getBoundingClientRect();
             var paddingEl = handler.buttonsWraper.children[1].querySelector('A');
             var totalPadding = 8;
+            
             if (paddingEl) totalPadding += parseInt(window.getComputedStyle(paddingEl).paddingRight);
             
             handler.ratioBarMaxWidth = (boundsData.left + boundsData.width) - totalPadding - handler.buttonsWraper.children[0].getBoundingClientRect().left;
             
             if (handler.ratioBarMaxWidth < 60) handler.ratioBarMaxWidth = 150;
-            if (handler.ratioBarMaxWidth > 210) handler.ratioBarMaxWidth = 210;            
-        } else if (handler.envSelectors.ratioWidthFixed) handler.ratioBarMaxWidth = handler.envSelectors.ratioWidthFixed;
+            if (handler.ratioBarMaxWidth > 210) handler.ratioBarMaxWidth = 210;    
             
+        } else if (handler.envSelectors.ratioWidthFixed) {
+            
+            handler.ratioBarMaxWidth = handler.envSelectors.ratioWidthFixed;
+        }
+        
         if (handler.ratioBar && handler.ratioBarMaxWidth) handler.ratioBar.style.width = handler.ratioBarMaxWidth + 'px';
     }
         
     function updateRatio() {
+        
         if (!handler.cfg.showRatioEnabled || !handler.buttonsWraper) return;
         
         var ydata = lastVideoYData, barCl = handler.baseClass + '-ratio-bar';
@@ -177,19 +234,27 @@ function KellyShowRate() {
         
         handler.ratioBar.className = barCl + ' ' + (isMobile() ? barCl + '-mobile ' : '') + (ydata ? '' : barCl + '-load ');
         
-        /* Comments Sidebar for Youtube ext. Fix */
+        /* Addition class if "Comments Sidebar for Youtube" extension enabled [Fix] */
+        
         if (document.getElementById('warc-app')) {
-            handler.envSelectors.ratioBp = 0;  handler.ratioBar.style.marginTop = (4 - handler.envSelectors.ratioHeight) + 'px';
+            
+            handler.envSelectors.ratioBp = 0; 
+            handler.ratioBar.style.marginTop = (4 - handler.envSelectors.ratioHeight) + 'px';
+            
             handler.ratioBar.className += ' ' + barCl + '-warc'; 
             handler.cfg.popupAvoidBoundsEnabled = false;
         }
 
         if (ydata) {
+            
             var percent = (ydata.likes + ydata.dislikes) / 100, api = handler.cfg.apis.cfg[ydata.apiId];
+            
             if (ydata.likes > 0 || ydata.dislikes > 0) {
+                
                 likeEl.style.width = (ydata.likes / percent).toFixed(2) + '%';        
                 dlikeEl.style.width = (ydata.dislikes / percent).toFixed(2) + '%';
             }
+            
             if (api.ratioLikeColor) likeEl.style.backgroundColor = api.ratioLikeColor;
             if (api.ratioDislikeColor) dlikeEl.style.backgroundColor = api.ratioDislikeColor;
         }
@@ -199,7 +264,7 @@ function KellyShowRate() {
         if (handler.envSelectors.ratioBp) handler.ratioBar.style.paddingTop = (handler.envSelectors.ratioBp - handler.envSelectors.ratioHeight) + 'px';
         
         updateRatioWidth();
-        if (!handler.ratioBarParent) return handler.log('Cant read ratio bar parrent - ' + handler.envSelectors.ratioParent, true);
+        if (!handler.ratioBarParent) return handler.log('Skip ratiobar addition - Cant read ratio bar parrent - ' + handler.envSelectors.ratioParent, true);
         handler.ratioBarParent.appendChild(handler.ratioBar); 
                 
         handler.ratioBar.onmouseover = function(e){
@@ -293,10 +358,11 @@ function KellyShowRate() {
         if (!browsingLog[videoId]) browsingLog[videoId] = handler.getDefaultBrowsingLog();
         
         if (handler.ytRequest) handler.ytRequest.abort();
-        
+         
         // check history data before request - clean history if needed before request
-        
+       
         if (browsingLog[videoId].ydata && showYData(browsingLog[videoId].ydata, 'redraw.existData')) {
+            
             return onReady(false, 'data already loaded before : ' + lastVideoId);
         }
         
@@ -795,18 +861,25 @@ function KellyShowRate() {
         
         if (updateTimer !== false) clearTimeout(updateTimer);
         updateTimer = setTimeout(function() {
-            if (clearCache && lastVideoId && browsingLog[lastVideoId]) browsingLog[lastVideoId] = handler.getDefaultBrowsingLog();        
+            
+            if (clearCache && lastVideoId && browsingLog[lastVideoId]) {
+                browsingLog[lastVideoId] = handler.getDefaultBrowsingLog();     
+            }
+            
             resetNavigation();
             updateTimer = false;
+            
             updatePageState();
+            
             setTimeout(updateRatioWidth, 200);
+            
         }, d ? d : 300);
     }
     
     this.updatePageStateWaitDomReady = function() {
                 
         initCss(); resetNavigation();
-        if (window.location.href.indexOf('watch?') == -1) {
+        if (!getVideoId()) {
             
             handler.log('[getPageDom] Video page not found. Wait next navigation', true);
             handler.buttonsWraper = false;
@@ -834,10 +907,7 @@ function KellyShowRate() {
             handler.cfg = cfg;
             handler.requestsCfg.enabledApis = [];
             handler.requestsCfg.helperApis = [];
-            
-            handler.envSelectors = domSelectors[isMobile() ? 'mobile' : 'desktop']; 
-            handler.envSelectors.ratioHeight = handler.cfg.fixedRatioHeightEnabled ? handler.cfg.fixedRatioHeight : handler.envSelectors.ratioHeight;
-            handler.envSelectors.ratioWidthFixed = handler.cfg.fixedRatioWidthEnabled ? handler.cfg.fixedRatioWidth : false;
+            initSelectors();
             
             for (var i = 0; i < handler.cfg.apis.order.length; i++) {
                 var apiId = handler.cfg.apis.order[i];

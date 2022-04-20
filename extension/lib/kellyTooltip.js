@@ -5,7 +5,7 @@
    @description    creates tooltip elements (attaches to an element or screen) widget
    @author         Rubchuk Vladimir <torrenttvi@gmail.com>
    @license        GPLv3
-   @version        v 1.0.5 23.12.21
+   @version        v 1.0.6 08.03.22
    
    ToDo : 
    
@@ -136,6 +136,8 @@ function KellyTooltip(cfg) {
             for (var k in cfg.events){
                 if (typeof cfg.events[k] === 'function') {
                      handler.userEvents[k] = cfg.events[k];
+                } else {
+                    console.log('unknown type for event ' + k + ' | ' + typeof cfg.events[k]);
                 }
             }
         }
@@ -561,6 +563,7 @@ KellyTooltip.loadDefaultCss = function(className) {
         .' + className + '-close svg {\
             width: 26px;\
             height: 15px;\
+            display: inline-block;\
         }\
         .' + className + '-close svg g line {\
             stroke: #fff;\
