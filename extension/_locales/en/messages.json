@@ -140,7 +140,7 @@
     "option_popupAvoidBounds":{  
         "message":"Display popup above the ratio bar (if not fit to view area of screen)"
     },
-    "option_sTimeout":{  
+    "option_tTimeout":{  
         "message":"Request timeout"
     },     
     "option_showPercent":{  
