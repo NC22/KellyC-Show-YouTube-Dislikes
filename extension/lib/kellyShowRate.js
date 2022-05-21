@@ -123,21 +123,10 @@ function KellyShowRate() {
         else return 'neutral';
     } 
     
+    // update information about current main page placeholders - buttonsWraper, ratioBarParent elements - used to put sentimentbar and update counters on buttons
+    
     function initSelectors() {
        
-        var upgrade = document.querySelector('#primary ytd-watch-metadata');    
-        handler.envSelectors = domSelectors[isMobile() ? 'mobile' : 'desktop']; 
-        handler.envSelectors.ratioHeight = handler.cfg.fixedRatioHeightEnabled ? handler.cfg.fixedRatioHeight : handler.envSelectors.ratioHeight;
-        handler.envSelectors.ratioWidthFixed = handler.cfg.fixedRatioWidthEnabled ? handler.cfg.fixedRatioWidth : false;
-        
-        if (handler.envSelectors.btnsWrap) {
-            handler.buttonsWraper = document.querySelector(handler.envSelectors.btnsWrap);
-        }
-        
-        if (handler.envSelectors.ratioParent) {
-            handler.ratioBarParent = document.querySelector(handler.envSelectors.ratioParent);
-        }
-        
         if (isShorts()) {
             
             handler.envSelectors = domSelectors['shorts'];
@@ -149,14 +138,28 @@ function KellyShowRate() {
                     handler.buttonsWraper = shortsVideos[i].querySelector(handler.envSelectors.btnsWrapDefault);
                     break;
                 }
-                
             }
             
-            handler.log('Shorts ' + videoId, true);
-            
-        } else if (!isMobile() && upgrade && !upgrade.hidden && !upgrade.hasAttribute('disable-upgrade') && document.querySelector(domSelectors['desktopUpgrade'].btnsWrap)) {            
-            handler.envSelectors = domSelectors['desktopUpgrade']; 
-        } 
+            return;
+        }
+       
+        var upgrade = document.querySelector('#primary ytd-watch-metadata'); 
+        
+        handler.envSelectors = domSelectors[isMobile() ? 'mobile' : 'desktop']; 
+        handler.envSelectors.ratioHeight = handler.cfg.fixedRatioHeightEnabled ? handler.cfg.fixedRatioHeight : handler.envSelectors.ratioHeight;
+        handler.envSelectors.ratioWidthFixed = handler.cfg.fixedRatioWidthEnabled ? handler.cfg.fixedRatioWidth : false;
+        
+        if (!isMobile() && upgrade && !upgrade.hidden && !upgrade.hasAttribute('disable-upgrade') && document.querySelector(domSelectors['desktopUpgrade'].btnsWrap)) { 
+            handler.envSelectors = domSelectors['desktopUpgrade'];          
+        }
+        
+        if (handler.envSelectors.btnsWrap) {
+            handler.buttonsWraper = document.querySelector(handler.envSelectors.btnsWrap);
+        }
+        
+        if (handler.envSelectors.ratioParent) {
+            handler.ratioBarParent = document.querySelector(handler.envSelectors.ratioParent);
+        }        
     }
         
     function getPageDom() { 
