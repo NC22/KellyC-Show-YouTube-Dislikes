@@ -17,7 +17,7 @@ KellyCAbout.showPage = function(cfg) {
     handler.container.style.display = '';
     
     if (mode == 'update') {        
-        handler.container.getElementsByClassName('version')[0] = KellyTools.getBrowser().runtime.getManifest().version;
+        handler.container.getElementsByClassName('version')[0].innerText = KellyTools.getBrowser().runtime.getManifest().version;
     }
     
     handler.bgManager = new KellyNradiowaveBg();

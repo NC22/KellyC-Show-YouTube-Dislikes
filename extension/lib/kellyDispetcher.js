@@ -2,7 +2,7 @@
 
 var KellyEDispetcher = new Object();
 
-    KellyEDispetcher.updatePageRevision = 1002; 
+    KellyEDispetcher.updatePageRevision = '1.1.3.9'; 
     KellyEDispetcher.init = function() {
         
              if (typeof chrome !== 'undefined' && typeof chrome.runtime !== 'undefined') KellyEDispetcher.api = chrome;
@@ -19,6 +19,15 @@ var KellyEDispetcher = new Object();
                 } else if (details.reason == "update") {
                    
                    console.log('[update] ' + details.previousVersion + ' - ' + KellyEDispetcher.api.runtime.getManifest().version);
+                   if ( details.previousVersion.indexOf(KellyEDispetcher.api.runtime.getManifest().version) === 0 ) {
+                        console.log('[update] skip update info - same version');
+                        return;
+                   }
+                   
+                   if ( KellyEDispetcher.updatePageRevision.indexOf(KellyEDispetcher.api.runtime.getManifest().version) == -1 ) {
+                        console.log('[update] skip update info - mismatch version');
+                        return;
+                   }
                    
                    KellyEDispetcher.api.storage.local.get('kelly-extension-update-inform', function(item) {
          
@@ -27,7 +36,7 @@ var KellyEDispetcher = new Object();
                         } else {
                             
                             var revisionInfo = item['kelly-extension-update-inform'];                        
-                            if (!revisionInfo || revisionInfo.revision < KellyEDispetcher.updatePageRevision) {
+                            if (!revisionInfo || revisionInfo.revision.indexOf(KellyEDispetcher.updatePageRevision) == -1) {
                                 
                                 KellyEDispetcher.api.tabs.create({url: '/env/page/update.html?mode=update'}, function(tab){});
                                 KellyEDispetcher.api.storage.local.set({'kelly-extension-update-inform' : {revision : KellyEDispetcher.updatePageRevision}}, function() {
