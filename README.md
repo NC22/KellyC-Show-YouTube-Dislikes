@@ -13,6 +13,10 @@ Show dislikes on Youtube
 - Edge, Opera and any that allow install extensions from Chrome Extensions Store
 - a bit tested on mobile devices as well (for ex. Kiwi Browser supports extensions)
 
+<h2> Want create issue report ? </h2>
+
+<a href="https://www.reddit.com/r/KellyC/comments/x4c27w/kellyc_show_youtube_dislikes_troubleshooting/">Short troubleshooting information</a>
+
 <h2> About </h2>
 
 Youtube has removed dislike statistics. This extension return this functionality back.
@@ -27,7 +31,7 @@ My project is similar to other ones, but with some features that was important p
 <p>- YouTube metadata parsing (used by default)</p>
 <p>- API by <a href="https://returnyoutubedislike.com/">Return YouTube Dislikes</a></p>
 <p>- API by <a href="https://sponsor.ajay.app/">SponsorBlock</a> (<a href="https://wiki.sponsor.ajay.app/w/API_Docs/Ratings">Documentation</a>)</p> (currently for testing only - deprecated)
-<p>- API by <a href="https://catface.ru">CatFace</a> (my server, currently used as cache for metadata)</p>
+<p>- API by <a href="https://catface.ru">CatFace</a> (my server, currently used as cache \ mirror server for Return YouTube Dislikes API for limited list of regions to prevent spam)</p>
 </li>
 <li>Classic ratio bar with [green \ red] \ custom colors</li>
 <li>Support of mobile devices</li>

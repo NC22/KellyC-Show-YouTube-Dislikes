@@ -26,12 +26,8 @@ KellyCAbout.showPage = function(cfg) {
     
 KellyCAbout.init = function() 
 {   
-    KellyTools.getBrowser().i18n.getAcceptLanguages().then(function(languages) {
-        
-        console.log(languages);
-        
-        if (languages.indexOf('ru') != -1) KellyCAbout.language = 'ru';
-        
-        KellyCAbout.showPage();
-    });             
+    var lang = KellyTools.getBrowser().i18n.getUILanguage();
+    if (lang.indexOf('ru') != -1) KellyCAbout.language = 'ru';
+    
+    KellyCAbout.showPage();             
 } 
