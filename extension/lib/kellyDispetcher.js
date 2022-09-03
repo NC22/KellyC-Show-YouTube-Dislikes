@@ -1,6 +1,8 @@
 // part of kellyShowRate extension, see kellyShowRate.js for copyrights and description
 
 var KellyEDispetcher = new Object();
+
+    KellyEDispetcher.updatePageRevision = 1002; 
     KellyEDispetcher.init = function() {
         
              if (typeof chrome !== 'undefined' && typeof chrome.runtime !== 'undefined') KellyEDispetcher.api = chrome;
@@ -8,6 +10,41 @@ var KellyEDispetcher = new Object();
         
         KellyEDispetcher.api.runtime.onMessage.addListener(this.onMessage);
         
+        KellyEDispetcher.api.runtime.onInstalled.addListener(function(details){
+             
+                if(details.reason == "install"){
+                    
+                   console.log('[install]');  // skip first install 
+                    
+                } else if (details.reason == "update") {
+                   
+                   console.log('[update] ' + details.previousVersion + ' - ' + KellyEDispetcher.api.runtime.getManifest().version);
+                   
+                   KellyEDispetcher.api.storage.local.get('kelly-extension-update-inform', function(item) {
+         
+                        if (KellyEDispetcher.api.runtime.lastError) {                        
+                            console.log(KellyEDispetcher.api.runtime.lastError);                            
+                        } else {
+                            
+                            var revisionInfo = item['kelly-extension-update-inform'];                        
+                            if (!revisionInfo || revisionInfo.revision < KellyEDispetcher.updatePageRevision) {
+                                
+                                KellyEDispetcher.api.tabs.create({url: '/env/page/update.html?mode=update'}, function(tab){});
+                                KellyEDispetcher.api.storage.local.set({'kelly-extension-update-inform' : {revision : KellyEDispetcher.updatePageRevision}}, function() {
+                                
+                                    if (KellyEDispetcher.api.runtime.lastError) {                            
+                                        console.log(KellyEDispetcher.api.runtime.lastError);                       
+                                    }
+                                });
+                            }
+                        }
+                    });	
+                    
+                   // var thisVersion = KellyTools.getBrowser().runtime.getManifest().version;
+                   // console.log("Updated from " + details.previousVersion + " to " + thisVersion);
+                }
+        });
+    
         return true;
     }
             

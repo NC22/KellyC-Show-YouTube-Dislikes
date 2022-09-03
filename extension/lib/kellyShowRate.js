@@ -19,7 +19,7 @@ function KellyShowRate() {
     var domSelectors = {
         mobile : {mobile : true, btnsWrap : '.slim-video-action-bar-actions', btnCounter : '.button-renderer-text', ratioHeight : 5, ratioBp : 0, ratioParent : 'ytm-slim-video-action-bar-renderer'},
         desktop : {mobile : false, btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#menu-container'},
-        shorts : {mobile : false, btnsWrapDefault : '#like-button ytd-like-button-renderer', btnCounter : '#text'},
+        shorts : {mobile : false, btnsWrapDefault : '#like-button ytd-like-button-renderer', btnCounter : '#text'}, // todo - add popup ratiobar on btn hover ?
         desktopUpgrade : {mobile : false, btnsWrap : '#above-the-fold #menu #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#above-the-fold #actions-inner'},
     };
     
@@ -134,7 +134,7 @@ function KellyShowRate() {
         
             for (var i = 0; i < shortsVideos.length; i++) {
                 
-                if (shortsVideos[i].innerHTML.indexOf(videoId) != -1) {
+                if (shortsVideos[i].innerHTML.indexOf(videoId) != -1 && KellyTools.isElInViewport(shortsVideos[i])) {
                     handler.buttonsWraper = shortsVideos[i].querySelector(handler.envSelectors.btnsWrapDefault);
                     break;
                 }

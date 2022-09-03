@@ -6,6 +6,15 @@ KellyTools = {
     E_ERROR : 2, 
     logBuffer : '',
 }; 
+
+    
+KellyTools.isElInViewport = function(el) {
+    
+    if (!el) return false;
+    
+    var bounds = el.getBoundingClientRect();
+    return bounds.top >= 0 && (bounds.top + bounds.height / 2) <= (window.innerHeight || document.documentElement.clientHeight);
+}
     
 KellyTools.nFormat = function(num) {
     

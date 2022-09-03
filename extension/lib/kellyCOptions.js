@@ -512,10 +512,15 @@ var KellyCOptions = new Object();
             html += '<div class="' + this.baseClass + '-popup-go"><button class="' + this.baseClass + '-options-btn tab-navigation" data-source="/env/page/options.html">' + this.getLoc('options') + '</button></div>';
             
             html += '<button class="' + this.baseClass + '-additions-show tab-navigation" data-source="/env/page/options.html?spoiler=datasources">' + this.getLoc('show_datasources_popup') + '</button>';
-            html += '<button class="' + this.baseClass + '-additions-show tab-navigation support" data-source="https://kellydownloader.com/donate/">' + this.getLoc('support_project') + '</button>';
+            html += '<button class="' + this.baseClass + '-additions-show tab-navigation support" data-source="/env/page/update.html">' + this.getLoc('support_project') + '</button>';
             html += '<div class="disclaimer" data-source="' + KellyCOptions.reportIssue + '">' + this.getLoc('disclaimer') + '</button>';
                        
         KellyTools.setHTMLData(this.page, html);
+        KellyCOptions.updateNavigationLinks();
+    }
+    
+    KellyCOptions.updateNavigationLinks = function() {
+        
         var mInputs = document.getElementsByClassName('tab-navigation');
         for (var i = 0; i < mInputs.length; i++) mInputs[i].onclick = function() {KellyTools.getBrowser().tabs.create({url: this.getAttribute('data-source')}, function(tab){});}; 
     }
@@ -531,6 +536,8 @@ var KellyCOptions = new Object();
         
         KellyCOptions.showTitle();
         if (KellyCOptions.showBgState()) return;
+        
+        // html += '<button class="' + handler.baseClass + '-additions-show tab-navigation support" data-source="/env/page/update.html">' + handler.getLoc('support_project') + '</button>';
         
         for (var i = 0; i < KellyStorage.fieldsOrder.length; i++) {
              
@@ -606,6 +613,7 @@ var KellyCOptions = new Object();
         KellyCOptions.initHelps();     
         KellyCOptions.addColorRing();
         KellyCOptions.addDataSources();
+        KellyCOptions.updateNavigationLinks();
     }
     
     KellyCOptions.init = function() {        

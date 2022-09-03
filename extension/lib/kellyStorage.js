@@ -15,7 +15,7 @@ var KellyStorage = {
             popupAvoidBounds : {optional : true, defaultOptional : true},
             
             fixedRatioWidth : {optional : true, type : 'int', defaultOptional : false, default : 150, limit : {from : 60, to : 350}},
-            fixedRatioHeight : {optional : true, type : 'int', defaultOptional : false, default : 5, limit : {from : 1, to : 8}}, 
+            fixedRatioHeight : {optional : true, type : 'int', defaultOptional : false, default : 3, defaultOptional : true, limit : {from : 1, to : 8}}, 
             
             ratioLikeColor : {type : 'string', default : '#75bc49', hidden : true},
             ratioDislikeColor : {type : 'string', default : '#cc6a7c', hidden : true},

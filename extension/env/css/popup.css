@@ -71,13 +71,3 @@ body {
 .popup-env button.support:hover {
     background-color: #7abde2;
 }
-
-button.support {
-    background-image: url(../../env/img/cup.png);
-    background-size: 32px;
-    background-repeat: no-repeat;
-    background-position-y: center;
-    background-position-x: 12px;
-    background-color: #56afdf;
-    color: #fff;
-}

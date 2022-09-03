@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+    
+        <meta charset="utf-8">
+        
+        <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1">
+        
+        <title>KellyC Return Youtube Dislike</title>
+        <!-- put last news notice -> update blocks and update revision number in kellyCAbout if some importent news needs to be shown -->
+        
+        <style>
+        
+            html, body {
+                background: #686970;
+                color: #181819;
+                margin : 0;
+                padding : 0;  
+                width: 100%;
+                height: 100%;  
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 14px;
+                line-height: 22px;
+                font-weight: 400;
+            }
+            
+            body {
+                padding-top: 20px;
+            }
+            
+            * {
+                box-sizing: border-box;
+            }       
+            
+            .notice-wrap {
+        
+                width: 80%;
+                background-size: cover;
+                background: #130e1b94;
+                color: #bfbfbf;
+                font-size: 16px;
+                margin: 0 auto;
+            }
+            
+            .notice-header {
+                   /* position: absolute; */
+                    height: 55px;
+                    background: #393e5873;
+                    width: 100%;
+                    left: 0;
+                    top: 0;
+                    z-index: 1;
+                    /* border-bottom: 1px solid #a5a5a5; */
+                    padding-top: 16px;
+                    padding-left: 29px;
+                    color: #fff;
+            }
+            
+            .notice {
+                margin: 0 auto;
+                min-height: 80%;
+                padding: 23px;
+                font-size: 16px;
+                color: #fff;
+                border-radius: 2px;
+                position: relative;
+                padding-top: 7px;
+            }
+
+            ul li {
+                margin-left: 31px;
+            }
+            
+            ul {
+                padding: 6px;
+                list-style: circle;
+            }
+            
+            .updates, .about {
+                display : none;
+            }
+            
+            .mode-update .updates, .mode-about .about {
+                display : unset;
+            }
+            
+            .addition-item {
+            
+                position: relative;
+                color: #fff;
+                background: #8997c4;
+                padding: 9px;
+                background: #62636c;
+                padding: 9px;
+                text-align: center;
+                white-space: nowrap;
+                display: inline-block;
+                margin-top: 107px;
+                min-width: 100px;
+                text-decoration: none;
+                text-align : left;
+                
+                margin-right: 30px;
+                margin-bottom: 20px;
+             }  
+             
+             .addition-item:hover div {
+                width: 120px;
+                height: 120px;
+                margin-left: -60px;
+                top: -117px;
+                background-size: 127px;
+            }
+            
+            .addition-item div {
+                transition: 0.2s background-size, 0.2s top, 0.2s margin-left, 0.2s width, 0.2s height;
+                width: 100px;
+                height: 100px;
+                background-size: 107px;
+                background-position: -4px -3px;
+                border-radius: 6px;
+                border: 2px solid #fff;
+                box-sizing: border-box;
+                margin-right: 34px;
+                display: inline-block;
+                position: absolute;
+                left: 50%;
+                margin-left: -50px;
+                top: -107px;
+            }
+            
+            .addition-item span {
+                display: block;
+                font-size: 12px;
+            }
+            
+            .addition-item .sticker {
+                background-repeat: no-repeat;
+                background-position : center;
+                background-color: rgba(158, 159, 168, 1);
+            }
+            
+            .additions {
+                margin-top: 30px;
+                text-align : center;
+            } 
+            
+            
+            @keyframes char-move {
+              0%, 100% {
+                left: -58px;
+              }
+              50% {
+                left: 10px;
+              }
+            }
+                            
+            .random-character {
+            
+                position: fixed;
+                bottom: 0;
+                width : 100%;
+                height : 100%;
+                box-sizing: border-box;
+                padding: 0;
+                transition: opacity 1s;
+                opacity: 0;
+                background-size : cover;
+                
+            }
+            
+            .random-character-ghost {
+                z-index : 1;
+            }
+          
+            .random-character-main {
+                z-index : 2;
+            }
+            
+            .random-character.fade-in {
+                opacity : 1;
+            }
+            
+            .notice-wrap {
+                position : relative;
+                z-index : 4;
+            }
+            
+            @media (max-width: 800px) {
+            
+                body {
+                    padding-top : 0;
+                }
+                
+                .notice-wrap {
+                    width: 100%;
+                }
+                
+                .addition-item {
+                    width : 100%;
+                }
+                
+                .notice-header {
+                    height: unset;
+                    padding: 18px;
+                }
+            }
+        </style>
+        
+    </head>
+
+    <body>
+       
+        
+        <div class="random-character random-character-ghost"></div>
+        <div class="random-character random-character-main"></div>
+        
+        <div class="notice-wrap notice-en" style="display : none;">
+        
+            <div class="notice-header">
+                <b>KellyC Show Youtube Dislike</b> <span class="updates">updated to version <b class="version"></span></b>            
+            </div>
+            
+            <div class="notice">
+            
+                <p>Hello. Thank you for using my extension <b>KellyC Return Youtube Dislike</b>. <span class="about">This extension done by me in spare time, all information about used data sources, source code and work description can be found on GitHub page</span> <span class="updates">Few last updates:</span></p>
+
+                <ul class="updates">
+                    <li>Fixed timeouts and YouTube Shorts detection</li>
+                    <li>Fixed ratio bar display on mobile devices in some cases</li>
+                    <li>Added fixes for new YouTube layout showed for some regions</li>
+                </ul>
+
+                <h2>Want to help ?</h2>
+                <p>
+                    If you find any display issues (<b>YouTube</b> keep changing user interface from time to time and this can cause problems), you can help in fast diagnostics by creating ticket on GitHub or notify on Reddit. If you want to help improve or fix some features, it is also welcome.
+                </p>
+                
+                <div class="additions">
+                    
+                    <a class="addition-item" href="https://nradiowave.ru/" target="_blank">
+                        
+                        Author (nradiowave) <span>my artworks, other projects</span>
+                        
+                        <div href="#" class="sticker material-image-show" style="background-image: url(https://nradiowave.ru/style/Default/img/nradiowave_228x228c.png);"></div>
+
+                    </a>
+                    
+                    <a class="addition-item" href="https://github.com/NC22/KellyC-Show-YouTube-Dislikes" target="_blank">
+                    
+                        GitHub <span>source files, bug reports & datasource information</span>
+                       
+                        <div href="#" class="sticker material-image-show" style="background-image: url(https://nradiowave.ru/style/Default/img/nradiowave/icons/git.png);"></div>
+                        
+                    </a>                        
+
+                    <a class="addition-item" href="https://www.reddit.com/r/KellyC/" target="_blank">
+                        
+                        Reddit <span>bug reports, suggestions, disscussion</span>
+                                
+                        <div href="#" class="sticker material-image-show" style="background-image: url(https://nradiowave.ru/style/Default/img/nradiowave/icons/reddit.png);"></div>
+                        
+                    </a>
+                    
+                </div>
+            
+            </div>
+        
+        </div>
+         
+        <div class="notice-wrap notice-ru" style="display : none;">
+        
+            <div class="notice-header">
+                <b>KellyC Show Youtube Dislike</b> <span class="updates">обновление до версии <b class="version">1.1.3.8</span></b>            
+            </div>
+            
+            <div class="notice">
+            
+                <p>Привет. Спасибо что используете мое расширение <b>KellyC Return Youtube Dislike</b>. <span class="about">Это расширение разрабатывается мной в свободное время по мере возможности, не всеми функциями ютуба сам пользуюсь (те же короткие видосы), по тому могу что то не заметить. Информация о используемых источниках данных, исходный код и подробное описание представлено на странице на гитхабе</span> <span class="updates">Актуальные изменения:</span></p>
+
+                <ul class="updates">
+                    <li>Исправлены таймауты и определение страниц в формате YouTube Shorts</li>
+                    <li>Исправлено отображение блока соотношения лайков к дизлайкам на мобильных устройствах в некоторых случаях</li>
+                    <li>Скорректировано отображение для нового оформления YouTube которое отображалось только у некоторых пользователей</li>
+                </ul>
+
+                <h2>Хотите помочь ?</h2>
+                <p>
+                    Если заметите какие-либо проблемы с отображением блока соотношения лайков к дизлайкам или самих счетчиков (<b>YouTube</b> периодически меняет оформление для некоторых пользователей в зависимости от региона) или что-то еще, для оперативного решения проблемы Вы можете создать тикет на GitHub или оповестить меня на Reddit. Если хотите помочь в доработке или исправлении каких-либо функций, это так же приветствуется.
+                </p>
+                
+                <div class="additions">
+                    
+                    <a class="addition-item" href="https://nradiowave.ru/?kellyc=1" target="_blank">
+                        
+                        Автор (nradiowave) <span>мои рисунки, остальные проекты</span>
+                        
+                        <div href="#" class="sticker material-image-show" style="background-image: url(https://nradiowave.ru/style/Default/img/nradiowave_228x228c.png);"></div>
+
+                    </a>
+                    
+                    
+                    <a class="addition-item" href="https://github.com/NC22/KellyC-Show-YouTube-Dislikes" target="_blank">
+                    
+                        GitHub <span>исходники, багрепорты и доп. информация</span>
+                       
+                        <div href="#" class="sticker material-image-show" style="background-image: url(https://nradiowave.ru/style/Default/img/nradiowave/icons/git.png);"></div>
+                        
+                    </a>                        
+
+                    <a class="addition-item" href="https://www.reddit.com/r/KellyC/" target="_blank">
+                        
+                        Reddit <span>отчеты об ошибках, предложения, обсуждение расширения</span>
+                                
+                        <div href="#" class="sticker material-image-show" style="background-image: url(https://nradiowave.ru/style/Default/img/nradiowave/icons/reddit.png);"></div>
+                        
+                    </a>
+                </div>
+            
+            </div>
+        
+        </div>     
+    
+    
+        <script src="../../lib/kellyTools.js"></script>
+        <script src="../../lib/kellyCAbout.js"></script>
+        <script src="../../lib/kellyNradiowaveBg.js"></script>
+        <script src="../../init/initAbout.js"></script>
+        
+        
+    </body>
+
+</html> 
