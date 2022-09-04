@@ -17,10 +17,11 @@ function KellyShowRate() {
     var updateTimer = false; var initTimer = false;
     var ldAction = {liked : 'likes', disliked : 'dislikes'}; // valid action request types
     var domSelectors = {
-        mobile : {mobile : true, btnsWrap : '.slim-video-action-bar-actions', btnCounter : '.button-renderer-text', ratioHeight : 5, ratioBp : 0, ratioParent : 'ytm-slim-video-action-bar-renderer'},
-        desktop : {mobile : false, btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#menu-container'},
-        shorts : {mobile : false, btnsWrapDefault : '#like-button ytd-like-button-renderer', btnCounter : '#text'}, // todo - add popup ratiobar on btn hover ?
-        desktopUpgrade : {mobile : false, btnsWrap : '#above-the-fold #menu #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#above-the-fold #actions-inner'},
+        mobile : {btnsWrap : '.slim-video-action-bar-actions', btnCounter : '.button-renderer-text', ratioHeight : 5, ratioBp : 0, ratioParent : 'ytm-slim-video-action-bar-renderer'},
+        desktop : {btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#menu-container'},
+        shorts : {shortsContainer : '#shorts-container ytd-reel-video-renderer', btnsWrap : '#like-button ytd-like-button-renderer', ratioWrapBefore : '#like-button', btnCounter : '#text'}, 
+        shortsMobile : {shortsContainer : '#player-shorts-container .carousel-item', btnsWrap : 'ytm-like-button-renderer', ratioWrapBefore : 'ytm-like-button-renderer', btnCounter : '.button-renderer-text'}, 
+        desktopUpgrade : {btnsWrap : '#above-the-fold #menu #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#above-the-fold #actions-inner'},
     };
     
     var handler = this; // todo - remove tpl vars from public
@@ -129,13 +130,41 @@ function KellyShowRate() {
        
         if (isShorts()) {
             
-            handler.envSelectors = domSelectors['shorts'];
-            var shortsVideos = document.querySelectorAll('#shorts-container ytd-reel-video-renderer'), videoId = getVideoId();
+            if (isMobile()) return; // mobile UI updates glitchy, not used \ supported full now
+            
+            handler.envSelectors = domSelectors[isMobile() ? 'shortsMobile' : 'shorts'];
+            var shortsVideos = document.querySelectorAll(handler.envSelectors.shortsContainer), videoId = getVideoId();
         
             for (var i = 0; i < shortsVideos.length; i++) {
                 
                 if (shortsVideos[i].innerHTML.indexOf(videoId) != -1 && KellyTools.isElInViewport(shortsVideos[i])) {
-                    handler.buttonsWraper = shortsVideos[i].querySelector(handler.envSelectors.btnsWrapDefault);
+                    handler.buttonsWraper = shortsVideos[i].querySelector(handler.envSelectors.btnsWrap);                    
+                    handler.ratioBarParent = shortsVideos[i].querySelector('.' + handler.baseClass + '-shrots-ratio-bar-wrap');
+                    
+                    if (!handler.cfg.showRatioShortsEnabled) {
+                        
+                        // disabled
+                        
+                    } else if (!handler.envSelectors.ratioWrapBefore) {
+                        
+                        handler.log('No ratioWrapBefore setted, skip ratiobar setup', true);
+                        
+                    } else {
+                        
+                        if (!handler.ratioBarParent) {
+                            
+                            var likesBtn = shortsVideos[i].querySelector(handler.envSelectors.ratioWrapBefore);
+                            if (likesBtn) {
+                                
+                                handler.ratioBarParent = document.createElement('DIV');
+                                handler.ratioBarParent.className = handler.baseClass + '-shrots-ratio-bar-wrap';
+                                likesBtn.parentElement.insertBefore(handler.ratioBarParent, likesBtn);
+                            }
+                        
+                        }
+                        
+                    }
+                    
                     break;
                 }
             }
@@ -203,7 +232,12 @@ function KellyShowRate() {
     }   
         
     function updateRatioWidth() {
-        
+         
+         if (isShorts()) { // unconfigurable, setted in css
+             handler.ratioBar.style.width = '';
+             return;
+         }
+         
          if (isMobile()) {
                    
            handler.ratioBarMaxWidth = 146; 
@@ -802,7 +836,7 @@ function KellyShowRate() {
            if (loadFail || KellyTools.DEBUG) showRetryForm(handler.tooltip.getContent(), notice, loadFail); 
            else handler.getTooltip().setMessage(notice);
            
-           handler.getTooltip().updateCfg({
+           var tooltipCfg = {
                 target : handler.ratioBar, 
                 offset : {left : 0, top : 0}, 
                 avoidOffset : {outBottom : -22, outLeft : 0}, 
@@ -812,7 +846,16 @@ function KellyShowRate() {
                 ptypeY : 'outside',
                 avoidOutOfBounds : handler.cfg.popupAvoidBoundsEnabled ? true : false,
                 closeButton : false, 
-           });
+           };
+           
+           if (isShorts()) {
+               
+               tooltipCfg.positionX = 'right';
+               tooltipCfg.positionY = 'top';
+               tooltipCfg.avoidOffset.outBottom = 22;
+           }
+           
+           handler.getTooltip().updateCfg(tooltipCfg);
            
            if (stick) {
                handler.getTooltip().beasy = true;

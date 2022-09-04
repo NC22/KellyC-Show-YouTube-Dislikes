@@ -9,7 +9,8 @@ var KellyStorage = {
         
         fields : {       
 
-            showRatio : {optional : true, defaultOptional : true},           
+            showRatio : {optional : true, defaultOptional : true},  
+            showRatioShorts : {optional : true, defaultOptional : true},         
             showSource : {optional : true, defaultOptional : true},
             showPercent : {optional : true, defaultOptional : false},
             popupAvoidBounds : {optional : true, defaultOptional : true},
@@ -41,6 +42,7 @@ var KellyStorage = {
         
         fieldsOrder : [
             'showRatio', 
+            
             'ratioLikeColor', 
             'ratioDislikeColor', 
             'ratioLoadingColor',        
@@ -51,6 +53,7 @@ var KellyStorage = {
                 'fixedRatioHeight',
                 'popupAvoidBounds',
             '_/ratio_options/_', 
+            'showRatioShorts',
             '__datasources__', 
                 // content generates throw kellyCOption methods
             '_/datasources/_', 

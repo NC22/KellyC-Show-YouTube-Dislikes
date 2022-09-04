@@ -131,6 +131,9 @@
     "option_showRatio":{  
         "message":"Show ratio"
     },    
+    "option_showRatioShorts":{  
+        "message":"Show ratio for YouTube Shorts"
+    },
     "option_showSource":{  
         "message":"Display data source in ratio bar popup"
     },

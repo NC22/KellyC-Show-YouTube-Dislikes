@@ -133,7 +133,10 @@
     },  
     "option_showRatio":{  
         "message":"Показывать соотношение лайков \\ дизлайков"
-    },   
+    },  
+    "option_showRatioShorts":{  
+        "message":"Показывать соотношение для YouTube Shorts"
+    },  
     "option_showSource":{  
         "message":"Отображать источник данных"
     },

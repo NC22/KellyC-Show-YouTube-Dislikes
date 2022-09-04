@@ -8,6 +8,13 @@
     z-index : 1;
 }
 
+.__BASECLASS__-shrots-ratio-bar-wrap .kelly-show-rating-ratio-bar {
+    position: relative;
+    width: 50px;
+    left: unset;
+    padding-bottom: 0;
+}
+
 /* YouTube layout upgrade */
 
 #above-the-fold #actions-inner {
