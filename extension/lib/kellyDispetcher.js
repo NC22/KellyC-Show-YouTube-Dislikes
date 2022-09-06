@@ -2,7 +2,7 @@
 
 var KellyEDispetcher = new Object();
 
-    KellyEDispetcher.updatePageRevision = '1.1.3.9'; 
+    KellyEDispetcher.updatePageRevision = ['1.1.3.9', '1.1.4.0']; // versions, that related to update.html page text
     KellyEDispetcher.init = function() {
         
              if (typeof chrome !== 'undefined' && typeof chrome.runtime !== 'undefined') KellyEDispetcher.api = chrome;
@@ -12,10 +12,11 @@ var KellyEDispetcher = new Object();
         
         KellyEDispetcher.api.runtime.onInstalled.addListener(function(details){
              
-                if(details.reason == "install"){
+                if (details.reason == "install") {
                     
-                   console.log('[install]');  // skip first install 
-                    
+                   console.log('[install]');  
+                   // KellyEDispetcher.api.tabs.create({url: '/env/page/update.html?mode=install'}, function(tab){});
+                   
                 } else if (details.reason == "update") {
                    
                    console.log('[update] ' + details.previousVersion + ' - ' + KellyEDispetcher.api.runtime.getManifest().version);
@@ -36,21 +37,21 @@ var KellyEDispetcher = new Object();
                         } else {
                             
                             var revisionInfo = item['kelly-extension-update-inform'];                        
-                            if (!revisionInfo || revisionInfo.revision.indexOf(KellyEDispetcher.updatePageRevision) == -1) {
+                            if (!revisionInfo || KellyEDispetcher.updatePageRevision.indexOf(revisionInfo.revision) == -1) {
                                 
+                                console.log('[update] needs to notify');                                
                                 KellyEDispetcher.api.tabs.create({url: '/env/page/update.html?mode=update'}, function(tab){});
-                                KellyEDispetcher.api.storage.local.set({'kelly-extension-update-inform' : {revision : KellyEDispetcher.updatePageRevision}}, function() {
+                                KellyEDispetcher.api.storage.local.set({'kelly-extension-update-inform' : {revision : KellyEDispetcher.api.runtime.getManifest().version}}, function() {
                                 
                                     if (KellyEDispetcher.api.runtime.lastError) {                            
                                         console.log(KellyEDispetcher.api.runtime.lastError);                       
                                     }
                                 });
+                            } else {
+                                console.log('[update] already notified in ' + revisionInfo.revision);
                             }
                         }
                     });	
-                    
-                   // var thisVersion = KellyTools.getBrowser().runtime.getManifest().version;
-                   // console.log("Updated from " + details.previousVersion + " to " + thisVersion);
                 }
         });
     

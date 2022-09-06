@@ -12,7 +12,7 @@ function KellyShowRate() {
 
     var lastVideoId = false;    // last loaded video id, can be erased on load new page  
     var lastVideoYData = false; // valid data for current video, can be erased on load new page  
-    var browsingLog = {};
+    var browsingLog = {};       // cache visited videos until page reload
     
     var updateTimer = false; var initTimer = false;
     var ldAction = {liked : 'likes', disliked : 'dislikes'}; // valid action request types
@@ -95,6 +95,8 @@ function KellyShowRate() {
         return false;
     }
     
+    // get uniq id for user, used for send actions to likes \ dislikes database provider
+    
     function getUserId() { 
     
         var scripts = document.getElementsByTagName('SCRIPT');
@@ -169,35 +171,32 @@ function KellyShowRate() {
                 }
             }
             
-            return;
+        } else {
+            
+                var upgrade = document.querySelector('#primary ytd-watch-metadata'); 
+    
+                handler.envSelectors = domSelectors[isMobile() ? 'mobile' : 'desktop']; 
+                handler.envSelectors.ratioHeight = handler.cfg.fixedRatioHeightEnabled ? handler.cfg.fixedRatioHeight : handler.envSelectors.ratioHeight;
+                handler.envSelectors.ratioWidthFixed = handler.cfg.fixedRatioWidthEnabled ? handler.cfg.fixedRatioWidth : false;
+                
+                if (!isMobile() && upgrade && !upgrade.hidden && !upgrade.hasAttribute('disable-upgrade') && document.querySelector(domSelectors['desktopUpgrade'].btnsWrap)) { 
+                    handler.envSelectors = domSelectors['desktopUpgrade'];          
+                }
+                
+                if (handler.envSelectors.btnsWrap) {
+                    handler.buttonsWraper = document.querySelector(handler.envSelectors.btnsWrap);
+                }
+                
+                if (handler.envSelectors.ratioParent) {
+                    handler.ratioBarParent = document.querySelector(handler.envSelectors.ratioParent);
+                }
+                
         }
-       
-        var upgrade = document.querySelector('#primary ytd-watch-metadata'); 
-        
-        handler.envSelectors = domSelectors[isMobile() ? 'mobile' : 'desktop']; 
-        handler.envSelectors.ratioHeight = handler.cfg.fixedRatioHeightEnabled ? handler.cfg.fixedRatioHeight : handler.envSelectors.ratioHeight;
-        handler.envSelectors.ratioWidthFixed = handler.cfg.fixedRatioWidthEnabled ? handler.cfg.fixedRatioWidth : false;
-        
-        if (!isMobile() && upgrade && !upgrade.hidden && !upgrade.hasAttribute('disable-upgrade') && document.querySelector(domSelectors['desktopUpgrade'].btnsWrap)) { 
-            handler.envSelectors = domSelectors['desktopUpgrade'];          
-        }
-        
-        if (handler.envSelectors.btnsWrap) {
-            handler.buttonsWraper = document.querySelector(handler.envSelectors.btnsWrap);
-        }
-        
-        if (handler.envSelectors.ratioParent) {
-            handler.ratioBarParent = document.querySelector(handler.envSelectors.ratioParent);
-        }        
+         
     }
         
     function getPageDom() { 
     
-        // if (upgrade.hidden) {
-        //    upgrade.hidden = false;
-        //    upgrade.removeAttribute('disable-upgrade');
-        // }
-        
         initSelectors();
         
         if (handler.buttonsWraper) {
@@ -207,9 +206,9 @@ function KellyShowRate() {
             handler.log('No buttonsWraper detected', true);
         }
     
-        // prevent update counters by external scripts
+        // prevents update counters by external scripts
         //
-        // youtube renderer redraw likes counter in some cases even if navigation already finished
+        // youtube renderer redraw likes counter in some cases even if navigation already finished - mostly in mobile, currently this method not helps very much and redraw still required very friquently
         
         if (handler.buttonsWraper && !handler.protectCounters) {
             handler.protectCounters = new MutationObserver(function(mutations) {
@@ -233,34 +232,39 @@ function KellyShowRate() {
         
     function updateRatioWidth() {
          
-         if (isShorts()) { // unconfigurable, setted in css
-             handler.ratioBar.style.width = '';
-             return;
-         }
+         if (!handler.ratioBar) return;
          
-         if (isMobile()) {
-                   
-           handler.ratioBarMaxWidth = 146; 
-                   
-         } else if (!handler.envSelectors.ratioWidthFixed && handler.buttonsWraper && handler.buttonsWraper.children.length > 1) {
-              
-            var boundsData = handler.buttonsWraper.children[1].getBoundingClientRect();
-            var paddingEl = handler.buttonsWraper.children[1].querySelector('A');
-            var totalPadding = 8;
+         if (isShorts()) { // unconfigurable, setted in css
+         
+             handler.ratioBar.style.width = '';
+             
+         } else {
+         
+             if (isMobile()) {
+                       
+               handler.ratioBarMaxWidth = 146; 
+                       
+             } else if (!handler.envSelectors.ratioWidthFixed && handler.buttonsWraper && handler.buttonsWraper.children.length > 1) {
+                  
+                var boundsData = handler.buttonsWraper.children[1].getBoundingClientRect();
+                var paddingEl = handler.buttonsWraper.children[1].querySelector('A');
+                var totalPadding = 8;
+                
+                if (paddingEl) totalPadding += parseInt(window.getComputedStyle(paddingEl).paddingRight);
+                
+                handler.ratioBarMaxWidth = (boundsData.left + boundsData.width) - totalPadding - handler.buttonsWraper.children[0].getBoundingClientRect().left;
+                
+                if (handler.ratioBarMaxWidth < 60) handler.ratioBarMaxWidth = 150;
+                if (handler.ratioBarMaxWidth > 210) handler.ratioBarMaxWidth = 210;    
+                
+            } else if (handler.envSelectors.ratioWidthFixed) {
+                
+                handler.ratioBarMaxWidth = handler.envSelectors.ratioWidthFixed;
+            }
             
-            if (paddingEl) totalPadding += parseInt(window.getComputedStyle(paddingEl).paddingRight);
+            if (handler.ratioBarMaxWidth) handler.ratioBar.style.width = handler.ratioBarMaxWidth + 'px';
             
-            handler.ratioBarMaxWidth = (boundsData.left + boundsData.width) - totalPadding - handler.buttonsWraper.children[0].getBoundingClientRect().left;
-            
-            if (handler.ratioBarMaxWidth < 60) handler.ratioBarMaxWidth = 150;
-            if (handler.ratioBarMaxWidth > 210) handler.ratioBarMaxWidth = 210;    
-            
-        } else if (handler.envSelectors.ratioWidthFixed) {
-            
-            handler.ratioBarMaxWidth = handler.envSelectors.ratioWidthFixed;
         }
-        
-        if (handler.ratioBar && handler.ratioBarMaxWidth) handler.ratioBar.style.width = handler.ratioBarMaxWidth + 'px';
     }
         
     function updateRatio() {
