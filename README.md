@@ -28,7 +28,7 @@ My project is similar to other ones, but with some features that was important p
   Support select of "dislikes" data providers, so user can clearly see where "likes\dislikes" stat was loaded from
   currently supported : 
   
-<p>- YouTube metadata parsing (used by default)</p>
+<p>- YouTube metadata parsing (used by default, helps to detect is author of video manualy closed likes \ dislikes actions)</p>
 <p>- API by <a href="https://returnyoutubedislike.com/">Return YouTube Dislikes</a></p>
 <p>- API by <a href="https://sponsor.ajay.app/">SponsorBlock</a> (<a href="https://wiki.sponsor.ajay.app/w/API_Docs/Ratings">Documentation</a>)</p> (currently for testing only - deprecated)
 <p>- API by <a href="https://catface.ru">CatFace</a> (my server, currently used as cache \ mirror server for Return YouTube Dislikes API for limited list of regions to prevent spam)</p>
