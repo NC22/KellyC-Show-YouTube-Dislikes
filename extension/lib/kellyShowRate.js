@@ -18,7 +18,7 @@ function KellyShowRate() {
     var ldAction = {liked : 'likes', disliked : 'dislikes'}; // valid action request types
     var domSelectors = {
         mobile : {btnsWrap : '.slim-video-action-bar-actions', btnCounter : '.button-renderer-text', ratioHeight : 5, ratioBp : 0, ratioParent : 'ytm-slim-video-action-bar-renderer'},
-        desktop : {btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', btnCounterSegmented : 'span[role="text"]', ratioHeight : 5, ratioBp : 8, ratioParent : '#menu-container'},
+        desktop : {btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#menu-container'},
         shorts : {shortsContainer : '#shorts-container ytd-reel-video-renderer', btnsWrap : '#like-button ytd-like-button-renderer', ratioWrapBefore : '#like-button', btnCounter : '#text'}, 
         shortsMobile : {shortsContainer : '#player-shorts-container .carousel-item', btnsWrap : 'ytm-like-button-renderer', ratioWrapBefore : 'ytm-like-button-renderer', btnCounter : '.button-renderer-text'}, 
         desktopUpgrade : {btnsWrap : '#above-the-fold #menu #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#above-the-fold #actions-inner'},
@@ -188,9 +188,9 @@ function KellyShowRate() {
                     handler.buttonsWraper = document.querySelector(handler.envSelectors.btnsWrap);
                     
                     // possible custom style of buttons 
-                    if (handler.envSelectors.btnCounterSegmented && handler.buttonsWraper && handler.buttonsWraper.children.length > 0 && handler.buttonsWraper.children[0].tagName.toLowerCase().indexOf('ytd-segmented-like-dislike-button-renderer') != -1) {
+                    if (handler.buttonsWraper && handler.buttonsWraper.children.length > 0 && handler.buttonsWraper.children[0].tagName.toLowerCase().indexOf('ytd-segmented-like-dislike-button-renderer') != -1) {
                         handler.buttonsWraper = handler.buttonsWraper.children[0];
-                        handler.envSelectors.btnCounter = handler.envSelectors.btnCounterSegmented;
+                        handler.envSelectors.btnCounter = 'span[role="text"]';
                     } 
                 }
                 
