@@ -129,7 +129,7 @@ function KellyShowRate() {
     // update information about current main page placeholders - buttonsWraper, ratioBarParent elements - used to put sentimentbar and update counters on buttons
     
     function initSelectors() {
-    
+        
         if (isShorts()) {
             
             if (isMobile()) return; // mobile UI updates glitchy, not used \ supported full now
@@ -141,7 +141,7 @@ function KellyShowRate() {
                 
                 if (shortsVideos[i].innerHTML.indexOf(videoId) != -1 && KellyTools.isElInViewport(shortsVideos[i])) {
                     handler.buttonsWraper = shortsVideos[i].querySelector(handler.envSelectors.btnsWrap);                    
-                    handler.ratioBarParent = shortsVideos[i].querySelector('.' + handler.baseClass + '-shrots-ratio-bar-wrap');
+                    handler.ratioBarParent = shortsVideos[i].querySelector('.' + handler.baseClass + '-shorts-ratio-bar-wrap');
                     
                     if (!handler.cfg.showRatioShortsEnabled) {
                         
@@ -159,7 +159,7 @@ function KellyShowRate() {
                             if (likesBtn) {
                                 
                                 handler.ratioBarParent = document.createElement('DIV');
-                                handler.ratioBarParent.className = handler.baseClass + '-shrots-ratio-bar-wrap';
+                                handler.ratioBarParent.className = handler.baseClass + '-shorts-ratio-bar-wrap';
                                 likesBtn.parentElement.insertBefore(handler.ratioBarParent, likesBtn);
                             }
                         
@@ -190,15 +190,17 @@ function KellyShowRate() {
                     handler.buttonsWraper = document.querySelector(handler.envSelectors.btnsWrap);
                     
                     handler.log('buttonsWraper:', true);
-                    console.log(handler.buttonsWraper);
+                    if (KellyTools.DEBUG) console.log(handler.buttonsWraper);
                     
                     // possible custom style of buttons 
                     if (handler.buttonsWraper && handler.buttonsWraper.children.length > 0 && handler.buttonsWraper.children[0].tagName.toLowerCase().indexOf('ytd-segmented-like-dislike-button-renderer') != -1) {
                         
                         handler.buttonsWraper = handler.buttonsWraper.children[0];
                         handler.envSelectors.btnCounter = 'span[role="text"]';
-                        handler.log('Env exception 2', true);                 
-
+                        handler.log('Env exception 2', true);
+                        
+                        handler.envSelectors.ratioBarClassName = handler.baseClass + '-ratio-bar-segmented-design';
+                        
                         if (!handler.buttonsWraper.children[1]) {
                             
                             handler.log('Env exception 2 - cant find dislike button', true);  
@@ -217,15 +219,27 @@ function KellyShowRate() {
                                 if (!likeTextBox) {
                                     
                                     handler.log('Env exception 2 - no like button prototype found', true);  
+                                    
                                 } else {                                    
                                     var newTextBox = likeTextBox.cloneNode(true);
                                         newTextBox.children[0].innerHTML = '';                                    
                                     buttonBase.appendChild(newTextBox);
                                 }
                                 
-                            } else {
+                                textBox = newTextBox;
                                 
+                            } else {                                
                                 handler.log('Env exception 2 - update text placeholder', true);  
+                            }
+                            
+                            if (textBox) {
+                                
+                                textBox.classList.add(handler.baseClass + '-segmented-design-dislike-text');
+                                
+                                if (!textBox.querySelector('span')) {
+                                    handler.log('Env exception 2 - use default text placeholder', true); 
+                                    KellyTools.setHTMLData(textBox, '<span class="yt-core-attributed-string yt-core-attributed-string--white-space-no-wrap" role="text"></span>'); 
+                                }
                             }
                         }
                     } 
@@ -236,7 +250,6 @@ function KellyShowRate() {
                 }
                 
         }
-        
         
     }
         
@@ -345,6 +358,10 @@ function KellyShowRate() {
             
             handler.ratioBar.className += ' ' + barCl + '-warc'; 
             handler.cfg.popupAvoidBoundsEnabled = false;
+        }
+        
+        if (handler.envSelectors.ratioBarClassName) {
+            handler.ratioBar.className += ' ' + handler.envSelectors.ratioBarClassName; 
         }
 
         if (ydata) {

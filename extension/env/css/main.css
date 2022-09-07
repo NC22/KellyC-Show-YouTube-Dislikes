@@ -8,11 +8,21 @@
     z-index : 1;
 }
 
-.__BASECLASS__-shrots-ratio-bar-wrap .kelly-show-rating-ratio-bar {
+.__BASECLASS__-shorts-ratio-bar-wrap .kelly-show-rating-ratio-bar {
     position: relative;
     width: 50px;
     left: unset;
     padding-bottom: 0;
+}
+
+/* YouTube layout upgrade - segmented buttons */
+
+.__BASECLASS__-segmented-design-dislike-text {
+    margin-left : 8px;
+}
+
+.__BASECLASS__-ratio-bar.__BASECLASS__-ratio-bar-segmented-design {
+    left : 0px;
 }
 
 /* YouTube layout upgrade */
