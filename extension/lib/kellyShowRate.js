@@ -18,7 +18,7 @@ function KellyShowRate() {
     var ldAction = {liked : 'likes', disliked : 'dislikes'}; // valid action request types
     var domSelectors = {
         mobile : {btnsWrap : '.slim-video-action-bar-actions', btnCounter : '.button-renderer-text', ratioHeight : 5, ratioBp : 0, ratioParent : 'ytm-slim-video-action-bar-renderer'},
-        desktop : {btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#menu-container'},
+        desktop : {btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', btnCounterSegmented : 'span[role="text"]', ratioHeight : 5, ratioBp : 8, ratioParent : '#menu-container'},
         shorts : {shortsContainer : '#shorts-container ytd-reel-video-renderer', btnsWrap : '#like-button ytd-like-button-renderer', ratioWrapBefore : '#like-button', btnCounter : '#text'}, 
         shortsMobile : {shortsContainer : '#player-shorts-container .carousel-item', btnsWrap : 'ytm-like-button-renderer', ratioWrapBefore : 'ytm-like-button-renderer', btnCounter : '.button-renderer-text'}, 
         desktopUpgrade : {btnsWrap : '#above-the-fold #menu #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#above-the-fold #actions-inner'},
@@ -173,18 +173,25 @@ function KellyShowRate() {
             
         } else {
             
-                var upgrade = document.querySelector('#primary ytd-watch-metadata'); 
-    
+                
                 handler.envSelectors = domSelectors[isMobile() ? 'mobile' : 'desktop']; 
                 handler.envSelectors.ratioHeight = handler.cfg.fixedRatioHeightEnabled ? handler.cfg.fixedRatioHeight : handler.envSelectors.ratioHeight;
                 handler.envSelectors.ratioWidthFixed = handler.cfg.fixedRatioWidthEnabled ? handler.cfg.fixedRatioWidth : false;
                 
+                // possible custom style
+                var upgrade = document.querySelector('#primary ytd-watch-metadata');     
                 if (!isMobile() && upgrade && !upgrade.hidden && !upgrade.hasAttribute('disable-upgrade') && document.querySelector(domSelectors['desktopUpgrade'].btnsWrap)) { 
                     handler.envSelectors = domSelectors['desktopUpgrade'];          
                 }
                 
                 if (handler.envSelectors.btnsWrap) {
                     handler.buttonsWraper = document.querySelector(handler.envSelectors.btnsWrap);
+                    
+                    // possible custom style of buttons 
+                    if (handler.envSelectors.btnCounterSegmented && handler.buttonsWraper && handler.buttonsWraper.children.length > 0 && handler.buttonsWraper.children[0].tagName.toLowerCase().indexOf('ytd-segmented-like-dislike-button-renderer') != -1) {
+                        handler.buttonsWraper = handler.buttonsWraper.children[0];
+                        handler.envSelectors.btnCounter = handler.envSelectors.btnCounterSegmented;
+                    } 
                 }
                 
                 if (handler.envSelectors.ratioParent) {
@@ -246,16 +253,25 @@ function KellyShowRate() {
                        
              } else if (!handler.envSelectors.ratioWidthFixed && handler.buttonsWraper && handler.buttonsWraper.children.length > 1) {
                   
-                var boundsData = handler.buttonsWraper.children[1].getBoundingClientRect();
                 var paddingEl = handler.buttonsWraper.children[1].querySelector('A');
-                var totalPadding = 8;
+                var totalPadding = 0;  
                 
-                if (paddingEl) totalPadding += parseInt(window.getComputedStyle(paddingEl).paddingRight);
+                handler.ratioBarMaxWidth = handler.buttonsWraper.children[0].clientWidth + handler.buttonsWraper.children[1].clientWidth;
+                                  
+                if (paddingEl) {
+                    totalPadding += parseInt(window.getComputedStyle(paddingEl).paddingRight);
+                }
                 
-                handler.ratioBarMaxWidth = (boundsData.left + boundsData.width) - totalPadding - handler.buttonsWraper.children[0].getBoundingClientRect().left;
+                handler.ratioBarMaxWidth -= totalPadding;       
                 
                 if (handler.ratioBarMaxWidth < 60) handler.ratioBarMaxWidth = 150;
-                if (handler.ratioBarMaxWidth > 210) handler.ratioBarMaxWidth = 210;    
+                if (handler.ratioBarMaxWidth > 210) handler.ratioBarMaxWidth = 210;
+                
+                if ( handler.cfg.ratioXoffsetEnabled ) handler.ratioBar.style.left = handler.cfg.ratioXoffset + 'px';
+                else handler.ratioBar.style.left = '';
+                
+                if ( handler.cfg.ratioYoffsetEnabled ) handler.ratioBar.style.top = handler.cfg.ratioYoffset + 'px';
+                else handler.ratioBar.style.top = '';
                 
             } else if (handler.envSelectors.ratioWidthFixed) {
                 

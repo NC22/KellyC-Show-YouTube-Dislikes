@@ -568,7 +568,7 @@ var KellyCOptions = new Object();
                      continue;
                  }
                  
-                 var title = KellyStorage.fields[key].hidden ? key : handler.getLoc('option_' + key);
+                 var title = KellyStorage.fields[key].hidden ? key : (KellyStorage.fields[key].defaultLoc ? KellyStorage.fields[key].defaultLoc : handler.getLoc('option_' + key));
                  if (!title) title = key;
                  
                  title += helpHtml;

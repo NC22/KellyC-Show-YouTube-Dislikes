@@ -2,20 +2,19 @@
 
 var KellyEDispetcher = new Object();
 
-    KellyEDispetcher.updatePageRevision = ['1.1.3.9', '1.1.4.0']; // versions, that related to update.html page text, if already notified on one of listed versions - skip
+    KellyEDispetcher.updatePageRevision = ['1.1.3.9', '1.1.4.0', '1.1.4.1']; // versions, that related to update.html page text, if already notified on one of listed versions - skip
     KellyEDispetcher.init = function() {
         
-             if (typeof chrome !== 'undefined' && typeof chrome.runtime !== 'undefined') KellyEDispetcher.api = chrome;
-        else if (typeof browser !== 'undefined' && typeof browser.runtime !== 'undefined') KellyEDispetcher.api = browser;
+             if (typeof browser !== 'undefined' && typeof browser.runtime !== 'undefined') KellyEDispetcher.api = browser;
+        else if (typeof chrome !== 'undefined' && typeof chrome.runtime !== 'undefined') KellyEDispetcher.api = chrome;     
         
         KellyEDispetcher.api.runtime.onMessage.addListener(this.onMessage);
-        
         KellyEDispetcher.api.runtime.onInstalled.addListener(function(details){
              
                 if (details.reason == "install") {
                     
                    console.log('[install]');  
-                   // KellyEDispetcher.api.tabs.create({url: '/env/page/update.html?mode=install'}, function(tab){});
+                   KellyEDispetcher.api.tabs.create({url: '/env/page/update.html?mode=install'}, function(tab){});
                    
                 } else if (details.reason == "update") {
                    
