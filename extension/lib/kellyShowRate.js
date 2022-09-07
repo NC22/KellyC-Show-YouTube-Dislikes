@@ -179,18 +179,24 @@ function KellyShowRate() {
                 handler.envSelectors.ratioWidthFixed = handler.cfg.fixedRatioWidthEnabled ? handler.cfg.fixedRatioWidth : false;
                 
                 // possible custom style
-                var upgrade = document.querySelector('#primary ytd-watch-metadata');     
+                var upgrade = document.querySelector('ytd-watch-metadata');     
+                
                 if (!isMobile() && upgrade && !upgrade.hidden && !upgrade.hasAttribute('disable-upgrade') && document.querySelector(domSelectors['desktopUpgrade'].btnsWrap)) { 
-                    handler.envSelectors = domSelectors['desktopUpgrade'];          
+                    handler.envSelectors = domSelectors['desktopUpgrade'];
+                    handler.log('Env exception 1', true);        
                 }
                 
                 if (handler.envSelectors.btnsWrap) {
                     handler.buttonsWraper = document.querySelector(handler.envSelectors.btnsWrap);
                     
+                    handler.log('buttonsWraper:', true);
+                    console.log(handler.buttonsWraper);
+                    
                     // possible custom style of buttons 
                     if (handler.buttonsWraper && handler.buttonsWraper.children.length > 0 && handler.buttonsWraper.children[0].tagName.toLowerCase().indexOf('ytd-segmented-like-dislike-button-renderer') != -1) {
                         handler.buttonsWraper = handler.buttonsWraper.children[0];
                         handler.envSelectors.btnCounter = 'span[role="text"]';
+                        handler.log('Env exception 2', true);  
                     } 
                 }
                 
@@ -212,7 +218,7 @@ function KellyShowRate() {
         } else {
             handler.log('No buttonsWraper detected', true);
         }
-    
+        
         // prevents update counters by external scripts
         //
         // youtube renderer redraw likes counter in some cases even if navigation already finished - mostly in mobile, currently this method not helps very much and redraw still required very friquently
@@ -350,6 +356,7 @@ function KellyShowRate() {
             
             handler.getTooltip().show(false);
         }
+        
     }
     
     function getYTData(cfg, onLoad) {

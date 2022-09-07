@@ -40,6 +40,7 @@ KellyShowRate.apiController['youtubeMetric'].parseYTPage = function(docRawText) 
 
                 var pageDataRegExp = /\"topLevelButtons\"\:\[\{([\s\S]*)watch-dislike\"\}/g;
                 var pageData = pageDataRegExp.exec(scripts[i].innerHTML);
+
                 var data = JSON.parse('[{' + pageData[1] + '"}}]');
                 if (!data || data.length < 0) break;
 
