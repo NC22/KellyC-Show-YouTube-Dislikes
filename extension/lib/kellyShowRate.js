@@ -129,7 +129,7 @@ function KellyShowRate() {
     // update information about current main page placeholders - buttonsWraper, ratioBarParent elements - used to put sentimentbar and update counters on buttons
     
     function initSelectors() {
-       
+    
         if (isShorts()) {
             
             if (isMobile()) return; // mobile UI updates glitchy, not used \ supported full now
@@ -194,9 +194,40 @@ function KellyShowRate() {
                     
                     // possible custom style of buttons 
                     if (handler.buttonsWraper && handler.buttonsWraper.children.length > 0 && handler.buttonsWraper.children[0].tagName.toLowerCase().indexOf('ytd-segmented-like-dislike-button-renderer') != -1) {
+                        
                         handler.buttonsWraper = handler.buttonsWraper.children[0];
                         handler.envSelectors.btnCounter = 'span[role="text"]';
-                        handler.log('Env exception 2', true);  
+                        handler.log('Env exception 2', true);                 
+
+                        if (!handler.buttonsWraper.children[1]) {
+                            
+                            handler.log('Env exception 2 - cant find dislike button', true);  
+                            
+                        } else {
+                            
+                            var buttonBase = handler.buttonsWraper.children[1].querySelector('button');
+                                buttonBase.style.width = 'auto';
+                                
+                            var textBox = handler.buttonsWraper.children[1].querySelector('.cbox');
+                            if (!textBox) {
+                            
+                                handler.log('Env exception 2 - create text placeholder', true);  
+                                
+                                var likeTextBox = handler.buttonsWraper.children[0].querySelector('.cbox');
+                                if (!likeTextBox) {
+                                    
+                                    handler.log('Env exception 2 - no like button prototype found', true);  
+                                } else {                                    
+                                    var newTextBox = likeTextBox.cloneNode(true);
+                                        newTextBox.children[0].innerHTML = '';                                    
+                                    buttonBase.appendChild(newTextBox);
+                                }
+                                
+                            } else {
+                                
+                                handler.log('Env exception 2 - update text placeholder', true);  
+                            }
+                        }
                     } 
                 }
                 
@@ -205,7 +236,8 @@ function KellyShowRate() {
                 }
                 
         }
-         
+        
+        
     }
         
     function getPageDom() { 
