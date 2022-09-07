@@ -19,8 +19,8 @@ function KellyShowRate() {
     var domSelectors = {
         mobile : {btnsWrap : '.slim-video-action-bar-actions', btnCounter : '.button-renderer-text', ratioHeight : 5, ratioBp : 0, ratioParent : 'ytm-slim-video-action-bar-renderer'},
         desktop : {btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#menu-container'},
-        shorts : {shortsContainer : '#shorts-container ytd-reel-video-renderer', btnsWrap : '#like-button ytd-like-button-renderer', ratioWrapBefore : '#like-button', btnCounter : '#text'}, 
-        shortsMobile : {shortsContainer : '#player-shorts-container .carousel-item', btnsWrap : 'ytm-like-button-renderer', ratioWrapBefore : 'ytm-like-button-renderer', btnCounter : '.button-renderer-text'}, 
+        shorts : {shortsContainer : '#shorts-container ytd-reel-video-renderer',  ratioHeight : 5, btnsWrap : '#like-button ytd-like-button-renderer', ratioWrapBefore : '#like-button', btnCounter : '#text'}, 
+        shortsMobile : {shortsContainer : '#player-shorts-container .carousel-item',  ratioHeight : 5, btnsWrap : 'ytm-like-button-renderer', ratioWrapBefore : 'ytm-like-button-renderer', btnCounter : '.button-renderer-text'}, 
         desktopUpgrade : {btnsWrap : '#above-the-fold #menu #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#above-the-fold #actions-inner'},
     };
     
@@ -175,8 +175,6 @@ function KellyShowRate() {
             
                 
                 handler.envSelectors = domSelectors[isMobile() ? 'mobile' : 'desktop']; 
-                handler.envSelectors.ratioHeight = handler.cfg.fixedRatioHeightEnabled ? handler.cfg.fixedRatioHeight : handler.envSelectors.ratioHeight;
-                handler.envSelectors.ratioWidthFixed = handler.cfg.fixedRatioWidthEnabled ? handler.cfg.fixedRatioWidth : false;
                 
                 // possible custom style
                 var upgrade = document.querySelector('ytd-watch-metadata');     
@@ -248,6 +246,10 @@ function KellyShowRate() {
                 if (handler.envSelectors.ratioParent) {
                     handler.ratioBarParent = document.querySelector(handler.envSelectors.ratioParent);
                 }
+                
+                handler.envSelectors.ratioHeight = handler.cfg.fixedRatioHeightEnabled ? handler.cfg.fixedRatioHeight : handler.envSelectors.ratioHeight;
+                handler.envSelectors.ratioWidthFixed = handler.cfg.fixedRatioWidthEnabled ? handler.cfg.fixedRatioWidth : false;
+                
                 
         }
         
