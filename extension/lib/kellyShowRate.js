@@ -792,6 +792,8 @@ function KellyShowRate() {
         if (lastVideoYData && getPageDom()) {
                         
             handler.dislikeBtn.style.opacity = 1;
+            handler.dislikeBtn.removeAttribute('is-empty');
+            
             var api = KellyStorage.apis[lastVideoYData.apiId], updateLikes = api && api.updateLikes;
 
             if (lastVideoYData.disabledReason) {
