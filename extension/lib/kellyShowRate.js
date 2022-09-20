@@ -268,15 +268,17 @@ function KellyShowRate() {
         
         // prevents update counters by external scripts
         //
-        // youtube renderer redraw likes counter in some cases even if navigation already finished - mostly in mobile, currently this method not helps very much and redraw still required very friquently
+        // youtube renderer redraw likes counter in some cases even if navigation already finished, and adds formated counter text after kellyc counter - so remove it if needed
         
         if (handler.buttonsWraper && !handler.protectCounters) {
             handler.protectCounters = new MutationObserver(function(mutations) {
                 
+                var updateLikes = (handler.currentApi && KellyStorage.apis[handler.currentApi].updateLikes) || handler.cfg.dNumbersFormatEnabled;
+
                 for (var i = 0; i < mutations.length; i++) {
                                               
                     if (mutations[i].type == 'childList' &&
-                       ((handler.currentApi && KellyStorage.apis[handler.currentApi].updateLikes && mutations[i].target == handler.likeBtn) || mutations[i].target == handler.dislikeBtn) && 
+                       ((updateLikes && mutations[i].target == handler.likeBtn) || mutations[i].target == handler.dislikeBtn) && 
                         mutations[i].addedNodes.length > 0 && 
                         mutations[i].addedNodes[0].nodeType == Node.TEXT_NODE) {                                
                         mutations[i].addedNodes[0].textContent = '';
@@ -522,7 +524,7 @@ function KellyShowRate() {
     function applyData(ydata, context) {
         
         var newData = validateYData(ydata); 
-        if (newData && !newData.helperApiId) {       
+        if (newData && !newData.helperApiId) { // main datasource loaded    
             
             browsingLog[lastVideoId].ydata = newData;
             browsingLog[lastVideoId].origYData = {likes : newData.likes, dislikes : newData.dislikes};
@@ -534,9 +536,11 @@ function KellyShowRate() {
                 }
             }
         
-        } else if (newData) browsingLog[lastVideoId].helperYdata[newData.helperApiId] = newData;
+        } else if (newData) browsingLog[lastVideoId].helperYdata[newData.helperApiId] = newData; // helpers info
         
         if (ydata && ydata.apiId == 'youtubeMetric' && ydata.disabledReason) browsingLog[lastVideoId].ydata.disabledReason = ydata.disabledReason;
+        
+        // recount if main data source was loaded, apply data from helpers if loaded 
         
         if (newData && browsingLog[lastVideoId].origYData) {
             
@@ -790,12 +794,13 @@ function KellyShowRate() {
         
         lastVideoYData = validateYData(ydata); 
         if (lastVideoYData && getPageDom()) {
-                        
+        
+            var api = KellyStorage.apis[lastVideoYData.apiId], updateLikes = (api && api.updateLikes) || handler.cfg.dNumbersFormatEnabled;
+                
             handler.dislikeBtn.style.opacity = 1;
-            handler.dislikeBtn.removeAttribute('is-empty');
-            
-            var api = KellyStorage.apis[lastVideoYData.apiId], updateLikes = api && api.updateLikes;
-
+            handler.dislikeBtn.removeAttribute('is-empty'); // style.display = 'flex'; 
+            if (updateLikes) handler.likeBtn.removeAttribute('is-empty');
+                
             if (lastVideoYData.disabledReason) {
                 
                 updateCounter('like', handler.likeBtn, false);                
@@ -803,9 +808,11 @@ function KellyShowRate() {
                 updateRatio();
                 
             } else {
+                var likesFormated = handler.cfg.dNumbersFormatEnabled ? KellyTools.dFormat(lastVideoYData.likes) : KellyTools.nFormat(lastVideoYData.likes);
+                var dislikesFormated = handler.cfg.dNumbersFormatEnabled ? KellyTools.dFormat(lastVideoYData.dislikes) : KellyTools.nFormat(lastVideoYData.dislikes);
                 
-                updateCounter('like', handler.likeBtn, updateLikes ? KellyTools.nFormat(lastVideoYData.likes) : false);                
-                updateCounter('dislike', handler.dislikeBtn, KellyTools.nFormat(lastVideoYData.dislikes));
+                updateCounter('like', handler.likeBtn, updateLikes ? likesFormated : false);                
+                updateCounter('dislike', handler.dislikeBtn, dislikesFormated);
                 updateRatio();
                 
                 setTimeout(updateRatioWidth, 500);
