@@ -190,7 +190,7 @@ function KellyShowRate() {
                     handler.log('buttonsWraper:', true);
                     if (KellyTools.DEBUG) console.log(handler.buttonsWraper);
                     
-                    // possible custom style of buttons 
+                    // possible custom style of buttons - segmented design
                     if (handler.buttonsWraper && handler.buttonsWraper.children.length > 0 && handler.buttonsWraper.children[0].tagName.toLowerCase().indexOf('ytd-segmented-like-dislike-button-renderer') != -1) {
                         
                         handler.buttonsWraper = handler.buttonsWraper.children[0];
@@ -307,7 +307,9 @@ function KellyShowRate() {
                handler.ratioBarMaxWidth = 146; 
                        
              } else if (!handler.envSelectors.ratioWidthFixed && handler.buttonsWraper && handler.buttonsWraper.children.length > 1) {
-                  
+                
+                /* calc ratio bar width by summ of buttons width */
+                
                 var paddingEl = handler.buttonsWraper.children[1].querySelector('A');
                 var totalPadding = 0;  
                 
@@ -322,16 +324,31 @@ function KellyShowRate() {
                 if (handler.ratioBarMaxWidth < 60) handler.ratioBarMaxWidth = 150;
                 if (handler.ratioBarMaxWidth > 210) handler.ratioBarMaxWidth = 210;
                 
-                if ( handler.cfg.ratioXoffsetEnabled ) handler.ratioBar.style.left = handler.cfg.ratioXoffset + 'px';
-                else handler.ratioBar.style.left = '';
-                
-                if ( handler.cfg.ratioYoffsetEnabled ) handler.ratioBar.style.top = handler.cfg.ratioYoffset + 'px';
-                else handler.ratioBar.style.top = '';
                 
             } else if (handler.envSelectors.ratioWidthFixed) {
                 
                 handler.ratioBarMaxWidth = handler.envSelectors.ratioWidthFixed;
             }
+        
+            /* apply offsets - segmented design auto offset to buttons wraper, optional user offsets */
+            
+            handler.ratioBar.style.left = '';
+            handler.ratioBar.style.top = '';
+            
+            var leftOffset = 0, topOffset = 0;
+            if (handler.cfg.ratioAutoAlignEnabled && handler.ratioBar.classList.contains(handler.baseClass + '-ratio-bar-segmented-design')) {
+                
+                var buttonsWraperPos = handler.buttonsWraper.getBoundingClientRect(), ratioBarPos = handler.ratioBar.getBoundingClientRect();
+                leftOffset = (buttonsWraperPos.left - ratioBarPos.left);
+            }
+            
+            if ( handler.cfg.ratioXoffsetEnabled ) leftOffset += handler.cfg.ratioXoffset                
+            if ( handler.cfg.ratioYoffsetEnabled ) topOffset += handler.cfg.ratioYoffset;
+            
+            if (leftOffset) handler.ratioBar.style.left = leftOffset + 'px';
+            if (topOffset) handler.ratioBar.style.left = topOffset + 'px';
+                
+            /* apply ratio bar width */
             
             if (handler.ratioBarMaxWidth) handler.ratioBar.style.width = handler.ratioBarMaxWidth + 'px';
             
@@ -1128,6 +1145,7 @@ function KellyShowRate() {
                 
             } else { 
                 document.addEventListener('yt-navigate-finish', handler.updatePageStateWaitDomReady);
+                window.addEventListener('resize', function() { handler.updatePageStateDelayed(200); });
                 handler.updatePageStateWaitDomReady();                
             }
                                 
