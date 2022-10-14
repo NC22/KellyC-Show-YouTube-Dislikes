@@ -136,12 +136,20 @@ function KellyShowRate() {
             
             handler.envSelectors = domSelectors[isMobile() ? 'shortsMobile' : 'shorts'];
             var shortsVideos = document.querySelectorAll(handler.envSelectors.shortsContainer), videoId = getVideoId();
-        
+            if (!shortsVideos) {
+                handler.log('No shortsVideos detected', true);                             
+            } 
+            
             for (var i = 0; i < shortsVideos.length; i++) {
                 
                 if (shortsVideos[i].innerHTML.indexOf(videoId) != -1 && KellyTools.isElInViewport(shortsVideos[i])) {
                     handler.buttonsWraper = shortsVideos[i].querySelector(handler.envSelectors.btnsWrap);                    
                     handler.ratioBarParent = shortsVideos[i].querySelector('.' + handler.baseClass + '-shorts-ratio-bar-wrap');
+                    
+                    // segmented style selector
+                    if (handler.buttonsWraper && !handler.buttonsWraper.children[0].querySelector(handler.envSelectors.btnCounter)) {
+                        handler.envSelectors.btnCounter = 'span[role="text"]';
+                    }
                     
                     if (!handler.cfg.showRatioShortsEnabled) {
                         
@@ -204,6 +212,8 @@ function KellyShowRate() {
                             handler.log('Env exception 2 - cant find dislike button', true);  
                             
                         } else {
+                            
+                            // dislike button in segmented style can be empty and not contain required structure as like button have - clone it in this case
                             
                             var buttonBase = handler.buttonsWraper.children[1].querySelector('button');
                                 buttonBase.style.width = 'auto';
@@ -819,6 +829,10 @@ function KellyShowRate() {
             if (updateLikes) handler.likeBtn.removeAttribute('is-empty');
                 
             if (lastVideoYData.disabledReason) {
+                
+                if (isShorts() && lastVideoYData.disabledReason != 'Old data') {                    
+                    lastVideoYData.disabledReason = 'Disabl.'; // short text instead full
+                }
                 
                 updateCounter('like', handler.likeBtn, false);                
                 updateCounter('dislike', handler.dislikeBtn, lastVideoYData.disabledReason == 'Old data' ? lastVideoYData.dislikes + ' (?)' : lastVideoYData.disabledReason, true);

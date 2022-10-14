@@ -19,7 +19,7 @@ var KellyStorage = {
             ratioYoffset : {defaultLoc : 'Ratio bar top offset (px)', optional : true, type : 'int', defaultOptional : false, default : 0, limit : {from : 0, to : 1200}},
             ratioAutoAlign : {defaultLoc : 'Auto align ratio bar (for segmented design)', optional : true, defaultOptional : true},
             
-            dNumbersFormat : {defaultLoc : '[beta] Show full counters (ex. 1,500,600 instead of 1.5M)', optional : true, defaultOptional : false},
+            dNumbersFormat : {defaultLoc : 'Show full counters (ex. 1,500,600 instead of 1.5M)', optional : true, defaultOptional : false},
                         
             fixedRatioWidth : {optional : true, type : 'int', defaultOptional : false, default : 150, limit : {from : 60, to : 350}},
             fixedRatioHeight : {optional : true, type : 'int', defaultOptional : false, default : 3, defaultOptional : true, limit : {from : 1, to : 8}}, 
