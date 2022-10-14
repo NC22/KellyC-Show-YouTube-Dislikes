@@ -51,7 +51,7 @@
         "message":"Fallback \\ backup for sended by extension actions. Can be replacement for SB"
     }, 
     "datasource_get":{  
-        "message":"Reciev data"
+        "message":"Receive data"
     }, 
     "datasource_send":{  
         "message":"Send actions"
@@ -75,7 +75,7 @@
         "message":"Extension gets information about dislikes / likes count by making request to data sources by priority. The count may differ based on the source from which the data was obtained in accordance with the order of requests."
     }, 
     "datasources_help_1":{  
-        "message":"<b>Reciev data</b> - extension will try to get statistic from API according to priority. <b>Use as addition data source</b> - count voices from a source in addition to the main data source"
+        "message":"<b>Receive data</b> - extension will try to get statistic from API according to priority. <b>Use as addition data source</b> - count voices from a source in addition to the main data source"
     },
     "datasources_help_2":{  
         "message":"<b>Send actions</b> - extension will send your like \\ dislike actions to API"
