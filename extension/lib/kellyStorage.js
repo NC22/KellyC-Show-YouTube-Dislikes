@@ -15,8 +15,8 @@ var KellyStorage = {
             showPercent : {optional : true, defaultOptional : false},
             popupAvoidBounds : {optional : true, defaultOptional : true},
             
-            ratioXoffset : {defaultLoc : 'Ratio bar left offset (px)', optional : true, type : 'int', defaultOptional : false, default : 0, limit : {from : 0, to : 1200}},
-            ratioYoffset : {defaultLoc : 'Ratio bar top offset (px)', optional : true, type : 'int', defaultOptional : false, default : 0, limit : {from : 0, to : 1200}},
+            ratioXoffsetA : {defaultLoc : 'Ratio bar left offset (px)', optional : true, type : 'int', defaultOptional : false, default : 0, limit : {from : 0, to : 1200}},
+            ratioYoffsetA : {defaultLoc : 'Ratio bar top offset (px)', optional : true, type : 'int', defaultOptional : false, default : 0, limit : {from : 0, to : 1200}},
             ratioAutoAlign : {defaultLoc : 'Auto align ratio bar (for segmented design)', optional : true, defaultOptional : true},
             
             dNumbersFormat : {defaultLoc : 'Show full counters (ex. 1,500,600 instead of 1.5M)', optional : true, defaultOptional : false},
@@ -58,8 +58,8 @@ var KellyStorage = {
                 'fixedRatioWidth',
                 'fixedRatioHeight',
                 'ratioAutoAlign',
-                'ratioXoffset',
-                'ratioYoffset',
+                'ratioXoffsetA',
+                'ratioYoffsetA',
                 'popupAvoidBounds',
             '_/ratio_options/_', 
             'showRatioShorts',

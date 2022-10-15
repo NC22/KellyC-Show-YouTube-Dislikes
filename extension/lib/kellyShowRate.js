@@ -309,7 +309,9 @@ function KellyShowRate() {
          if (isShorts()) { // unconfigurable, setted in css
          
              handler.ratioBar.style.width = '';
-             
+             handler.ratioBar.style.left = '';
+             handler.ratioBar.style.top = '';
+            
          } else {
          
              if (isMobile()) {
@@ -352,8 +354,8 @@ function KellyShowRate() {
                 leftOffset = (buttonsWraperPos.left - ratioBarPos.left);
             }
             
-            if ( handler.cfg.ratioXoffsetEnabled ) leftOffset += handler.cfg.ratioXoffset                
-            if ( handler.cfg.ratioYoffsetEnabled ) topOffset += handler.cfg.ratioYoffset;
+            if ( handler.cfg.ratioXoffsetAEnabled ) leftOffset += handler.cfg.ratioXoffsetA;
+            if ( handler.cfg.ratioYoffsetAEnabled ) topOffset += handler.cfg.ratioYoffsetA;
             
             if (leftOffset) handler.ratioBar.style.left = leftOffset + 'px';
             if (topOffset) handler.ratioBar.style.left = topOffset + 'px';
@@ -514,16 +516,16 @@ function KellyShowRate() {
        
         if (browsingLog[videoId].ydata && showYData(browsingLog[videoId].ydata, 'redraw.existData')) {
             
-            if (isShorts()) {
-                 setTimeout(function() {
-                     
-                     if ( lastVideoId == videoId ) {
-                        getPageDom();
-                        showYData(browsingLog[videoId].ydata, 'redraw.existData');
-                     }
-                     
-                 }, 1000);
-            }
+            
+            // currently event yt-navigate-finish not synced with YT page rendering mechanics, and some times can be called before YT actually redraw all elements and extension changes can be just overwriten by YT page after
+            // so we need to find some addition events to detect updates to not use this timer
+            
+            setTimeout(function() {
+                 if ( lastVideoId == videoId ) {
+                    getPageDom();
+                    showYData(browsingLog[videoId].ydata, 'redraw.existData (prevent YT layout redraws)');
+                 }
+            }, 1000);
             
             return onReady(false, 'data already loaded before : ' + lastVideoId);
         }
@@ -1049,6 +1051,16 @@ function KellyShowRate() {
         // if (['youtubeMetric', 'catface', 'ryda'].indexOf(handler.currentApi) != -1) 
         updatePageStateByAR(nextLoop);
     }
+    
+    // todo
+    /*
+        use delayed update by cache without request for some cases (resize window, may be some else - currently used only in prepareRequestStart on already loaded data - so add on every applydata event too)
+        
+        getPageDom();
+        var videoId = getVideoId();
+        showYData(browsingLog[videoId].ydata, 'redraw.existData (prevent YT layout redraws)');
+                    
+    */
     
     this.updatePageStateDelayed = function(d, clearCache) {
         
