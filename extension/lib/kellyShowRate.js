@@ -199,56 +199,60 @@ function KellyShowRate() {
                     if (KellyTools.DEBUG) console.log(handler.buttonsWraper);
                     
                     // possible custom style of buttons - segmented design
-                    if (handler.buttonsWraper && handler.buttonsWraper.children.length > 0 && handler.buttonsWraper.children[0].tagName.toLowerCase().indexOf('ytd-segmented-like-dislike-button-renderer') != -1) {
+                    if (handler.buttonsWraper && handler.buttonsWraper.children.length > 0) {
                         
-                        handler.buttonsWraper = handler.buttonsWraper.children[0];
-                        handler.envSelectors.btnCounter = 'span[role="text"]';
-                        handler.log('Env exception 2', true);
-                        
-                        handler.envSelectors.ratioBarClassName = handler.baseClass + '-ratio-bar-segmented-design';
-                        
-                        if (!handler.buttonsWraper.children[1]) {
+                        if (!handler.buttonsWraper.querySelector('#text')) { // default
                             
-                            handler.log('Env exception 2 - cant find dislike button', true);  
+                            handler.buttonsWraper = handler.buttonsWraper.children[0];
+                            handler.envSelectors.btnCounter = 'span[role="text"]';
+                            handler.log('Env exception 2 - use alternative btnCounter selector', true);
                             
-                        } else {
+                            handler.envSelectors.ratioBarClassName = handler.baseClass + '-ratio-bar-segmented-design';
                             
-                            // dislike button in segmented style can be empty and not contain required structure as like button have - clone it in this case
-                            
-                            var buttonBase = handler.buttonsWraper.children[1].querySelector('button');
-                                buttonBase.style.width = 'auto';
+                            if (!handler.buttonsWraper.children[1]) {
                                 
-                            var textBox = handler.buttonsWraper.children[1].querySelector('.cbox');
-                            if (!textBox) {
-                            
-                                handler.log('Env exception 2 - create text placeholder', true);  
+                                handler.log('Env exception 2 - cant find dislike button', true);  
                                 
-                                var likeTextBox = handler.buttonsWraper.children[0].querySelector('.cbox');
-                                if (!likeTextBox) {
+                            } else {
+                                
+                                // dislike button in segmented style can be empty and not contain required structure as like button have - clone it in this case
+                                
+                                var buttonBase = handler.buttonsWraper.children[1].querySelector('button');
+                                    buttonBase.style.width = 'auto';
                                     
-                                    handler.log('Env exception 2 - no like button prototype found', true);  
+                                var textBox = handler.buttonsWraper.children[1].querySelector('.cbox');
+                                if (!textBox) {
+                                
+                                    handler.log('Env exception 2 - create text placeholder', true);  
                                     
-                                } else {                                    
-                                    var newTextBox = likeTextBox.cloneNode(true);
-                                        newTextBox.children[0].innerHTML = '';                                    
-                                    buttonBase.appendChild(newTextBox);
+                                    var likeTextBox = handler.buttonsWraper.children[0].querySelector('.cbox');
+                                    if (!likeTextBox) {
+                                        
+                                        handler.log('Env exception 2 - no like button prototype found', true);  
+                                        
+                                    } else {                                    
+                                        var newTextBox = likeTextBox.cloneNode(true);
+                                            newTextBox.children[0].innerHTML = '';                                    
+                                        buttonBase.appendChild(newTextBox);
+                                    }
+                                    
+                                    textBox = newTextBox;
+                                    
+                                } else {                                
+                                    handler.log('Env exception 2 - update text placeholder', true);  
                                 }
                                 
-                                textBox = newTextBox;
-                                
-                            } else {                                
-                                handler.log('Env exception 2 - update text placeholder', true);  
-                            }
-                            
-                            if (textBox) {
-                                
-                                textBox.classList.add(handler.baseClass + '-segmented-design-dislike-text');
-                                
-                                if (!textBox.querySelector('span')) {
-                                    handler.log('Env exception 2 - use default text placeholder', true); 
-                                    KellyTools.setHTMLData(textBox, '<span class="yt-core-attributed-string yt-core-attributed-string--white-space-no-wrap" role="text"></span>'); 
+                                if (textBox) {
+                                    
+                                    textBox.classList.add(handler.baseClass + '-segmented-design-dislike-text');
+                                    
+                                    if (!textBox.querySelector('span')) {
+                                        handler.log('Env exception 2 - use default text placeholder', true); 
+                                        KellyTools.setHTMLData(textBox, '<span class="yt-core-attributed-string yt-core-attributed-string--white-space-no-wrap" role="text"></span>'); 
+                                    }
                                 }
                             }
+                            
                         }
                     } 
                 }
