@@ -146,7 +146,7 @@ function KellyShowRate() {
                     handler.buttonsWraper = shortsVideos[i].querySelector(handler.envSelectors.btnsWrap);                    
                     handler.ratioBarParent = shortsVideos[i].querySelector('.' + handler.baseClass + '-shorts-ratio-bar-wrap');
                     
-                    // segmented style selector
+                    // new rounded style selector
                     if (handler.buttonsWraper && !handler.buttonsWraper.children[0].querySelector(handler.envSelectors.btnCounter)) {
                         handler.envSelectors.btnCounter = 'span[role="text"]';
                     }
@@ -198,12 +198,18 @@ function KellyShowRate() {
                     handler.log('buttonsWraper:', true);
                     if (KellyTools.DEBUG) console.log(handler.buttonsWraper);
                     
-                    // possible custom style of buttons - segmented design
+                    // if buttonsWraper found, check possible custom style of buttons section 
+                    
                     if (handler.buttonsWraper && handler.buttonsWraper.children.length > 0) {
                         
-                        if (!handler.buttonsWraper.querySelector('#text')) { // default
-                            
+                        //segmented buttons - placed inside additional wraper-container
+                        
+                        if (handler.buttonsWraper.children[0].tagName.toLowerCase().indexOf('ytd-segmented-like-dislike-button-renderer') != -1) {
                             handler.buttonsWraper = handler.buttonsWraper.children[0];
+                        }
+                        
+                        if (!handler.buttonsWraper.querySelector('#text')) { // new rounded style selector
+                            
                             handler.envSelectors.btnCounter = 'span[role="text"]';
                             handler.log('Env exception 2 - use alternative btnCounter selector', true);
                             
@@ -254,7 +260,9 @@ function KellyShowRate() {
                             }
                             
                         }
-                    } 
+                    } else {
+                         handler.log('Env exception 1 - buttonsWraper missing', true);  
+                    }
                 }
                 
                 if (handler.envSelectors.ratioParent) {
