@@ -16,6 +16,8 @@ function KellyShowRate() {
     
     var updateTimer = false; var initTimer = false;
     var ldAction = {liked : 'likes', disliked : 'dislikes'}; // valid action request types
+    
+    // optional ratioAutoAlignOffset for several exceptions
     var domSelectors = {
         mobile : {btnsWrap : '.slim-video-action-bar-actions', btnCounter : '.button-renderer-text', ratioHeight : 5, ratioBp : 0, ratioParent : 'ytm-slim-video-action-bar-renderer'},
         desktop : {btnsWrap : '#menu-container #top-level-buttons-computed', btnCounter : '#text', ratioHeight : 5, ratioBp : 8, ratioParent : '#menu-container'},
@@ -184,7 +186,7 @@ function KellyShowRate() {
                 
                 handler.envSelectors = domSelectors[isMobile() ? 'mobile' : 'desktop']; 
                 
-                // possible custom style
+                // possible custom desktop style
                 var upgrade = document.querySelector('ytd-watch-metadata');     
                 
                 if (!isMobile() && upgrade && !upgrade.hidden && !upgrade.hasAttribute('disable-upgrade') && document.querySelector(domSelectors['desktopUpgrade'].btnsWrap)) { 
@@ -206,9 +208,13 @@ function KellyShowRate() {
                         
                         if (handler.buttonsWraper.children[0].tagName.toLowerCase().indexOf('ytd-segmented-like-dislike-button-renderer') != -1) {
                             handler.buttonsWraper = handler.buttonsWraper.children[0];
+                        } else if (handler.buttonsWraper.children[0].tagName.toLowerCase().indexOf('ytm-segmented-like-dislike-button-renderer') != -1) {
+                            handler.buttonsWraper = handler.buttonsWraper.querySelector('.segmented-buttons');
+                        } else {
+                            handler.envSelectors.ratioAutoAlignOffset = {left : 4, top : 0};
                         }
                         
-                        if (!handler.buttonsWraper.querySelector('#text')) { // new rounded style selector
+                        if (!handler.buttonsWraper.querySelector(isMobile() ? '.button-renderer-text' : '#text')) { // new rounded style buttons style
                             
                             handler.envSelectors.btnCounter = 'span[role="text"]';
                             handler.log('Env exception 2 - use alternative btnCounter selector', true);
@@ -246,6 +252,7 @@ function KellyShowRate() {
                                     
                                 } else {                                
                                     handler.log('Env exception 2 - update text placeholder', true);  
+                                    console.log(textBox);
                                 }
                                 
                                 if (textBox) {
@@ -326,11 +333,12 @@ function KellyShowRate() {
             
          } else {
          
-             if (isMobile()) {
+             //if (isMobile()) {
                        
-               handler.ratioBarMaxWidth = 146; 
+              // handler.ratioBarMaxWidth = 146; 
                        
-             } else if (!handler.envSelectors.ratioWidthFixed && handler.buttonsWraper && handler.buttonsWraper.children.length > 1) {
+             //} else 
+             if (!handler.envSelectors.ratioWidthFixed && handler.buttonsWraper && handler.buttonsWraper.children.length > 1) {
                 
                 /* calc ratio bar width by summ of buttons width */
                 
@@ -360,14 +368,20 @@ function KellyShowRate() {
             handler.ratioBar.style.top = '';
             
             var leftOffset = 0, topOffset = 0;
-            if (handler.cfg.ratioAutoAlignEnabled && handler.ratioBar.classList.contains(handler.baseClass + '-ratio-bar-segmented-design')) {
+            
+            // currently disabled for old design \ mobile
+            if (!isMobile() && handler.cfg.ratioAutoAlignEnabled && handler.ratioBar.classList.contains(handler.baseClass + '-ratio-bar-segmented-design') && handler.buttonsWraper) {
                 
                 var buttonsWraperPos = handler.buttonsWraper.getBoundingClientRect(), ratioBarPos = handler.ratioBar.getBoundingClientRect();
                 leftOffset = (buttonsWraperPos.left - ratioBarPos.left);
+                
+                if (handler.envSelectors && handler.envSelectors.ratioAutoAlignOffset) {
+                    leftOffset += handler.envSelectors.ratioAutoAlignOffset.left;
+                }
             }
             
-            if ( handler.cfg.ratioXoffsetAEnabled ) leftOffset += handler.cfg.ratioXoffsetA;
-            if ( handler.cfg.ratioYoffsetAEnabled ) topOffset += handler.cfg.ratioYoffsetA;
+            if ( handler.cfg.ratioXoffsetBEnabled ) leftOffset += handler.cfg.ratioXoffsetB;
+            if ( handler.cfg.ratioYoffsetBEnabled ) topOffset += handler.cfg.ratioYoffsetB;
             
             if (leftOffset) handler.ratioBar.style.left = leftOffset + 'px';
             if (topOffset) handler.ratioBar.style.left = topOffset + 'px';
@@ -1153,8 +1167,10 @@ function KellyShowRate() {
                             (mutations[i].target.classList.contains('slim-video-action-bar-actions')) &&
                             mutations[i].addedNodes.length > 0 && 
                             mutations[i].addedNodes[0].nodeType == Node.ELEMENT_NODE && 
-                            mutations[i].addedNodes[0].classList.contains('button-renderer')) {
-                                
+                            (mutations[i].addedNodes[0].classList.contains('button-renderer') || mutations[i].addedNodes[0].tagName.toLowerCase().indexOf('button-renderer') != -1)) {
+                            
+                            handler.log('[MOBILE] major layout changes, need to redraw and recall, possible changed video', true);
+                            
                             return handler.updatePageStateDelayed(200);
                             
                         } else if (lastVideoYData && handler.buttonsWraper) {
