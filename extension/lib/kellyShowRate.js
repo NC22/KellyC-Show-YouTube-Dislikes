@@ -849,8 +849,9 @@ function KellyShowRate() {
         
         lastVideoYData = validateYData(ydata); 
         if (lastVideoYData && getPageDom()) {
-        
-            var api = KellyStorage.apis[lastVideoYData.apiId], updateLikes = (api && api.updateLikes) || handler.cfg.dNumbersFormatEnabled;
+            
+            var dFormatEnabled = handler.cfg.dNumbersFormatEnabled && !isShorts();
+            var api = KellyStorage.apis[lastVideoYData.apiId], updateLikes = (api && api.updateLikes) || dFormatEnabled;
                 
             handler.dislikeBtn.style.opacity = 1;
             handler.dislikeBtn.removeAttribute('is-empty'); // style.display = 'flex'; 
@@ -867,8 +868,8 @@ function KellyShowRate() {
                 updateRatio();
                 
             } else {
-                var likesFormated = handler.cfg.dNumbersFormatEnabled ? KellyTools.dFormat(lastVideoYData.likes) : KellyTools.nFormat(lastVideoYData.likes);
-                var dislikesFormated = handler.cfg.dNumbersFormatEnabled ? KellyTools.dFormat(lastVideoYData.dislikes) : KellyTools.nFormat(lastVideoYData.dislikes);
+                var likesFormated = dFormatEnabled ? KellyTools.dFormat(lastVideoYData.likes) : KellyTools.nFormat(lastVideoYData.likes);
+                var dislikesFormated = dFormatEnabled ? KellyTools.dFormat(lastVideoYData.dislikes) : KellyTools.nFormat(lastVideoYData.dislikes);
                 
                 updateCounter('like', handler.likeBtn, updateLikes ? likesFormated : false);                
                 updateCounter('dislike', handler.dislikeBtn, dislikesFormated);

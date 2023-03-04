@@ -2,7 +2,7 @@
 
 var KellyEDispetcher = new Object();
 
-    KellyEDispetcher.updatePageRevision = ['1.1.5.3', '1.1.5.4']; // versions, that related to update.html page text, if already notified on one of listed versions - skip
+    KellyEDispetcher.updatePageRevision = []; // versions, that related to update.html page text, if already notified on one of listed versions - skip
     KellyEDispetcher.init = function() {
         
              if (typeof browser !== 'undefined' && typeof browser.runtime !== 'undefined') KellyEDispetcher.api = browser;

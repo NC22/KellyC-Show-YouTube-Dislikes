@@ -12,10 +12,10 @@
         "message":"Настройки изменены"
     },  
     "num_k":{  
-        "message":"Тыс"
+        "message":"тыс."
     },  
     "num_m":{  
-        "message":"Млн"
+        "message":"млн."
     }, 
     "loading":{  
         "message":"Загрузка"
