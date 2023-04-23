@@ -252,7 +252,7 @@ function KellyShowRate() {
                                     
                                 } else {                                
                                     handler.log('Env exception 2 - update text placeholder', true);  
-                                    console.log(textBox);
+                                    // console.log(textBox);
                                 }
                                 
                                 if (textBox) {
@@ -354,7 +354,7 @@ function KellyShowRate() {
                 handler.ratioBarMaxWidth -= totalPadding;       
                 
                 if (handler.ratioBarMaxWidth < 60) handler.ratioBarMaxWidth = 150;
-                if (handler.ratioBarMaxWidth > 210) handler.ratioBarMaxWidth = 210;
+                if (handler.ratioBarMaxWidth > 400) handler.ratioBarMaxWidth = 400;
                 
                 
             } else if (handler.envSelectors.ratioWidthFixed) {
