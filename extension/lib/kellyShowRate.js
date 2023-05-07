@@ -206,13 +206,20 @@ function KellyShowRate() {
                         
                         //segmented buttons - placed inside additional wraper-container
                         
-                        if (handler.buttonsWraper.children[0].tagName.toLowerCase().indexOf('ytd-segmented-like-dislike-button-renderer') != -1) {
+                        if (handler.buttonsWraper.innerHTML.indexOf('ytd-segmented-like-dislike-button-renderer') != -1) {
                             handler.buttonsWraper = handler.buttonsWraper.children[0];
-                        } else if (handler.buttonsWraper.children[0].tagName.toLowerCase().indexOf('ytm-segmented-like-dislike-button-renderer') != -1) {
+                        } else if (handler.buttonsWraper.innerHTML.indexOf('ytm-segmented-like-dislike-button-renderer') != -1) {
                             handler.buttonsWraper = handler.buttonsWraper.querySelector('.segmented-buttons');
                         } else {
                             handler.envSelectors.ratioAutoAlignOffset = {left : 4, top : 0};
                         }
+                        
+                        //console.log(handler.buttonsWraper);
+                        
+                        //console.log(handler.buttonsWraper.children[1]);
+                        //console.log('-------------')
+                        //console.log('-------------')
+                        //console.log('-------------')
                         
                         if (!handler.buttonsWraper.querySelector(isMobile() ? '.button-renderer-text' : '#text')) { // new rounded style buttons style
                             
