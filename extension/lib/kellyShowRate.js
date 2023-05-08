@@ -208,6 +208,12 @@ function KellyShowRate() {
                         
                         if (handler.buttonsWraper.innerHTML.indexOf('ytd-segmented-like-dislike-button-renderer') != -1) {
                             handler.buttonsWraper = handler.buttonsWraper.children[0];
+                            
+                            if (handler.buttonsWraper && handler.buttonsWraper.children.length <= 1) { // style with addition "yt-smartimation" wraper
+                                handler.buttonsWraper = handler.buttonsWraper.querySelector('#segmented-buttons-wrapper');
+                                handler.log('Env exception 3', true);  
+                            }                            
+                            
                         } else if (handler.buttonsWraper.innerHTML.indexOf('ytm-segmented-like-dislike-button-renderer') != -1) {
                             handler.buttonsWraper = handler.buttonsWraper.querySelector('.segmented-buttons');
                         } else {
