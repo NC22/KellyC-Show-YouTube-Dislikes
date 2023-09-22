@@ -20,11 +20,11 @@ KellyTools.nFormat = function(num) {
     
     if(num > 999 && num < 1000000) {
         
-        return (num / 1000).toFixed(1) + "&nbsp;" + KellyTools.getLoc('num_k'); 
+        return (num / 1000).toFixed(1) + KellyTools.getLoc('num_k'); 
         
     } else if(num > 1000000) {
         
-        return (num / 1000000).toFixed(1) + "&nbsp;" + KellyTools.getLoc('num_m');
+        return (num / 1000000).toFixed(1) + KellyTools.getLoc('num_m');
         
     } else {
         

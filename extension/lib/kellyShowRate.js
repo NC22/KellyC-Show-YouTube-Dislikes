@@ -171,10 +171,10 @@ function KellyShowRate() {
                                 handler.ratioBarParent = document.createElement('DIV');
                                 handler.ratioBarParent.className = handler.baseClass + '-shorts-ratio-bar-wrap';
                                 likesBtn.parentElement.insertBefore(handler.ratioBarParent, likesBtn);
-                            }
-                        
+                            }                        
+                        } else {
+                            handler.ratioBarParent.innerHTML = '';
                         }
-                        
                     }
                     
                     break;
@@ -182,7 +182,11 @@ function KellyShowRate() {
             }
             
         } else {
-            
+                
+                // var shortsBars = document.getElementsByClassName(handler.baseClass + '-shorts-ratio-bar-wrap');
+                // for (var i = 0; i < shortsBars.length; i++) {
+                //      shortsBars[i].parentElement.removeChild(shortsBars[i]);
+                // }
                 
                 handler.envSelectors = domSelectors[isMobile() ? 'mobile' : 'desktop']; 
                 
@@ -302,8 +306,15 @@ function KellyShowRate() {
         initSelectors();
         
         if (handler.buttonsWraper) {
+            
+            if (handler.buttonsWraper.children.length < 2) {
+                handler.log('buttonsWraper detected, but buttons not ready', true);
+                return false;
+            }
+            
             handler.likeBtn = handler.buttonsWraper.children[0].querySelector(handler.envSelectors.btnCounter);
             handler.dislikeBtn = handler.buttonsWraper.children[1].querySelector(handler.envSelectors.btnCounter);
+            
         } else {
             handler.log('No buttonsWraper detected', true);
         }
