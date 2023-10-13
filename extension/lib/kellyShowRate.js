@@ -224,12 +224,14 @@ function KellyShowRate() {
                             handler.envSelectors.ratioAutoAlignOffset = {left : 4, top : 0};
                         }
                         
-                        //console.log(handler.buttonsWraper);
+                        // console.log(handler.buttonsWraper);
                         
-                        //console.log(handler.buttonsWraper.children[1]);
-                        //console.log('-------------')
-                        //console.log('-------------')
-                        //console.log('-------------')
+                        // console.log(handler.buttonsWraper.children[1]);
+                        // console.log( handler.ratioBarParent);
+                        // console.log('-------------')
+                        // console.log('-------------')
+                        // console.log('-------------')
+                        
                         
                         if (!handler.buttonsWraper.querySelector(isMobile() ? '.button-renderer-text' : '#text')) { // new rounded style buttons style
                             
@@ -249,19 +251,26 @@ function KellyShowRate() {
                                 var buttonBase = handler.buttonsWraper.children[1].querySelector('button');
                                     buttonBase.style.width = 'auto';
                                     
-                                var textBox = handler.buttonsWraper.children[1].querySelector('.cbox');
+                                var textSelector = '.cbox';
+                                if (!handler.buttonsWraper.children[0].querySelector(textSelector)) { // check what type of text selector used in like button
+                                    textSelector = '.yt-spec-button-shape-next__button-text-content';
+                                }
+                                
+                                var textBox = handler.buttonsWraper.children[1].querySelector(textSelector);
                                 if (!textBox) {
                                 
                                     handler.log('Env exception 2 - create text placeholder', true);  
                                     
-                                    var likeTextBox = handler.buttonsWraper.children[0].querySelector('.cbox');
+                                    var likeTextBox = handler.buttonsWraper.children[0].querySelector(textSelector);
+                                    var newTextBox = null;
+                                    
                                     if (!likeTextBox) {
                                         
                                         handler.log('Env exception 2 - no like button prototype found', true);  
                                         
-                                    } else {                                    
-                                        var newTextBox = likeTextBox.cloneNode(true);
-                                            newTextBox.children[0].innerHTML = '';                                    
+                                    } else {   
+                                    
+                                        newTextBox = likeTextBox.cloneNode(true);                                 
                                         buttonBase.appendChild(newTextBox);
                                     }
                                     
@@ -275,11 +284,12 @@ function KellyShowRate() {
                                 if (textBox) {
                                     
                                     textBox.classList.add(handler.baseClass + '-segmented-design-dislike-text');
-                                    
+                                    var counterText = textBox.querySelector('span');
                                     if (!textBox.querySelector('span')) {
                                         handler.log('Env exception 2 - use default text placeholder', true); 
                                         KellyTools.setHTMLData(textBox, '<span class="yt-core-attributed-string yt-core-attributed-string--white-space-no-wrap" role="text"></span>'); 
-                                    }
+                                    } else counterText = '';
+                                    
                                 }
                             }
                             
@@ -301,19 +311,20 @@ function KellyShowRate() {
         
     }
         
-    function getPageDom() { 
+    function getPageDom(initiator) { 
     
         initSelectors();
-        
+        console.log('---->' + initiator);
         if (handler.buttonsWraper) {
             
             if (handler.buttonsWraper.children.length < 2) {
                 handler.log('buttonsWraper detected, but buttons not ready', true);
-                return false;
-            }
+                
+            } else {
             
-            handler.likeBtn = handler.buttonsWraper.children[0].querySelector(handler.envSelectors.btnCounter);
-            handler.dislikeBtn = handler.buttonsWraper.children[1].querySelector(handler.envSelectors.btnCounter);
+                handler.likeBtn = handler.buttonsWraper.children[0].querySelector(handler.envSelectors.btnCounter);
+                handler.dislikeBtn = handler.buttonsWraper.children[1].querySelector(handler.envSelectors.btnCounter);
+            }
             
         } else {
             handler.log('No buttonsWraper detected', true);
@@ -342,7 +353,7 @@ function KellyShowRate() {
             handler.protectCounters.observe(handler.buttonsWraper, {childList: true, subtree: true});
         }
         
-        return !handler.dislikeBtn ? false : true;
+        return !handler.dislikeBtn && !handler.ratioBarParent ? false : true;
     }   
         
     function updateRatioWidth() {
@@ -553,7 +564,7 @@ function KellyShowRate() {
             return onReady(false, 'same video id - skip : ' + lastVideoId);
         }
         
-        getPageDom();
+        getPageDom('prepareRequestStart');
         lastVideoId = videoId;
         lastVideoYData = false;
         updateRatio();
@@ -572,7 +583,7 @@ function KellyShowRate() {
             
             setTimeout(function() {
                  if ( lastVideoId == videoId ) {
-                    getPageDom();
+                    getPageDom('redraw.existData');
                     showYData(browsingLog[videoId].ydata, 'redraw.existData (prevent YT layout redraws)');
                  }
             }, 1000);
@@ -718,7 +729,7 @@ function KellyShowRate() {
             
             handler.ytRequest = getYTData(requestCfg, function(ydata, error) {
                 
-                getPageDom();     
+                getPageDom('handler.ytRequest');     
                 handler.ytRequest = false;
                 if (!error && !applyData(ydata)) {
                     error = 'dataParserError'; // parser deprecated ? - imidiatly go to api methods
@@ -872,7 +883,13 @@ function KellyShowRate() {
         handler.log('[showYData] show YData [' + callerId + ']', true);
         
         lastVideoYData = validateYData(ydata); 
-        if (lastVideoYData && getPageDom()) {
+        if (lastVideoYData && getPageDom('showYData')) {
+            
+            if (!handler.dislikeBtn) {
+                updateRatio();                
+                setTimeout(updateRatioWidth, 500);
+                return true;
+            }
             
             var dFormatEnabled = handler.cfg.dNumbersFormatEnabled && !isShorts();
             var api = KellyStorage.apis[lastVideoYData.apiId], updateLikes = (api && api.updateLikes) || dFormatEnabled;
@@ -1135,6 +1152,8 @@ function KellyShowRate() {
     this.updatePageStateWaitDomReady = function() {
                 
         initCss(); resetNavigation();
+        var delay = 0;
+        
         if (!getVideoId()) {
             
             handler.log('[getPageDom] Video page not found. Wait next navigation', true);
@@ -1144,16 +1163,29 @@ function KellyShowRate() {
             return false;
         }
         
-        if (!getPageDom()) {
+        if (!getPageDom('updatePageStateWaitDomReady')) {
             handler.log('[updatePageStateWaitDomReady] Wait dom ready...', true);
-            initTimer = setTimeout(handler.updatePageStateWaitDomReady, 150);
+            initTimer = setTimeout(handler.updatePageStateWaitDomReady, 250);
             return;
+        } else {
+            
+            if (!handler.dislikeBtn || !handler.ratioBarParent) {
+               handler.log('[updatePageStateWaitDomReady] Partly ready... - ' + (!handler.dislikeBtn ? 'NO BUTTON COUNTER DETECTED' : 'NO RATIO BAR PARENT'), true);
+               delay = 500;
+            }
         }
         
-        setTimeout(updateRatioWidth, 200);
-        handler.log('[updatePageStateWaitDomReady] Init extension dom and env', true);
-        if (KellyStorage.bgFail) KellyTools.setHTMLData(handler.dislikeBtn, handler.bgFailTpl);
-        else updatePageState();
+        var onDomReady = function() {
+            
+            setTimeout(updateRatioWidth, 200);
+            handler.log('[updatePageStateWaitDomReady] Init extension dom and env', true);
+            
+            if (KellyStorage.bgFail) KellyTools.setHTMLData(handler.dislikeBtn, handler.bgFailTpl);
+            else updatePageState();
+        }
+        
+        if (delay) setTimeout(onDomReady, delay);
+        else onDomReady();
     }
         
     this.init = function() {
@@ -1180,7 +1212,7 @@ function KellyShowRate() {
             if (isMobile()) {
                 
                 var mobileMutationDelayRedraw = function() {
-                    if (getPageDom() && lastVideoYData) showYData(lastVideoYData, 'mobileMutationDelayRedraw.redraw');
+                    if (getPageDom('mobileMutationDelayRedraw') && lastVideoYData) showYData(lastVideoYData, 'mobileMutationDelayRedraw.redraw');
                 }
                 
                 handler.observer = new MutationObserver(function(mutations) {
