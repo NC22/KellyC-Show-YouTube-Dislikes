@@ -123,8 +123,8 @@ function KellyShowRate() {
     
     function getRatingState() {
              if (!handler.buttonsWraper) return 'unkonwn';
-        else if (handler.buttonsWraper.children[0].querySelector('[aria-pressed=true]')) return 'liked';
-        else if (handler.buttonsWraper.children[1].querySelector('[aria-pressed=true]')) return 'disliked';
+        else if (handler.buttonsWraper.children.length > 0 && handler.buttonsWraper.children[0].querySelector('[aria-pressed=true]')) return 'liked';
+        else if (handler.buttonsWraper.children.length > 1 && handler.buttonsWraper.children[1].querySelector('[aria-pressed=true]')) return 'disliked';
         else return 'neutral';
     } 
     
@@ -474,7 +474,9 @@ function KellyShowRate() {
         
         likeEl.style.height = handler.envSelectors.ratioHeight + 'px';
         dlikeEl.style.height = handler.envSelectors.ratioHeight + 'px';
-        if (handler.envSelectors.ratioBp) handler.ratioBar.style.paddingTop = (handler.envSelectors.ratioBp - handler.envSelectors.ratioHeight) + 'px';
+        handler.ratioBar.style.borderRadius = handler.envSelectors.ratioHeight + 'px';
+        
+        if (handler.envSelectors.ratioBp) handler.ratioBar.style.marginTop = (handler.envSelectors.ratioBp - handler.envSelectors.ratioHeight) + 'px';
         
         updateRatioWidth();
         if (!handler.ratioBarParent) return handler.log('Skip ratiobar addition - Cant read ratio bar parrent - ' + handler.envSelectors.ratioParent, true);
@@ -1026,7 +1028,7 @@ function KellyShowRate() {
            
            var tooltipCfg = {
                 target : handler.ratioBar, 
-                offset : {left : 0, top : 0}, 
+                offset : {left : 0, top : 12}, 
                 avoidOffset : {outBottom : -22, outLeft : 0}, 
                 positionY : 'bottom',
                 positionX : 'left',                
