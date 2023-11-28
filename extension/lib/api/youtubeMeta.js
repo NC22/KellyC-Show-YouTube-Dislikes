@@ -16,7 +16,24 @@ KellyShowRate.apiController['youtubeMetric'].parseYTPage = function(docRawText) 
     var publicData = {likes : false, dislikes : false, count : false, rating : false, utDislikes : false, source : 'Rating', likesDisabled : false};
     var pairs = {LIKE : 'likes', DISLIKE : 'dislikes'};
     var scripts = doc.getElementsByTagName('SCRIPT'), counter = doc.querySelector('[itemprop="interactionCount"]'), found = {};
+    var parseDataItem = function(item, index) {
 
+       
+        if (typeof item.toggleButtonRenderer != 'undefined' && 
+            typeof item.toggleButtonRenderer.defaultIcon != 'undefined') {
+            item = item.toggleButtonRenderer;
+            
+            if (item.defaultText.accessibility && typeof pairs[item.defaultIcon.iconType] != 'undefined') {
+                
+                
+                var num = parseInt(item.defaultText.accessibility.accessibilityData.label.replace(/[^0-9]/g,''));
+                if (!isNaN(num)) publicData[pairs[item.defaultIcon.iconType]] = num;
+                
+                // keep title of buttons
+            }
+        }
+    }
+    
     if (counter && counter.getAttribute('content')) publicData.count = parseInt(counter.getAttribute('content'));
     for (var i = 0; i < scripts.length; i++) {
         
@@ -37,27 +54,29 @@ KellyShowRate.apiController['youtubeMetric'].parseYTPage = function(docRawText) 
         if (scripts[i].innerHTML.indexOf('topLevelButtons') != -1) { 
             
             try {
-
-                var pageDataRegExp = /\"topLevelButtons\"\:\[\{([\s\S]*)watch-dislike\"\}/g;
+                
+                if (scripts[i].innerHTML.indexOf('defaultNavigationEndpoint') != -1) {
+                    var pageDataRegExp = /\"topLevelButtons\"\:\[\{([\s\S]*)defaultNavigationEndpoint/g;
+                } else {
+                    var pageDataRegExp = /\"topLevelButtons\"\:\[\{([\s\S]*)defaultServiceEndpoint/g;
+                }
+                
                 var pageData = pageDataRegExp.exec(scripts[i].innerHTML);
-
-                var data = JSON.parse('[{' + pageData[1] + '"}}]');
-                if (!data || data.length < 0) break;
-
-                    data.forEach(function(item, index) {
-                        if (typeof item.toggleButtonRenderer != 'undefined' && 
-                            typeof item.toggleButtonRenderer.defaultIcon != 'undefined') {
-                            item = item.toggleButtonRenderer;
-                            if (item.defaultText.accessibility && typeof pairs[item.defaultIcon.iconType] != 'undefined') {
-                                
-                                //console.log(item.defaultText.accessibility.accessibilityData.label);
-                                var num = parseInt(item.defaultText.accessibility.accessibilityData.label.replace(/[^0-9]/g,''));
-                                if (!isNaN(num)) publicData[pairs[item.defaultIcon.iconType]] = num;
-                                
-                                // keep title of buttons
-                            }
-                        }
-                    });
+                
+                console.log(pageData);
+                
+                console.log(scripts[i].innerHTML);
+                
+                var pageDataR =  pageData[0].replace(new RegExp('defaultServiceEndpoint', 'g'), '');
+                    pageDataR = '[{' + pageDataR + '}}}}]}]';
+                    pageDataR = pageDataR.replace(',"}}}}]}]', '}}}}]}]');
+                
+                var data = JSON.parse(pageDataR);
+                    data = data[0].topLevelButtons[0].segmentedLikeDislikeButtonRenderer;
+                    
+                    if (!data) break;
+                
+                    parseData(data.likeButton);
 
             } catch (e) {
                 console.log('Fail to parse page data');

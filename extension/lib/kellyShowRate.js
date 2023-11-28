@@ -213,10 +213,15 @@ function KellyShowRate() {
                         if (handler.buttonsWraper.innerHTML.indexOf('ytd-segmented-like-dislike-button-renderer') != -1) {
                             handler.buttonsWraper = handler.buttonsWraper.children[0];
                             
-                            if (handler.buttonsWraper && handler.buttonsWraper.children.length <= 1) { // style with addition "yt-smartimation" wraper
+                            if (handler.buttonsWraper && handler.buttonsWraper.children.length <= 1) { // style after 06.23 with addition "yt-smartimation" wraper
                                 handler.buttonsWraper = handler.buttonsWraper.querySelector('#segmented-buttons-wrapper');
                                 handler.log('Env exception 3', true);  
                             }                            
+                            
+                        } else if (handler.buttonsWraper.innerHTML.indexOf('segmented-like-dislike-button-view-model') != -1) { // segmented buttons after 28.11.23
+                            
+                            handler.buttonsWraper = handler.buttonsWraper.querySelector('.YtSegmentedLikeDislikeButtonViewModelSegmentedButtonsWrapper'); 
+                            if (!handler.buttonsWraper) handler.buttonsWraper = handler.buttonsWraper.querySelector('yt-smartimation .smartimation__content > div');                            
                             
                         } else if (handler.buttonsWraper.innerHTML.indexOf('ytm-segmented-like-dislike-button-renderer') != -1) {
                             handler.buttonsWraper = handler.buttonsWraper.querySelector('.segmented-buttons');
@@ -228,6 +233,8 @@ function KellyShowRate() {
                         
                         // console.log(handler.buttonsWraper.children[1]);
                         // console.log( handler.ratioBarParent);
+                        // console.log(handler.buttonsWraper.innerHTML.indexOf('segmented-like-dislike-button-view-model') != -1);
+                        // console.log(handler.buttonsWraper.innerHTML.indexOf('segmented-like-dislike-button-view-model') != -1);
                         // console.log('-------------')
                         // console.log('-------------')
                         // console.log('-------------')
@@ -235,7 +242,7 @@ function KellyShowRate() {
                         
                         if (!handler.buttonsWraper.querySelector(isMobile() ? '.button-renderer-text' : '#text')) { // new rounded style buttons style
                             
-                            handler.envSelectors.btnCounter = 'span[role="text"]';
+                            handler.envSelectors.btnCounter = 'span[role="text"]'; // currently will work universaly for all new layouts only for dislike button - todo - make universal selector, like btn needed in some cases
                             handler.log('Env exception 2 - use alternative btnCounter selector', true);
                             
                             handler.envSelectors.ratioBarClassName = handler.baseClass + '-ratio-bar-segmented-design';
@@ -252,6 +259,8 @@ function KellyShowRate() {
                                     buttonBase.style.width = 'auto';
                                     
                                 var textSelector = '.cbox';
+                                
+                                // new selector after 06.23 
                                 if (!handler.buttonsWraper.children[0].querySelector(textSelector)) { // check what type of text selector used in like button
                                     textSelector = '.yt-spec-button-shape-next__button-text-content';
                                 }
@@ -342,7 +351,7 @@ function KellyShowRate() {
                 for (var i = 0; i < mutations.length; i++) {
                                               
                     if (mutations[i].type == 'childList' &&
-                       ((updateLikes && mutations[i].target == handler.likeBtn) || mutations[i].target == handler.dislikeBtn) && 
+                       ((updateLikes && handler.likeBtn && mutations[i].target == handler.likeBtn) || mutations[i].target == handler.dislikeBtn) && 
                         mutations[i].addedNodes.length > 0 && 
                         mutations[i].addedNodes[0].nodeType == Node.TEXT_NODE) {                                
                         mutations[i].addedNodes[0].textContent = '';
@@ -594,6 +603,7 @@ function KellyShowRate() {
         }
         
         var apiCfg = KellyStorage.apis[handler.currentApi];
+        console.log(browsingLog[videoId].ydata);
         
         var requestCfg = {
             
@@ -865,6 +875,8 @@ function KellyShowRate() {
     
     function updateCounter(type, counterEl, val, mark) {
         
+        if (!counterEl) return;
+        
         var holder = document.getElementsByClassName(handler.baseClass + '-' + type);
         if (holder.length <= 0) holder = document.createElement('span');
         else holder = holder[0];
@@ -898,7 +910,7 @@ function KellyShowRate() {
                 
             handler.dislikeBtn.style.opacity = 1;
             handler.dislikeBtn.removeAttribute('is-empty'); // style.display = 'flex'; 
-            if (updateLikes) handler.likeBtn.removeAttribute('is-empty');
+            if (updateLikes && handler.likeBtn) handler.likeBtn.removeAttribute('is-empty');
                 
             if (lastVideoYData.disabledReason) {
                 
