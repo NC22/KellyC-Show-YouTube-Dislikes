@@ -365,7 +365,7 @@ function KellyShowRate() {
         return !handler.dislikeBtn && !handler.ratioBarParent ? false : true;
     }   
         
-    function updateRatioWidth() {
+    function updateRatioWidth(retry) {
          
          if (!handler.ratioBar) return;
          
@@ -416,9 +416,14 @@ function KellyShowRate() {
             // currently disabled for old design \ mobile
             if (!isMobile() && handler.cfg.ratioAutoAlignEnabled && handler.ratioBar.classList.contains(handler.baseClass + '-ratio-bar-segmented-design') && handler.buttonsWraper) {
                 
-                var buttonsWraperPos = handler.buttonsWraper.getBoundingClientRect(), ratioBarPos = handler.ratioBar.getBoundingClientRect();
+                var buttonsWraperPos = handler.buttonsWraper.getBoundingClientRect(), ratioBarPos = handler.ratioBar.getBoundingClientRect();                
                 leftOffset = (buttonsWraperPos.left - ratioBarPos.left);
                 
+                if (buttonsWraperPos.left == 0 || leftOffset < -50) {
+                    handler.updatePageStateDelayed(400);
+                    leftOffset = handler.ratioBarMaxWidth - 30;
+                } 
+                    
                 if (handler.envSelectors && handler.envSelectors.ratioAutoAlignOffset) {
                     leftOffset += handler.envSelectors.ratioAutoAlignOffset.left;
                 }
@@ -603,7 +608,7 @@ function KellyShowRate() {
         }
         
         var apiCfg = KellyStorage.apis[handler.currentApi];
-        console.log(browsingLog[videoId].ydata);
+        // console.log(browsingLog[videoId].ydata);
         
         var requestCfg = {
             
@@ -1284,8 +1289,8 @@ function KellyShowRate() {
                     if (lastVideoId && browsingLog[lastVideoId]) actionRequest(getRatingState(), 'button_click');
                     
                     // drop cache if needed to resend request browsingLog[lastVideoId] = false;
+                    setTimeout(handler.updatePageStateWaitDomReady, 500);
                     
-                    handler.updatePageStateWaitDomReady();
                 }
             });
         });

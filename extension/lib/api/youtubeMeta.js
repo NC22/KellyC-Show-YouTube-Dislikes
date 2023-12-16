@@ -63,9 +63,9 @@ KellyShowRate.apiController['youtubeMetric'].parseYTPage = function(docRawText) 
                 
                 var pageData = pageDataRegExp.exec(scripts[i].innerHTML);
                 
-                console.log(pageData);
+                //console.log(pageData);
                 
-                console.log(scripts[i].innerHTML);
+                //console.log(scripts[i].innerHTML);
                 
                 var pageDataR =  pageData[0].replace(new RegExp('defaultServiceEndpoint', 'g'), '');
                     pageDataR = '[{' + pageDataR + '}}}}]}]';
