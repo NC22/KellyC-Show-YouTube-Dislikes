@@ -93,7 +93,14 @@ function KellyShowRate() {
                 return match[2];
             }
         }
-        
+        if (href.indexOf('live') != -1) {
+            
+            var regExp = /(live\/)([-_A-Za-z0-9]+){0,11}/;
+            var match = href.match(regExp);
+            if (match && match[2].length==11) {
+                return match[2];
+            }
+        }
         return false;
     }
     
@@ -191,17 +198,17 @@ function KellyShowRate() {
                 handler.envSelectors = domSelectors[isMobile() ? 'mobile' : 'desktop']; 
                 
                 // possible custom desktop style
-                var upgrade = document.querySelector('ytd-watch-metadata');     
-                
+                var upgrade = document.getElementById('above-the-fold');//querySelector('ytd-watch-metadata');     
+
                 if (!isMobile() && upgrade && !upgrade.hidden && !upgrade.hasAttribute('disable-upgrade') && document.querySelector(domSelectors['desktopUpgrade'].btnsWrap)) { 
                     handler.envSelectors = domSelectors['desktopUpgrade'];
                     handler.log('Env exception 1', true);        
                 }
                 
                 if (handler.envSelectors.btnsWrap) {
-                    handler.buttonsWraper = document.querySelector(handler.envSelectors.btnsWrap);
-                    
-                    handler.log('buttonsWraper:', true);
+					
+					handler.buttonsWraper = getPriorityUserSpace().querySelector(handler.envSelectors.btnsWrap);
+                    handler.log('buttonsWraper: (by selector : ' + handler.envSelectors.btnsWrap + ')', true);
                     if (KellyTools.DEBUG) console.log(handler.buttonsWraper);
                     
                     // if buttonsWraper found, check possible custom style of buttons section 
@@ -263,6 +270,7 @@ function KellyShowRate() {
                                 // new selector after 06.23 
                                 if (!handler.buttonsWraper.children[0].querySelector(textSelector)) { // check what type of text selector used in like button
                                     textSelector = '.yt-spec-button-shape-next__button-text-content';
+                                    handler.log('Env exception 2 - different text selector - yt-spec-button-shape-next__button-text-content', true);  
                                 }
                                 
                                 var textBox = handler.buttonsWraper.children[1].querySelector(textSelector);
@@ -309,7 +317,7 @@ function KellyShowRate() {
                 }
                 
                 if (handler.envSelectors.ratioParent) {
-                    handler.ratioBarParent = document.querySelector(handler.envSelectors.ratioParent);
+                    handler.ratioBarParent = getPriorityUserSpace().querySelector(handler.envSelectors.ratioParent);
                 }
                 
                 handler.envSelectors.ratioHeight = handler.cfg.fixedRatioHeightEnabled ? handler.cfg.fixedRatioHeight : handler.envSelectors.ratioHeight;
@@ -441,6 +449,17 @@ function KellyShowRate() {
             
         }
     }
+	
+	function getPriorityUserSpace() {
+		
+		var userSpaceBelow = document.getElementById('below'); // .getBoundingClientRect()
+		var userSpaceSecond = document.getElementById('secondary'); // .getBoundingClientRect()
+		if (userSpaceSecond && userSpaceSecond.getBoundingClientRect().height > 0 && userSpaceSecond.querySelector('.YtSegmentedLikeDislikeButtonViewModelSegmentedButtonsWrapper')) {
+			return userSpaceSecond;
+		} else {			
+			return document;
+		}                   
+	}
         
     function updateRatio() {
         
@@ -1173,6 +1192,8 @@ function KellyShowRate() {
         initCss(); resetNavigation();
         var delay = 0;
         
+		handler.log('[updatePageStateWaitDomReady] navigation finished', true);
+		
         if (!getVideoId()) {
             
             handler.log('[getPageDom] Video page not found. Wait next navigation', true);
