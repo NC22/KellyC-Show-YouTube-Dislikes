@@ -227,8 +227,9 @@ function KellyShowRate() {
                             
                         } else if (handler.buttonsWraper.innerHTML.indexOf('segmented-like-dislike-button-view-model') != -1) { // segmented buttons after 28.11.23
                             
+                            var wraper = handler.buttonsWraper;
                             handler.buttonsWraper = handler.buttonsWraper.querySelector('.YtSegmentedLikeDislikeButtonViewModelSegmentedButtonsWrapper'); 
-                            if (!handler.buttonsWraper) handler.buttonsWraper = handler.buttonsWraper.querySelector('yt-smartimation .smartimation__content > div');                            
+                            if (!handler.buttonsWraper) handler.buttonsWraper = wraper.querySelector('yt-smartimation .smartimation__content > div');                            
                             
                         } else if (handler.buttonsWraper.innerHTML.indexOf('ytm-segmented-like-dislike-button-renderer') != -1) {
                             handler.buttonsWraper = handler.buttonsWraper.querySelector('.segmented-buttons');
